@@ -12,7 +12,7 @@ export class CreditSearchPerson {
 }
 
 export class CreditSearchPersonResult {
-  id: string;
+  id: number;
   creditors: Creditor[];
   report: string;
 }

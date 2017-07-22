@@ -1,5 +1,5 @@
 import { Service } from "./service";
-import { CreditSearchAddressResultTransformer, CreditSearchAddressTransformer } from "../transformers";
+import { CreditSearchAddressResultTransformer, CreditSearchAddressTransformer, CreditSearchPersonTransformer, CreditSearchPersonResultTransformer, CreditReportTransformer } from "../transformers";
 import { CreditSearchAddress, CreditSearchAddressResult, PartnerLinkError, CreditSearchPerson, CreditSearchPersonResult } from "../types";
 
 export class CreditSearch extends Service {
@@ -54,13 +54,43 @@ export class CreditSearch extends Service {
       ) });
   }
 
+  /**
+   * Performs a credit check on a person at the supplied addresses
+   *
+   * @param  {CreditSearchPerson}                person Details of the person
+   * @return {Promise<CreditSearchPersonResult>}        ID of the credit search, creditor list and credit report
+   */
   public performCreditCheck(person: CreditSearchPerson): Promise<CreditSearchPersonResult> {
     return Promise.resolve(person)
-      .then(person => new CreditSearchPersonResult)
+      .then(person => (new CreditSearchPersonTransformer(this.credentials)).item(person))
+      .then(personTransformed => this.soapRequest(
+        personTransformed,
+        "creditSearchUrl",
+        "services/SearchHeavyInterface.asmx",
+        "http://searchlink.co.uk/GetLightSearchAccountDataWithCreditSearchID"
+      ))
+      .then(personResult => (new CreditSearchPersonResultTransformer(this.credentials)).xmlItem(personResult))
+      .then(transformedPerson => Promise.resolve(transformedPerson.id)
+        .then(id => this.getCreditReport(id))
+        .then(html => {
+          transformedPerson.report = html;
+          return transformedPerson;
+        }))
       .catch(e => { throw new PartnerLinkError(
-        e.code === undefined ? `At least one requested address was not found.` : e.message,
+        e.code === undefined ? `No Creditors have been found.` : e.message,
         e.code === undefined ? 406 : e.code
       ) });
+  }
+
+  public getCreditReport(id: number): Promise<string> {
+    return Promise.resolve(id)
+      .then(id => this.soapRequest(
+        (new CreditReportTransformer(this.credentials)).item(id),
+        "creditSearchUrl",
+        "services/SearchHeavyInterface.asmx",
+        "http://searchlink.co.uk/GetLightSearchCreditReportHTML"
+      ))
+      .then(result => (new CreditReportTransformer(this.credentials)).getHtmlFromResult(result));
   }
 
 }
