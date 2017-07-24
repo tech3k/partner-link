@@ -11,6 +11,7 @@ export class CreditSearchAddressResult {
   public address1: string;
   public address2: string;
   public town: string;
+  public county: string;
   public postalCode: string;
   public surname: string;
 }

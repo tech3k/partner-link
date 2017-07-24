@@ -16,3 +16,20 @@ export class CreditSearchPersonResult {
   creditors: Creditor[];
   report: string;
 }
+
+export class Person {
+  public title: string;
+  public firstName: string;
+  public middleNames: string;
+  public lastName: string;
+  public maidenName?: string;
+  public dateOfBirth: moment.Moment;
+  public gender: string;
+  public addresses: CreditSearchAddressResult[];
+  public homeNumber: string;
+  public mobileNumber: string;
+  public emailAddress: string;
+  public employmentStatus: string;
+  public employerName: string;
+  public jobTitle: string;
+}

@@ -4,6 +4,27 @@ import { AcceptsCredentials } from "./credentials";
 import { PartnerLinkCredentials, PartnerLinkError } from "../types";
 
 export class Service extends AcceptsCredentials {
+  private jwt: string = undefined;
+
+  constructor(credentials: PartnerLinkCredentials) {
+    super(credentials);
+    this.getJwt();
+  }
+
+  private getJwt(): Promise<string> {
+    let options = {
+      method: 'POST',
+      uri: `https://${this.credentials["url"]}/Token`,
+      json: true,
+      form: {
+        grant_type: "password",
+        username: this.credentials.username,
+        password: this.credentials.password
+      }
+    };
+    return request(options)
+      .then(result => { this.jwt = result.access_token; return this.jwt; });
+  }
 
   protected soapRequest(body: string, credentialUrl: string, path: string, action: string): Promise<any> {
     let options: any = {
@@ -20,18 +41,33 @@ export class Service extends AcceptsCredentials {
     return request(options);
   }
 
-  protected getRquest(): Promise<any> {
-    return request({
-      method: 'GET',
-      uri: this.credentials.url
-    });
+  protected async tokenPostRequest(body: string, credentialUrl: string, path: string): Promise<any> {
+    let options = {
+      method: 'POST',
+      uri: `https://${this.credentials[credentialUrl]}/${path}`,
+      headers: {
+        "Content-Type": "text/xml",
+        "Authorization": "Bearer " + (this.jwt !== undefined ? this.jwt : await this.getJwt())
+      },
+      json: false,
+      body: this.stripEmptyLines(body)
+    };
+    return request(options)
+    .then(result => { return result; });
   }
 
-  protected postRequest(): Promise<any> {
-    return request({
+  protected postRequest(body: string, credentialUrl: string, path: string): Promise<any> {
+    let options = {
       method: 'POST',
-      uri: this.credentials.url
-    });
+      uri: `https://${this.credentials[credentialUrl]}/${path}`,
+      headers: {
+        "Content-Type": "text/xml",
+      },
+      json: false,
+      body: this.stripEmptyLines(body)
+    };
+    return request(options)
+    .then(result => { return result; });
   }
 
   private stripEmptyLines(data: string): string {

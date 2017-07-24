@@ -45,6 +45,10 @@ export class CreditSearchPersonTransformer extends Transformer implements Object
 </soap:Envelope>
     `;
   }
+
+  items(object: any[]): string {
+    return '';
+  }
 }
 
 export class CreditReportTransformer extends Transformer {

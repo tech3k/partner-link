@@ -14,4 +14,8 @@ export class Creditor {
   public creditAmount: number;
   public creditTerms: string;
   public latestStatus: string;
+  public applicant?: number;
+  public source?: string;
+  public owner?: number;
+  public creditCheck?: boolean;
 }

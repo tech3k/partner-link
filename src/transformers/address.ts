@@ -43,6 +43,10 @@ export class CreditSearchAddressTransformer extends Transformer implements Objec
 </soap:Envelope>
     `;
   }
+
+  items(object: any[]): string {
+    return '';
+  }
 }
 
 export class CreditSearchAddressResultTransformer extends Transformer implements XmlToObjectTransformer {
@@ -69,5 +73,48 @@ export class CreditSearchAddressResultTransformer extends Transformer implements
     let parsedResults: string[] = [];
 
     return Promise.all(parsedResults.map(address => this.xmlItem(address)));
+  }
+}
+
+
+export class AddAddressTransformer extends Transformer implements ObjectToXmlTransformer {
+  public item(object: CreditSearchAddressResult, index: number): string {
+    return `
+<AddressDetails>
+  <AddressLine1>${object.address1}</AddressLine1>
+  <AddressLine2>${object.address2}</AddressLine2>
+  <Applicant>1</Applicant>
+  <Country>England</Country>
+  <County>${object.county}</County>
+  <Notes>Credit Check ${this.textFromNumber(index)} address</Notes>
+  <Owner>Single</Owner>
+  <PTCAB>${object.id}</PTCAB>
+  <PostCode>${object.postalCode}</PostCode>
+  <SearchNumber>1</SearchNumber>
+</AddressDetails>
+    `;
+  }
+
+  private textFromNumber(n: number): string {
+    switch(n) {
+      case 1:
+        return "second";
+      case 2:
+        return "third";
+      default:
+        return "first";
+    }
+  }
+
+  items(object: any[]): string {
+    return `
+<AddAddressesRequest>
+  <Addresses>
+    ${object.map((address,i) => this.item(address, i)).join("\n")}
+  </Addresses>
+  <Password>${this.credentials.password}</Password>
+  <Username>${this.credentials.username}</Username>
+</AddAddressesRequest>
+    `;
   }
 }
