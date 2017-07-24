@@ -43,13 +43,15 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
          <CountryID>1</CountryID>
          <County>${object.people[0].addresses[0].county}</County>
          <DateOfBirth>${object.people[0].dateOfBirth.format("YYYY-MM-DD")}</DateOfBirth>
-         <DependantsList>
-            ${object.dependants.map(item => `
-              <Dependant>
-                 <Age>${item.fromNow().split(" ")[0]}</Age>
-              </Dependant>
-            `)}
-         </DependantsList>
+         ${object.dependants.length === 0 ? `` : `
+           <DependantsList>
+              ${object.dependants.map(item => `
+                <Dependant>
+                   <Age>${item.fromNow().split(" ")[0]}</Age>
+                </Dependant>
+              `)}
+           </DependantsList>
+         `}
          <Email>${object.people[0].emailAddress}</Email>
          <FirstName>${object.people[0].firstName}</FirstName>
          <Gender>${object.people[0].gender}</Gender>
@@ -59,23 +61,25 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
          <MaritalStatus>Married</MaritalStatus>
          <MiddleName>${object.people[0].middleNames}</MiddleName>
          <Mobile>${object.people[0].mobileNumber}</Mobile>
-         <PartnerAddressLine1>${object.people[1].addresses[0].address1}</PartnerAddressLine1>
-         <PartnerAddressLine2>${object.people[1].addresses[0].address2}</PartnerAddressLine2>
-         <PartnerCity>${object.people[1].addresses[0].town}</PartnerCity>
-         <PartnerCountryID>1</PartnerCountryID>
-         <PartnerCounty>${object.people[1].addresses[0].county}</PartnerCounty>
-         <PartnerDateOfBirth>${object.people[1].dateOfBirth.format("YYYY-MM-DD")}</PartnerDateOfBirth>
-         <PartnerEmail>${object.people[1].emailAddress}</PartnerEmail>
-         <PartnerFirstName>${object.people[1].firstName}</PartnerFirstName>
-         <PartnerGender>${object.people[1].gender}</PartnerGender>
-         <PartnerHomeTelephone>${object.people[1].homeNumber}</PartnerHomeTelephone>
-         <PartnerMaidenName>${object.people[1].maidenName}</PartnerMaidenName>
-         <PartnerMaritalStatus>Married</PartnerMaritalStatus>
-         <PartnerMiddleName>${object.people[1].middleNames}</PartnerMiddleName>
-         <PartnerMobile>${object.people[1].mobileNumber}</PartnerMobile>
-         <PartnerPostcode>${object.people[1].addresses[0].postalCode}</PartnerPostcode>
-         <PartnerSalutation>${object.people[1].title}</PartnerSalutation>
-         <PartnerSurname>${object.people[1].lastName}</PartnerSurname>
+         ${object.people.length < 2 ? `` : `
+           <PartnerAddressLine1>${object.people[1].addresses[0].address1}</PartnerAddressLine1>
+           <PartnerAddressLine2>${object.people[1].addresses[0].address2}</PartnerAddressLine2>
+           <PartnerCity>${object.people[1].addresses[0].town}</PartnerCity>
+           <PartnerCountryID>1</PartnerCountryID>
+           <PartnerCounty>${object.people[1].addresses[0].county}</PartnerCounty>
+           <PartnerDateOfBirth>${object.people[1].dateOfBirth.format("YYYY-MM-DD")}</PartnerDateOfBirth>
+           <PartnerEmail>${object.people[1].emailAddress}</PartnerEmail>
+           <PartnerFirstName>${object.people[1].firstName}</PartnerFirstName>
+           <PartnerGender>${object.people[1].gender}</PartnerGender>
+           <PartnerHomeTelephone>${object.people[1].homeNumber}</PartnerHomeTelephone>
+           <PartnerMaidenName>${object.people[1].maidenName}</PartnerMaidenName>
+           <PartnerMaritalStatus>Married</PartnerMaritalStatus>
+           <PartnerMiddleName>${object.people[1].middleNames}</PartnerMiddleName>
+           <PartnerMobile>${object.people[1].mobileNumber}</PartnerMobile>
+           <PartnerPostcode>${object.people[1].addresses[0].postalCode}</PartnerPostcode>
+           <PartnerSalutation>${object.people[1].title}</PartnerSalutation>
+           <PartnerSurname>${object.people[1].lastName}</PartnerSurname>
+         `}
          <PartnerUnaware>false</PartnerUnaware>
          <Postcode>${object.people[0].addresses[0].postalCode}</Postcode>
          <Salutation>${object.people[0].title}</Salutation>
