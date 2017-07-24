@@ -30,28 +30,22 @@ export class CreditorTransformer extends Transformer implements ObjectToXmlTrans
 
   item(object: Creditor): string {
     return `
-<AddCreditorsRequest>
-<Creditors>
 <CreditorDetails>
 <AccountReference>${object.reference}</AccountReference>
 <Applicant>${object.applicant}</Applicant>
-<CreditStatus>Settled</CreditStatus>
+<CreditStatus>${object.latestStatus}</CreditStatus>
 <CreditorSource>${object.creditCheck ? 'Credit Check' : 'Provided By Client'}</CreditorSource>
-<CurrentBalance>${object.currentBalance / 100}</CurrentBalance>
+${object.currentBalance === undefined ? `` : `<CurrentBalance>${object.currentBalance / 100}</CurrentBalance>`}
 <DebtOwner>${object.jointAccount ? "joint" : "single"}</DebtOwner>
-<DelinquentBalance>${object.delinquentBalance / 100}</DelinquentBalance>
+${object.delinquentBalance === undefined ? `` : `<DelinquentBalance>${object.delinquentBalance / 100}</DelinquentBalance>`}
 <ExternalCreditCheck>${object.creditCheck ? 'true' : 'false'}</ExternalCreditCheck>
 <Name>${object.name}</Name>
-<StartBalance>${object.startBalance / 100}</StartBalance>
-<StartDate>${object.creditStartDate.format("YYYY-MM-DD")}</StartDate>
-<TotalBalance>${object.creditAmount / 100}</TotalBalance>
-<Type>${object.creditorType}</Type>
-<UpdateDate>${object.creditUpdateDate.format("YYYY-MM-DD")}</UpdateDate>
+${object.startBalance === undefined ? `` : `<StartBalance>${object.startBalance / 100}</StartBalance>`}
+${object.creditStartDate === undefined ? `` : `<StartDate>${object.creditStartDate.format("YYYY-MM-DD")}</StartDate>`}
+${object.creditAmount === undefined ? `` : `<TotalBalance>${object.creditAmount / 100}</TotalBalance>`}
+${object.creditorType === undefined ? `` : `<Type>${object.creditorType}</Type>`}
+${object.creditUpdateDate === undefined ? `` : `<UpdateDate>${object.creditUpdateDate.format("YYYY-MM-DD")}</UpdateDate>`}
 </CreditorDetails>
-</Creditors>
-<Password>${this.credentials.password}</Password>
-<Username>${this.credentials.username}</Username>
-</AddCreditorsRequest>
     `;
   }
 
@@ -59,9 +53,13 @@ export class CreditorTransformer extends Transformer implements ObjectToXmlTrans
     if (object === undefined || object.length === 0) { return ''; }
 
     return `
-<OtherAssets>
-  ${object.map(item => this.item(item)).join("\n")}
-</OtherAssets>
+<AddCreditorsRequest>
+<Creditors>
+${object.map(item => this.item(item)).join("\n")}
+</Creditors>
+<Password>${this.credentials.password}</Password>
+<Username>${this.credentials.username}</Username>
+</AddCreditorsRequest>
     `;
   }
 

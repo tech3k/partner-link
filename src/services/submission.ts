@@ -13,7 +13,7 @@ export class Submission extends Service {
       ))
       .then(caseResult => (new CaseResultTransformer(this.credentials)).xmlItem(caseResult))
       .catch(e => { throw new PartnerLinkError(
-        e.message, //e.code === undefined ? `Unable to submit case.` : e.message,
+        e.code === undefined ? `Unable to submit case (${e.message}).` : e.message,
         e.code === undefined ? 406 : e.code
       ) });
   }
@@ -28,6 +28,10 @@ export class Submission extends Service {
       );
       return info;
     })
+    .catch(e => { throw new PartnerLinkError(
+      e.code === undefined ? `Unable to submit addresses (${e.message}).` : e.message,
+      e.code === undefined ? 406 : e.code
+    ) });
   }
 
   public addNotes(caseInformation: CaseResult, notes: NoteRequest): Promise<CaseResult> {
@@ -37,29 +41,44 @@ export class Submission extends Service {
         "url",
         "api/AddNotes"
       ))
-      .then(result => caseInformation);
+      .then(result => caseInformation)
+      .catch(e => { throw new PartnerLinkError(
+        e.code === undefined ? `Unable to submit notes (${e.message}).` : e.message,
+        e.code === undefined ? 406 : e.code
+      ) });
   }
 
   public addCreditors(caseInformation: CaseResult, creditors: Creditor[]): Promise<CaseResult> {
-    return Promise.all(
-      creditors.map(item => this.addCreditor(caseInformation, item))
-    ).then(results => caseInformation);
-  }
-
-  public addCreditor(caseInformation: CaseResult, creditor: Creditor): Promise<CaseResult> {
-    return Promise.resolve({info: caseInformation, creditor: creditor})
-      .then(({info, creditor}) => this.postRequest(
-        (new CreditorTransformer(this.credentials)).item(creditor),
+    return Promise.resolve({info: caseInformation, creditors: creditors})
+      .then(({info, creditors}) => this.postRequest(
+        (new CreditorTransformer(this.credentials)).items(creditors),
         "url",
         "api/AddCreditors/" + info.id
       ))
       .then(results => caseInformation)
+      .catch(e => { throw new PartnerLinkError(
+        e.code === undefined ? `Unable to submit creditors (${e.message}).` : e.message,
+        e.code === undefined ? 406 : e.code
+      ) });
+  }
+
+  public addCreditor(caseInformation: CaseResult, creditor: Creditor): Promise<CaseResult> {
+    return this.addCreditors(caseInformation, [creditor])
+    .then(results => caseInformation)
+    .catch(e => { throw new PartnerLinkError(
+      e.code === undefined ? `Unable to submit creditor ${creditor.name} for ${creditor.currentBalance}.` : e.message,
+      e.code === undefined ? 406 : e.code
+    ) });
   }
 
   public addDocuments(caseInformation: CaseResult, documents: Document[]): Promise<CaseResult> {
     return Promise.all(
       documents.map(item => this.addDocument(caseInformation, item))
-    ).then(results => caseInformation);
+    ).then(results => caseInformation)
+    .catch(e => { throw new PartnerLinkError(
+      e.code === undefined ? `Unable to submit documents (${e.message}).` : e.message,
+      e.code === undefined ? 406 : e.code
+    ) });
   }
 
   public addDocument(caseInformation: CaseResult, document: Document): Promise<CaseResult> {
@@ -70,6 +89,10 @@ export class Submission extends Service {
         "api/AddDocument"
       ))
       .then(results => caseInformation)
+      .catch(e => { throw new PartnerLinkError(
+        e.code === undefined ? `Unable to submit document ${document.fileName}.` : e.message,
+        e.code === undefined ? 406 : e.code
+      ) });
   }
 
 }

@@ -37,7 +37,7 @@ export class Service extends AcceptsCredentials {
       json: false,
       body: this.stripEmptyLines(body)
     };
-
+    if (this.credentials.debug) { console.log(options); }
     return request(options);
   }
 
@@ -52,8 +52,9 @@ export class Service extends AcceptsCredentials {
       json: false,
       body: this.stripEmptyLines(body)
     };
+    if (this.credentials.debug) { console.log(options); }
     return request(options)
-    .then(result => { return result; });
+    .then(result => { if (this.credentials.debug) { console.log(result); } return result; });
   }
 
   protected postRequest(body: string, credentialUrl: string, path: string): Promise<any> {
@@ -66,8 +67,9 @@ export class Service extends AcceptsCredentials {
       json: false,
       body: this.stripEmptyLines(body)
     };
+    if (this.credentials.debug) { console.log(options); }
     return request(options)
-    .then(result => { return result; });
+    .then(result => { if (this.credentials.debug) { console.log(result); } return result; });
   }
 
   private stripEmptyLines(data: string): string {

@@ -9,4 +9,5 @@ export class PartnerLinkCredentials {
   public creditSearchUsername: string;
   public creditSearchPassword: string;
   public creditSearchClient: string;
+  public debug: boolean = false;
 }

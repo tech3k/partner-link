@@ -12,7 +12,7 @@ export class CreditSearchPersonTransformer extends Transformer implements Object
   <soap:Body>
     <GetLightSearchAccountDataWithCreditSearchID xmlns="http://searchlink.co.uk/">
       <ClientReference>${object.clientReference}</ClientReference>
-      <Title>${object.title}</Title>
+      <Title>${object.title !== undefined && object.title !== null ? object.title : ''}</Title>
       <Forename>${object.firstName}</Forename>
       <Surname>${object.lastName}</Surname>
       <DateOfBirth>${object.dateOfBirth.format("YYYY-MM-DD")}</DateOfBirth>
