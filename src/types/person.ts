@@ -32,4 +32,5 @@ export class Person {
   public employmentStatus: string;
   public employerName: string;
   public jobTitle: string;
+  public maritalStatus: string;
 }
