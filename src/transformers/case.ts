@@ -1,8 +1,10 @@
 import * as moment from "moment";
-import { Transformer, XmlToObjectTransformer, ObjectToXmlTransformer } from "./transformer";
-import { PartnerLinkError, Case, CaseResult } from "../types";
 
-import { VehicleTransformer, PropertyTransformer, AssetTransformer, IncomeTransformer, ExpenditureTransformer } from "./";
+import { AssetTransformer, ExpenditureTransformer, IncomeTransformer, PropertyTransformer, VehicleTransformer } from "./";
+import { Case, CaseResult, PartnerLinkError } from "../types";
+import { ObjectToXmlTransformer, Transformer, XmlToObjectTransformer } from "./transformer";
+
+
 
 export class CaseTransformer extends Transformer implements ObjectToXmlTransformer {
   public item(object: Case): string {
@@ -13,6 +15,19 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
     if (object.people[0].homeNumber === undefined || object.people[0].homeNumber === null || object.people[0].homeNumber.length === 0) {
       throw new PartnerLinkError('No home telephone number has been provided.', 406);
     }
+
+    let clientAddressMatches = object.people[0].addresses[0].address1.trim().match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d+[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
+    let clientHouseNumber = clientAddressMatches[1].trim();
+    let clientStreetName = clientAddressMatches[2] !== undefined ? clientAddressMatches[2].trim() : object.people[0].addresses[0].address2;
+    let partnerHouseNumber: string = undefined;
+    let partnerStreetName: string = undefined;
+
+    if (object.people.length > 1) {
+      let partnerAddressMatches = object.people[1].addresses[0].address1.trim().match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d+[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
+      partnerHouseNumber = partnerAddressMatches[1].trim();
+      partnerStreetName = partnerAddressMatches[2] !== undefined ? partnerAddressMatches[2].trim() : object.people[1].addresses[0].address2;
+    }
+
 
     return `
 <CreateFullCaseRequest>
@@ -44,8 +59,8 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
       ${(new IncomeTransformer).items(object.income)}
       ${(new AssetTransformer).items(object.assets)}
       <PersonalDetails>
-         <AddressLine1>${object.people[0].addresses[0].address1.trim()}</AddressLine1>
-         ${object.people[0].addresses[0].address2 === undefined ? `` : `<AddressLine2>${object.people[0].addresses[0].address2.trim()}</AddressLine2>`}
+         <AddressLine1>${clientHouseNumber}</AddressLine1>
+         <AddressLine2>${clientStreetName}</AddressLine2>
          <City>${object.people[0].addresses[0].town.trim()}</City>
          <CountryID>1</CountryID>
          ${object.people[0].addresses[0].county === undefined ? `` : `<County>${object.people[0].addresses[0].county.trim()}</County>`}
@@ -69,11 +84,11 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
          ${object.people[0].middleNames === undefined || object.people[0].middleNames === null ? `` : `<MiddleName>${object.people[0].middleNames.trim()}</MiddleName>`}
          ${object.people[0].mobileNumber === undefined || object.people[0].mobileNumber === null ? `` : `<Mobile>${object.people[0].mobileNumber.trim()}</Mobile>`}
          ${object.people.length < 2 ? `` : `
-           <PartnerAddressLine1>${object.people[1].addresses[0].address1.trim()}</PartnerAddressLine1>
-           <PartnerAddressLine2>${object.people[1].addresses[0].address2.trim()}</PartnerAddressLine2>
-           <PartnerCity>${object.people[1].addresses[0].town.trim()}</PartnerCity>
+           ${partnerHouseNumber === undefined ? `` : `<PartnerAddressLine1>${partnerHouseNumber}</PartnerAddressLine1>`}
+           ${partnerStreetName === undefined ? `` : `<PartnerAddressLine2>${partnerStreetName}</PartnerAddressLine2>`}
+           ${object.people[1].addresses[0].town === undefined || object.people[1].addresses[0].town === null ? `` : `<PartnerCity>${object.people[1].addresses[0].town.trim()}</PartnerCity>`}
            <PartnerCountryID>1</PartnerCountryID>
-           <PartnerCounty>${object.people[1].addresses[0].county.trim()}</PartnerCounty>
+           ${object.people[1].addresses[0].county === undefined || object.people[1].addresses[0].county === null ? `` : `<PartnerCounty>${object.people[1].addresses[0].county.trim()}</PartnerCounty>`}
            <PartnerDateOfBirth>${object.people[1].dateOfBirth.format("YYYY-MM-DD")}</PartnerDateOfBirth>
            ${object.people[1].emailAddress === undefined || object.people[1].emailAddress === null || object.people[1].emailAddress.length < 5 ? `` : `<PartnerEmail>${object.people[1].emailAddress.trim()}</PartnerEmail>`}
            <PartnerFirstName>${object.people[1].firstName.trim()}</PartnerFirstName>

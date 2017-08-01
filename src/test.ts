@@ -1,5 +1,7 @@
 import * as moment from "moment";
-import { PartnerLinkError, PartnerLink, PartnerLinkCredentials, CreditSearchAddress, CreditSearchAddressResult, CreditSearchPerson, Case, Income, Expenditure, Person, NoteRequest, Note, Creditor, Document } from "./";
+
+import { Case, CreditSearchAddress, CreditSearchAddressResult, CreditSearchPerson, Creditor, Document, Expenditure, Income, Note, NoteRequest, PartnerLink, PartnerLinkCredentials, PartnerLinkError, Person } from "./";
+
 
 let partnerLink = new PartnerLink({
   url: "partnerlinkapidev.azurewebsites.net",
@@ -10,8 +12,10 @@ let partnerLink = new PartnerLink({
   creditSearchUrl: "searchfulllive.azurewebsites.net",
   creditSearchClient: "BeyondComparison",
   creditSearchUsername: "simonbc",
-  creditSearchPassword: "c9ee1b951fd661d23e82c9175afd8182398d68f194b149669e971e1f71edb75b"
+  creditSearchPassword: "c9ee1b951fd661d23e82c9175afd8182398d68f194b149669e971e1f71edb75b",
+  debug: true
 } as PartnerLinkCredentials);
+
 
 // Submit Details to Partner Link
 // ------------------------------
@@ -26,7 +30,7 @@ partnerLink.submission.createFullCase({
      employmentStatus: "Employed", employerName: "Beyond Comparison", jobTitle: "IT Director"} as Person,
      {title: "Mrs", firstName: "Katie", middleNames: 'Ellen', lastName: "Skinner", maidenName: "Smith", dateOfBirth: moment("1987-01-12"), gender: "F",
       addresses: [
-        {id: "3253224", address1: "123 Test Lane", address2: "sdfsd", town: "Testing", county: "testashire", postalCode: "TE5 7ER", surname: "Skinner"} as CreditSearchAddressResult
+        {id: "3253224", address1: "Flat 10a Witherfood Road", address2: "sdfsd", town: "Testing", county: "testashire", postalCode: "TE5 7ER", surname: "Skinner"} as CreditSearchAddressResult
       ],
       homeNumber: "01204297397", mobileNumber: "07402444653", emailAddress: "simon@sisk-ltd.co.uk",
       employmentStatus: "Employed", employerName: "Beyond Comparison", jobTitle: "IT Director"} as Person
@@ -114,8 +118,9 @@ partnerLink.submission.createFullCase({
 // ------------------------
 //
 // partnerLink.creditSearch.checkMultipleAddresses([
-//   {houseNumber: "51", postalCode: "BL1 8WB", street: "Waterside Gardens", town: "Bolton", surname: "Fish"} as CreditSearchAddress,
-//   {houseNumber: "128 Hulton Lane", postalCode: "BL3 4JD", street: "128 Hulton Lane", town: "Bolton", surname: "Fish"} as CreditSearchAddress
+//   {houseNumber: "128 Hulton Lane", postalCode: "BL3 4JD", street: "128 Hulton Lane", town: "Bolton", surname: "Fish"} as CreditSearchAddress,
+//   {houseNumber: "Flat 10a Bigford Lane", postalCode: "BL3 4JD", street: "Flat 10a Bigford Lane", town: "Bolton", surname: "Fish"} as CreditSearchAddress,
+//   {houseNumber: "Flat 991", postalCode: "BL3 4JD", street: "Salisbury Avenue", town: "Bolton", surname: "Fish"} as CreditSearchAddress
 // ])
 // .then(addresses => partnerLink.creditSearch.performCreditCheck({
 //   clientReference: "asdi7gasfdi87asgf9a8sf",

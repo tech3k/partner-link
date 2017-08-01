@@ -1,5 +1,6 @@
-import { Transformer, XmlToObjectTransformer, ObjectToXmlTransformer } from "./transformer";
-import { PartnerLinkError, CreditSearchAddressResult, CreditSearchAddress } from "../types";
+import { CreditSearchAddress, CreditSearchAddressResult, PartnerLinkError } from "../types";
+import { ObjectToXmlTransformer, Transformer, XmlToObjectTransformer } from "./transformer";
+
 
 export class CreditSearchAddressTransformer extends Transformer implements ObjectToXmlTransformer {
   public item(object: CreditSearchAddress): string {
@@ -23,14 +24,18 @@ export class CreditSearchAddressTransformer extends Transformer implements Objec
       throw new PartnerLinkError('Surname is missing from the address.', 406);
     }
 
+    let addressMatches = object.houseNumber.match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d+[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
+    let houseNumber = addressMatches[1];
+    let streetName = addressMatches[2] !== undefined ? addressMatches[2] : object.street;
+
     return `
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
   <SearchAddress xmlns="http://searchlink.co.uk/">
-    <HouseNumber>${object.houseNumber}</HouseNumber>
+    <HouseNumber>${houseNumber}</HouseNumber>
     <PostCode>${object.postalCode}</PostCode>
-    <Street>${object.street}</Street>
+    <Street>${streetName}</Street>
     <Town>${object.town}</Town>
     <Surname>${object.surname}</Surname>
     <cred>
@@ -78,11 +83,16 @@ export class CreditSearchAddressResultTransformer extends Transformer implements
 
 
 export class AddAddressTransformer extends Transformer implements ObjectToXmlTransformer {
+
   public item(object: CreditSearchAddressResult, index: number): string {
+    let addressMatches = object.address1.match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d+[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
+    let houseNumber = addressMatches[1];
+    let streetName = addressMatches[2] !== undefined ? addressMatches[2] : object.address2;
+
     return `
 <AddressDetails>
-  <AddressLine1>${object.address1}</AddressLine1>
-  <AddressLine2>${object.address2}</AddressLine2>
+  <AddressLine1>${houseNumber}</AddressLine1>
+  <AddressLine2>${streetName}</AddressLine2>
   <Applicant>1</Applicant>
   <Country>England</Country>
   <County>${object.county}</County>
