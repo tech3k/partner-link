@@ -85,6 +85,11 @@ export class CreditSearchAddressResultTransformer extends Transformer implements
 export class AddAddressTransformer extends Transformer implements ObjectToXmlTransformer {
 
   public item(object: CreditSearchAddressResult, index: number): string {
+
+    if (object.county === undefined || object.county === null || object.county.length === 0) {
+      throw new PartnerLinkError('County is missing from the address.', 406);
+    }
+
     let addressMatches = object.address1.match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d+[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
     let houseNumber = addressMatches[1];
     let streetName = addressMatches[2] !== undefined ? addressMatches[2] : object.address2;
