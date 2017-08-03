@@ -1,7 +1,10 @@
 import * as moment from "moment";
 
-import { Transformer, ObjectToXmlTransformer } from "./transformer";
+import { ObjectToXmlTransformer, Transformer } from "./transformer";
+
 import { Creditor } from "../types";
+
+
 
 export class CreditorTransformer extends Transformer implements ObjectToXmlTransformer {
   public parseXmlItem(item: any): Creditor {
@@ -29,6 +32,8 @@ export class CreditorTransformer extends Transformer implements ObjectToXmlTrans
   }
 
   item(object: Creditor): string {
+    let creditorName: string = object.name.toUpperCase();
+
     return `
 <CreditorDetails>
 <AccountReference>${object.reference}</AccountReference>
@@ -39,7 +44,7 @@ ${object.currentBalance === undefined ? `` : `<CurrentBalance>${object.currentBa
 <DebtOwner>${object.jointAccount ? "joint" : "single"}</DebtOwner>
 ${object.delinquentBalance === undefined ? `` : `<DelinquentBalance>${object.delinquentBalance / 100}</DelinquentBalance>`}
 <ExternalCreditCheck>${object.creditCheck ? 'true' : 'false'}</ExternalCreditCheck>
-<Name>${object.name}</Name>
+<Name>${creditorName}</Name>
 ${object.startBalance === undefined ? `` : `<StartBalance>${object.startBalance / 100}</StartBalance>`}
 ${object.creditStartDate === undefined ? `` : `<StartDate>${object.creditStartDate.format("YYYY-MM-DD")}</StartDate>`}
 ${object.creditAmount === undefined ? `` : `<TotalBalance>${object.creditAmount / 100}</TotalBalance>`}
