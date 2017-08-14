@@ -1,6 +1,7 @@
 dist
 node_modules
 npm-debug*
+test.ts
 
 # IDEs and editors
 /.idea

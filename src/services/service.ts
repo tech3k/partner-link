@@ -38,7 +38,11 @@ export class Service extends AcceptsCredentials {
       body: this.stripEmptyLines(body)
     };
     if (this.credentials.debug) { console.log(options); }
-    return request(options);
+    return request(options)
+      .then(result => {
+        if (this.credentials.debug) { console.log(result); }
+        return result;
+      });
   }
 
   protected async tokenPostRequest(body: string, credentialUrl: string, path: string): Promise<any> {

@@ -24,7 +24,7 @@ export class CreditSearchAddressTransformer extends Transformer implements Objec
       throw new PartnerLinkError('Surname is missing from the address.', 406);
     }
 
-    let addressMatches = object.houseNumber.match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d+[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
+    let addressMatches = object.houseNumber.match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d*[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
     let houseNumber = addressMatches[1];
     let streetName = addressMatches[2] !== undefined ? addressMatches[2] : object.street;
 
@@ -55,12 +55,9 @@ export class CreditSearchAddressTransformer extends Transformer implements Objec
 }
 
 export class CreditSearchAddressResultTransformer extends Transformer implements XmlToObjectTransformer {
-  public xmlItem(xml: string): Promise<CreditSearchAddressResult> {
+  public xmlItem(xml: any): Promise<CreditSearchAddressResult> {
     return Promise.resolve(xml)
-      .then(xml => this.parseXml(xml))
-      .then(parsedResult => parsedResult["soap:Envelope"]["soap:Body"][0]["SearchAddressResponse"][0]["SearchAddressResult"][0])
-      .then(singleResult => this.parseXml(singleResult))
-      .then(parsedSingleResult => parsedSingleResult["Address"]["AddressMatch"][0]["$"])
+      .then(xml => xml["$"])
       .then(address => {
         let returnAddress = new CreditSearchAddressResult;
 
@@ -75,9 +72,12 @@ export class CreditSearchAddressResultTransformer extends Transformer implements
   }
 
   public xmlItems(xml: string): Promise<CreditSearchAddressResult[]> {
-    let parsedResults: string[] = [];
-
-    return Promise.all(parsedResults.map(address => this.xmlItem(address)));
+    return Promise.resolve(xml)
+      .then(xml => this.parseXml(xml))
+      .then(parsedResult => parsedResult["soap:Envelope"]["soap:Body"][0]["SearchAddressResponse"][0]["SearchAddressResult"])
+      .then(singleResult => this.parseXml(singleResult))
+      .then(parsedSingleResult => Promise.all(parsedSingleResult["Address"]["AddressMatch"].map(this.xmlItem)))
+      .then(allResults => allResults as CreditSearchAddressResult[]);
   }
 }
 
@@ -90,7 +90,7 @@ export class AddAddressTransformer extends Transformer implements ObjectToXmlTra
       throw new PartnerLinkError('County is missing from the address.', 406);
     }
 
-    let addressMatches = object.address1.match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d+[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
+    let addressMatches = object.address1.match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d*[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
     let houseNumber = addressMatches[1];
     let streetName = addressMatches[2] !== undefined ? addressMatches[2] : object.address2;
 

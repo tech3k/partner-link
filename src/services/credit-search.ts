@@ -11,7 +11,7 @@ export class CreditSearch extends Service {
    * @param  {CreditSearchAddress} address The required address
    * @return {CreditSearchResult}          The parsed valid address
    */
-  public checkAddress(address: CreditSearchAddress): Promise<CreditSearchAddressResult> {
+  public checkAddress(address: CreditSearchAddress): Promise<CreditSearchAddressResult[]> {
     return Promise.resolve(address)
       .then(address => this.soapRequest(
         (new CreditSearchAddressTransformer(this.credentials)).item(address),
@@ -19,9 +19,9 @@ export class CreditSearch extends Service {
         "services/SearchHeavyInterface.asmx",
         "http://searchlink.co.uk/SearchAddress"
       ))
-      .then(addressResult => (new CreditSearchAddressResultTransformer(this.credentials)).xmlItem(addressResult))
+      .then(addressResult => (new CreditSearchAddressResultTransformer(this.credentials)).xmlItems(addressResult))
       .then(addressResult => {
-        if (addressResult.id === undefined || addressResult.id === null || addressResult.id.length === 0) {
+        if (addressResult.length === 0) {
           throw new PartnerLinkError(`Address ${address.houseNumber} ${address.postalCode} was not found.`, 406);
         }
 
@@ -40,7 +40,7 @@ export class CreditSearch extends Service {
    * @param  {CreditSearchAddress[]}          addresses An array of addresses
    * @return {Promise<CreditSearchResult[]>}            An array of parsed addresses
    */
-  public checkMultipleAddresses(addresses: CreditSearchAddress[]): Promise<CreditSearchAddressResult[]> {
+  public checkMultipleAddresses(addresses: CreditSearchAddress[]): Promise<CreditSearchAddressResult[][]> {
     return Promise.resolve(addresses)
       .then(addresses => {
         if (addresses.length > 3) { throw new PartnerLinkError("No more than 3 addresses can be credit searched.", 406) }

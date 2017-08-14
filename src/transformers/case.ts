@@ -16,14 +16,14 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
       throw new PartnerLinkError('No home telephone number has been provided.', 406);
     }
 
-    let clientAddressMatches = object.people[0].addresses[0].address1.trim().match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d+[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
+    let clientAddressMatches = object.people[0].addresses[0].address1.trim().match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d*[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
     let clientHouseNumber = clientAddressMatches[1].trim();
     let clientStreetName = clientAddressMatches[2] !== undefined ? clientAddressMatches[2].trim() : object.people[0].addresses[0].address2;
     let partnerHouseNumber: string = undefined;
     let partnerStreetName: string = undefined;
 
     if (object.people.length > 1) {
-      let partnerAddressMatches = object.people[1].addresses[0].address1.trim().match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d+[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
+      let partnerAddressMatches = object.people[1].addresses[0].address1.trim().match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d*[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
       partnerHouseNumber = partnerAddressMatches[1].trim();
       partnerStreetName = partnerAddressMatches[2] !== undefined ? partnerAddressMatches[2].trim() : object.people[1].addresses[0].address2;
     }
@@ -97,7 +97,7 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
            ${object.people[1].maidenName === undefined || object.people[1].maidenName === null || object.people[1].maidenName.length < 5 ? `` : `<PartnerMaidenName>${object.people[1].maidenName.trim()}</PartnerMaidenName>`}
            ${object.people[1].maritalStatus === undefined || object.people[1].maritalStatus === null ? `` : `<PartnerMaritalStatus>${object.people[1].maritalStatus}</PartnerMaritalStatus>`}
            ${object.people[1].middleNames === undefined || object.people[1].middleNames === null || object.people[1].middleNames.length < 5 ? `` : `<PartnerMiddleName>${object.people[1].middleNames.trim()}</PartnerMiddleName>`}
-           <PartnerMobile>${object.people[1].mobileNumber.trim()}</PartnerMobile>
+           ${object.people[1].mobileNumber === undefined || object.people[1].mobileNumber === null || object.people[1].mobileNumber.length < 5 ? `` : `<PartnerMobile>${object.people[1].mobileNumber.trim()}</PartnerMobile>`}
            <PartnerPostcode>${object.people[1].addresses[0].postalCode.trim()}</PartnerPostcode>
            ${object.people[1].title === undefined || object.people[1].title === null || object.people[1].title.length < 2 ? `` : `<PartnerSalutation>${object.people[1].title.trim()}</PartnerSalutation>`}
            <PartnerSurname>${object.people[1].lastName}</PartnerSurname>

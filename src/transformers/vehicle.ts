@@ -1,5 +1,7 @@
-import { XmlToObjectTransformer, ObjectToXmlTransformer } from "./transformer";
+import { ObjectToXmlTransformer, XmlToObjectTransformer } from "./transformer";
+
 import { Vehicle } from "../types";
+
 
 export class VehicleTransformer implements ObjectToXmlTransformer {
 
