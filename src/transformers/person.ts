@@ -21,19 +21,19 @@ export class CreditSearchPersonTransformer extends Transformer implements Object
       <HouseNumber1>${object.addresses[0] !== undefined && object.addresses[0] !== null ? object.addresses[0].address1 : ''}</HouseNumber1>
       <PostCode1>${object.addresses[0] !== undefined && object.addresses[0] !== null ? object.addresses[0].postalCode : ''}</PostCode1>
       <Town1>${object.addresses[0] !== undefined && object.addresses[0] !== null ? object.addresses[0].town : ''}</Town1>
-      <StreetName1>${object.addresses[0] !== undefined && object.addresses[0] !== null ? object.addresses[0].address1 : ''}</StreetName1>
+      <StreetName1>${object.addresses[0] !== undefined && object.addresses[0] !== null ? object.addresses[0].address2 : ''}</StreetName1>
 
       <PTCAB2>${object.addresses[1] !== undefined && object.addresses[1] !== null ? object.addresses[1].id : ''}</PTCAB2>
       <HouseNumber2>${object.addresses[1] !== undefined && object.addresses[1] !== null ? object.addresses[1].address1 : ''}</HouseNumber2>
       <PostCode2>${object.addresses[1] !== undefined && object.addresses[1] !== null ? object.addresses[1].postalCode : ''}</PostCode2>
       <Town2>${object.addresses[1] !== undefined && object.addresses[1] !== null ? object.addresses[1].town : ''}</Town2>
-      <StreetName2>${object.addresses[1] !== undefined && object.addresses[1] !== null ? object.addresses[1].address1 : ''}</StreetName2>
+      <StreetName2>${object.addresses[1] !== undefined && object.addresses[1] !== null ? object.addresses[1].address2 : ''}</StreetName2>
 
       <PTCAB3>${object.addresses[2] !== undefined && object.addresses[2] !== null ? object.addresses[2].id : ''}</PTCAB3>
       <HouseNumber3>${object.addresses[2] !== undefined && object.addresses[2] !== null ? object.addresses[2].address1 : ''}</HouseNumber3>
       <PostCode3>${object.addresses[2] !== undefined && object.addresses[2] !== null ? object.addresses[2].postalCode : ''}</PostCode3>
       <Town3>${object.addresses[2] !== undefined && object.addresses[2] !== null ? object.addresses[2].town : ''}</Town3>
-      <StreetName3>${object.addresses[2] !== undefined && object.addresses[2] !== null ? object.addresses[2].address1 : ''}</StreetName3>
+      <StreetName3>${object.addresses[2] !== undefined && object.addresses[2] !== null ? object.addresses[2].address2 : ''}</StreetName3>
 
       <cred>
         <Client>${this.credentials.creditSearchClient}</Client>

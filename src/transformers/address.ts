@@ -62,8 +62,9 @@ export class CreditSearchAddressResultTransformer extends Transformer implements
         let returnAddress = new CreditSearchAddressResult;
 
         returnAddress.id = address["ptcabs"];
-        returnAddress.address1 = `${address["HouseNumber"]} ${address["Street1"]}`;
-        returnAddress.address2 = address["Street2"];
+        returnAddress.address1 = `${address["HouseNumber"]}`;
+        returnAddress.address2 = address["Street1"];
+        returnAddress.address3 = address["Street2"];
         returnAddress.town = address["Town"];
         returnAddress.postalCode = address["PostCode"];
 
@@ -96,8 +97,8 @@ export class AddAddressTransformer extends Transformer implements ObjectToXmlTra
 
     return `
 <AddressDetails>
-  <AddressLine1>${houseNumber}</AddressLine1>
-  <AddressLine2>${streetName}</AddressLine2>
+  <AddressLine1>${object.address1}</AddressLine1>
+  <AddressLine2>${object.address2}</AddressLine2>
   <Applicant>1</Applicant>
   <Country>England</Country>
   <County>${object.county}</County>
