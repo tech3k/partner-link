@@ -12,7 +12,7 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
       throw new PartnerLinkError('No Employment Status has been provided.', 406);
     }
 
-    if (object.people[0].homeNumber === undefined || object.people[0].homeNumber === null || object.people[0].homeNumber.length === 0) {
+    if ((object.people[0].homeNumber === undefined || object.people[0].homeNumber === null || object.people[0].homeNumber.length <= 3) && (object.people[0].mobileNumber === undefined || object.people[0].mobileNumber === null || object.people[0].mobileNumber.length <= 3)) {
       throw new PartnerLinkError('No home telephone number has been provided.', 406);
     }
 
@@ -77,7 +77,7 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
          ${object.people[0].emailAddress === undefined || object.people[0].emailAddress === null || object.people[0].emailAddress.length < 5 ? `` : `<Email>${object.people[0].emailAddress.trim()}</Email>`}
          <FirstName>${object.people[0].firstName.trim()}</FirstName>
          ${object.people[0].gender === undefined || object.people[0].gender === null || object.people[0].gender.length < 1 ? `` : `<Gender>${object.people[0].gender.trim()}</Gender>`}
-         ${(object.people[0].homeNumber === undefined || object.people[0].homeNumber === null) && (object.people[0].mobileNumber === undefined || object.people[0].mobileNumber === null) ? `` : `<HomeTelephone>${object.people[0].homeNumber.length > 2 ? object.people[0].homeNumber.trim() : object.people[0].mobileNumber.trim()}</HomeTelephone>`}
+         ${(object.people[0].homeNumber === undefined || object.people[0].homeNumber === null || object.people[0].homeNumber.length <= 3) && (object.people[0].mobileNumber === undefined || object.people[0].mobileNumber === null || object.people[0].mobileNumber.length <= 3) ? `` : `<HomeTelephone>${object.people[0].homeNumber.length > 2 ? object.people[0].homeNumber.trim() : object.people[0].mobileNumber.trim()}</HomeTelephone>`}
          <JointApplicant>${object.people.length > 1 ? 'true' : 'false'}</JointApplicant>
          ${object.people[0].maidenName === undefined || object.people[0].maidenName === null ? `` : `<MaidenName>${object.people[0].maidenName.trim()}</MaidenName>`}
          ${object.people[0].maritalStatus === undefined || object.people[0].maritalStatus === null ? `` : `<MaritalStatus>${object.people[0].maritalStatus}</MaritalStatus>`}

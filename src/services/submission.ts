@@ -89,7 +89,7 @@ export class Submission extends Service {
         "api/AddDocument"
       ))
       .then(results => caseInformation)
-      .catch(e => { throw new PartnerLinkError(
+      .catch(e => { if (this.credentials.debug) { console.log(e); } throw new PartnerLinkError(
         e.code === undefined ? `Unable to submit document ${document.fileName}.` : e.message,
         e.code === undefined ? 406 : e.code
       ) });
