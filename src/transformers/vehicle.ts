@@ -1,47 +1,41 @@
-import { ObjectToXmlTransformer, XmlToObjectTransformer } from "./transformer";
-
 import { Vehicle } from "../types";
-
+import { ObjectToXmlTransformer, XmlToObjectTransformer } from "./transformer";
 
 export class VehicleTransformer implements ObjectToXmlTransformer {
 
-  item(object: Vehicle): string {
-    return `
-<VehicleRequest>
-   <AdaptedForDisabledUse>${object.adaptedFordisabledUse}</AdaptedForDisabledUse>
-   <AmountAdvanced>${object.amountAdvanced / 100}</AmountAdvanced>
-   <AmountOutstanding>${object.amountOutstanding}</AmountOutstanding>
+  public item(object: Vehicle): string {
+    return `<VehicleRequest>
+   ${object.adaptedFordisabledUse ? "<AdaptedForDisabledUse>${object.adaptedFordisabledUse}</AdaptedForDisabledUse>" : "" }
+   ${object.amountAdvanced ? "<AmountAdvanced>${object.amountAdvanced / 100}</AmountAdvanced>" : ""}
+   ${object.amountOutstanding ? "<AmountOutstanding>${object.amountOutstanding}</AmountOutstanding>" : ""}
    <Applicant>${object.applicant}</Applicant>
-   <BalloonPayment>${object.balloonPayment}</BalloonPayment>
-   <DateOfAdvance>${object.dateOfAdvance.format('YYYY-MM-DD')}</DateOfAdvance>
-   <DateOfRegistration>${object.dateOfRegistration.format('YYYY-MM-DD')}</DateOfRegistration>
-   <DefaultedOnTheLoan>${object.defaulted ? 'true' : 'false'}</DefaultedOnTheLoan>
-   <EndDate>${object.endDate.format('YYYY-MM-DD')}</EndDate>
-   <FinanceOutstanding>${object.financeOustanding ? 'true' : 'false'}</FinanceOutstanding>
-   <FinanceType>${object.financeType}</FinanceType>
-   <LoanReferenceNo>${object.reference}</LoanReferenceNo>
+   ${object.balloonPayment ? "<BalloonPayment>${object.balloonPayment}</BalloonPayment>" : ""}
+   ${object.dateOfAdvance ? "<DateOfAdvance>${object.dateOfAdvance.format('YYYY-MM-DD')}</DateOfAdvance>" : ""}
+   ${object.dateOfRegistration ? "<DateOfRegistration>${object.dateOfRegistration.format('YYYY-MM-DD')}</DateOfRegistration>" : ""}
+   <DefaultedOnTheLoan>${object.defaulted ? "true" : "false"}</DefaultedOnTheLoan>
+   ${object.endDate ? "<EndDate>${object.endDate.format('YYYY-MM-DD')</EndDate>" : ""}
+   <FinanceOutstanding>${object.financeOustanding ? "true" : "false"}</FinanceOutstanding>
+   ${object.financeType ? "<FinanceType>${object.financeType}</FinanceType>" : ""}
+   ${object.reference ? "<LoanReferenceNo>${object.reference}</LoanReferenceNo>" : ""}
    <Make>${object.make}</Make>
    <Model>${object.model}</Model>
-   <MonthlyCost>${object.monthlyCost / 100}</MonthlyCost>
+   ${object.monthlyCost ? "<MonthlyCost>${object.monthlyCost / 100}</MonthlyCost>" : ""}
    <RegistrationNo>${object.registrationNumber}</RegistrationNo>
-   <TermInMonths>${object.termInMonths}</TermInMonths>
-   <VehicleAge>${object.age}</VehicleAge>
-   <VehicleMileage>${object.mileage}</VehicleMileage>
-   <VehicleNecessary>${object.necessary ? 'true' : 'false'}</VehicleNecessary>
+   ${object.termInMonths ? "<TermInMonths>${object.termInMonths}</TermInMonths>" : ""}
+   ${object.age ? "<VehicleAge>${object.age}</VehicleAge>" : ""}
+   ${object.mileage ? "<VehicleMileage>${object.mileage}</VehicleMileage>" : ""}
+   <VehicleNecessary>${object.necessary ? "true" : "false"}</VehicleNecessary>
    <VehicleUse>${object.useType}</VehicleUse>
    <VehicleValue>${object.value / 100}</VehicleValue>
-</VehicleRequest>
-    `;
+</VehicleRequest>`;
   }
 
-  items(object: Vehicle[]): string {
-    if (object === undefined || object.length === 0) { return ''; }
+  public items(object: Vehicle[]): string {
+    if (object === undefined || object.length === 0) { return ""; }
 
-    return `
-<Vehicles>
-  ${object.map(item => this.item(item)).join("\n")}
-</Vehicles>
-    `;
+    return `<Vehicles>
+  ${object.map((item) => this.item(item)).join("\n")}
+</Vehicles>`;
   }
 
 }

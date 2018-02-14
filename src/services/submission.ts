@@ -5,17 +5,24 @@ import { PartnerLinkError, Case, CaseResult, CreditSearchAddressResult, NoteRequ
 export class Submission extends Service {
 
   public createFullCase(fullCase: Case): Promise<CaseResult> {
+    // if(1 == 1) {
+    //     let str = (new CaseTransformer(this.credentials)).item(fullCase);
+    //     console.log(str);
+    //     throw new Error('Full stop in package');
+    // }
     return Promise.resolve(fullCase)
-      .then(fullCase => this.postRequest(
+      .then((fullCase) => this.postRequest(
         (new CaseTransformer(this.credentials)).item(fullCase),
         "url",
         "api/CreateFullCaseWithReturn"
       ))
-      .then(caseResult => (new CaseResultTransformer(this.credentials)).xmlItem(caseResult))
-      .catch(e => { throw new PartnerLinkError(
-        e.code === undefined ? `Unable to submit case (${e.message}).` : e.message,
-        e.code === undefined ? 406 : e.code
-      ) });
+      .then((caseResult) => (new CaseResultTransformer(this.credentials)).xmlItem(caseResult))
+      .catch((e) => {
+        throw new PartnerLinkError(
+          e.code === undefined ? `Unable to submit case (${e.message}).` : e.message,
+          e.code === undefined ? 406 : e.code
+        );
+      });
   }
 
   public addAddresses(caseInformation: CaseResult, addresses: CreditSearchAddressResult[]): Promise<CaseResult> {
