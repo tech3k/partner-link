@@ -1,10 +1,10 @@
 import { CreditSearch } from "../../services/credit-search";
 import { PartnerLinkError } from "../../types";
-import { expect, assert } from "chai";
+import { expect } from "chai";
 import 'mocha';
 
-describe('Service: Credit Search', () => {
-  it('should throw error if credentials omitted', () => {
-    assert.throws((new CreditSearch(undefined)).checkAddress, PartnerLinkError, "No credentials given.")
+describe("Service: Credit Search", () => {
+  it("should throw error if credentials omitted", () => {
+      expect(() => (new CreditSearch(undefined)).checkAddress).to.throw(PartnerLinkError, "No credentials given.");
   });
 });

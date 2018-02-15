@@ -5,5 +5,6 @@ export class PartnerLinkError extends Error {
     super(message);
     this.code = code;
     this.name = "PartnerLinkError";
+    Object.setPrototypeOf(this, new.target.prototype);
   }
 }
