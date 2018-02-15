@@ -1,6 +1,6 @@
 {
   "name": "@debtpanel/partner-link",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "A Node module to allow connection to the Partner Link API.",
   "repository": {
     "type": "git",
@@ -15,21 +15,22 @@
     "test": "mocha -r ts-node/register src/tests/**/*.ts"
   },
   "dependencies": {
-    "moment": "^2.18.1",
-    "request": "^2.81.0",
-    "request-promise-native": "^1.0.4",
-    "xml2js": "^0.4.17"
+    "moment": "^2.20.1",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.1",
-    "@types/mocha": "^2.2.41",
-    "@types/node": "^7.0.32",
-    "@types/request": "^2.0.0",
-    "chai": "^4.1.0",
-    "mocha": "^3.4.2",
-    "rimraf": "^2.5.4",
+    "@types/chai": "^4.1.2",
+    "@types/mocha": "^2.2.48",
+    "@types/node": "^7.0.55",
+    "@types/request": "^2.47.0",
+    "@types/xml2js": "^0.4.2",
+    "chai": "^4.1.2",
+    "mocha": "^3.5.3",
+    "rimraf": "^2.6.2",
     "ts-node": "^3.2.1",
-    "tslint": "^5.4.2",
-    "typescript": "^2.4.0"
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.1"
   }
 }

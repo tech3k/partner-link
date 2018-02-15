@@ -5,23 +5,23 @@ import { ObjectToXmlTransformer, Transformer, XmlToObjectTransformer } from "./t
 export class CreditSearchAddressTransformer extends Transformer implements ObjectToXmlTransformer {
   public item(object: CreditSearchAddress): string {
     if (object.houseNumber === undefined || object.houseNumber === null || object.houseNumber.length === 0) {
-      throw new PartnerLinkError('House Number is missing from the address.', 406);
+      throw new PartnerLinkError("House Number is missing from the address.", 406);
     }
 
     if (object.street === undefined || object.street === null || object.street.length === 0) {
-      throw new PartnerLinkError('Street is missing from the address.', 406);
+      throw new PartnerLinkError("Street is missing from the address.", 406);
     }
 
     if (object.postalCode === undefined || object.postalCode === null || object.postalCode.length === 0) {
-      throw new PartnerLinkError('Postcode is missing from the address.', 406);
+      throw new PartnerLinkError("Postcode is missing from the address.", 406);
     }
 
     if (object.town === undefined || object.town === null || object.town.length === 0) {
-      throw new PartnerLinkError('Town is missing from the address.', 406);
+      throw new PartnerLinkError("Town is missing from the address.", 406);
     }
 
     if (object.surname === undefined || object.surname === null || object.surname.length === 0) {
-      throw new PartnerLinkError('Surname is missing from the address.', 406);
+      throw new PartnerLinkError("Surname is missing from the address.", 406);
     }
 
     let addressMatches = object.houseNumber.match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d*[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
@@ -49,8 +49,8 @@ export class CreditSearchAddressTransformer extends Transformer implements Objec
     `;
   }
 
-  items(object: any[]): string {
-    return '';
+  public items(object: any[]): string {
+    return "";
   }
 }
 
@@ -72,23 +72,22 @@ export class CreditSearchAddressResultTransformer extends Transformer implements
       })
   }
 
-  public xmlItems(xml: string): Promise<CreditSearchAddressResult[]> {
+  public xmlItems(xml: string): Promise<any[]> {
     return Promise.resolve(xml)
-      .then(xml => this.parseXml(xml))
-      .then(parsedResult => parsedResult["soap:Envelope"]["soap:Body"][0]["SearchAddressResponse"][0]["SearchAddressResult"])
-      .then(singleResult => this.parseXml(singleResult))
-      .then(parsedSingleResult => Promise.all(parsedSingleResult["Address"]["AddressMatch"].map(this.xmlItem)))
-      .then(allResults => allResults as CreditSearchAddressResult[]);
+      .then((xml) => this.parseXml(xml))
+      .then((parsedResult) => parsedResult["soap:Envelope"]["soap:Body"][0]["SearchAddressResponse"][0]["SearchAddressResult"])
+      .then((singleResult) => this.parseXml(singleResult))
+      .then((parsedSingleResult) => Promise.all(parsedSingleResult["Address"]["AddressMatch"].map(this.xmlItem)))
+      .then((allResults) => allResults);
   }
 }
-
 
 export class AddAddressTransformer extends Transformer implements ObjectToXmlTransformer {
 
   public item(object: CreditSearchAddressResult, index: number): string {
 
     if (object.county === undefined || object.county === null || object.county.length === 0) {
-      throw new PartnerLinkError('County is missing from the address.', 406);
+      throw new PartnerLinkError("County is missing from the address.", 406);
     }
 
     let addressMatches = object.address1.match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d*[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);
@@ -122,7 +121,7 @@ export class AddAddressTransformer extends Transformer implements ObjectToXmlTra
     }
   }
 
-  items(object: any[]): string {
+  public items(object: any[]): string {
     return `
 <AddAddressesRequest>
   <Addresses>

@@ -55,9 +55,9 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
            ${object.people[1].jobTitle === undefined || object.people[1].jobTitle === null ? `` : `<JobTitle>${object.people[1].jobTitle.trim()}</JobTitle>`}
          `}
       </EmploymentDetails>
-      ${(new ExpenditureTransformer).items(object.expenditure)}
-      ${(new IncomeTransformer).items(object.income)}
-      ${(new AssetTransformer).items(object.assets)}
+      ${(new ExpenditureTransformer()).items(object.expenditure)}
+      ${(new IncomeTransformer()).items(object.income)}
+      ${(new AssetTransformer()).items(object.assets)}
       <PersonalDetails>
          <AddressLine1>${clientHouseNumber}</AddressLine1>
          <AddressLine2>${clientStreetName}</AddressLine2>
@@ -107,31 +107,30 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
          ${object.people[0].title === undefined || object.people[0].title === null ? `` : `<Salutation>${object.people[0].title.trim()}</Salutation>`}
          <Surname>${object.people[0].lastName.trim()}</Surname>
       </PersonalDetails>
-      ${(new PropertyTransformer).items(object.properties)}
-      ${(new VehicleTransformer).items(object.vehicles)}
+      ${(new PropertyTransformer()).items(object.properties)}
+      ${(new VehicleTransformer()).items(object.vehicles)}
    </CaseDetails>
    <Password>${this.credentials.password}</Password>
    <Username>${this.credentials.username}</Username>
-</CreateFullCaseRequest>
-    `;
+</CreateFullCaseRequest>`;
   }
 
-  items(object: any[]): string {
-    return '';
+  public items(object: any[]): string {
+    return "";
   }
 }
 
 export class CaseResultTransformer extends Transformer implements XmlToObjectTransformer {
   public xmlItem(xml: string): Promise<CaseResult> {
     return Promise.resolve(xml)
-      .then(xml => this.parseXml(xml))
-      .then(parsedXml => {
-        if (parsedXml["CreatedAssignment"] === undefined) { throw new PartnerLinkError('Case could not be created', 406); }
+      .then((xml) => this.parseXml(xml))
+      .then((parsedXml) => {
+        if (parsedXml["CreatedAssignment"] === undefined) { throw new PartnerLinkError("Case could not be created", 406); }
 
-        return parsedXml["CreatedAssignment"]
+        return parsedXml["CreatedAssignment"];
       })
-      .then(parsedSingleResult => {
-        let caseResult: CaseResult = new CaseResult;
+      .then((parsedSingleResult) => {
+        let caseResult: CaseResult = new CaseResult();
 
         console.log(parsedSingleResult);
 
@@ -139,7 +138,7 @@ export class CaseResultTransformer extends Transformer implements XmlToObjectTra
         caseResult.reference = parsedSingleResult.CaseReference[0];
 
         return caseResult;
-      })
+      });
   }
 
   public xmlItems(xml: string): Promise<CaseResult[]> {

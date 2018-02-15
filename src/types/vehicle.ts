@@ -1,5 +1,10 @@
 import * as moment from "moment";
 
+export class VehicleRequest {
+  public id: string;
+  public vehicle: Vehicle;
+}
+
 export class Vehicle {
   public adaptedFordisabledUse: boolean;
   public amountAdvanced: number;
