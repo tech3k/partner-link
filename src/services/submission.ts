@@ -5,11 +5,6 @@ import { PartnerLinkError, Case, CaseResult, CreditSearchAddressResult, NoteRequ
 export class Submission extends Service {
 
   public createFullCase(fullCase: Case): Promise<CaseResult> {
-    // if(1 == 1) {
-    //     let str = (new CaseTransformer(this.credentials)).item(fullCase);
-    //     console.log(str);
-    //     throw new Error('Full stop in package');
-    // }
     return Promise.resolve(fullCase)
       .then((fullCase) => this.postRequest(
         (new CaseTransformer(this.credentials)).item(fullCase),
