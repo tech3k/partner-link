@@ -1,7 +1,7 @@
-import { CreditSearch } from "../../services/credit-search";
-import { PartnerLinkError } from "../../types";
 import { expect } from "chai";
-import 'mocha';
+import "mocha";
+import { CreditSearch } from "../../services";
+import { PartnerLinkError } from "../../types";
 
 describe("Service: Credit Search", () => {
   it("should throw error if credentials omitted", () => {

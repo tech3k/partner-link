@@ -132,8 +132,6 @@ export class CaseResultTransformer extends Transformer implements XmlToObjectTra
       .then((parsedSingleResult) => {
         let caseResult: CaseResult = new CaseResult();
 
-        console.log(parsedSingleResult);
-
         caseResult.id = parsedSingleResult.AssignmentID[0];
         caseResult.reference = parsedSingleResult.CaseReference[0];
 
