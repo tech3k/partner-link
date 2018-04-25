@@ -1,29 +1,30 @@
-import { XmlToObjectTransformer, ObjectToXmlTransformer, Transformer } from "./transformer";
-import { Note, NoteRequest } from "../types";
+import {Note, NoteRequest} from "../types";
+import {ObjectToXmlTransformer, Transformer} from "./transformer";
 
 export class NoteTransformer extends Transformer implements ObjectToXmlTransformer {
 
-  item(object: NoteRequest): string {
-    return `
-<AddNotesRequest>
-  <AssignmentID>${object.id}</AssignmentID>
-  <Notes>
-    ${object.notes.map(item => `
-      <NoteRequest>
-        <ExportedToVB>${item.export ? 'true' : 'false'}</ExportedToVB>
-        <Note>${item.note}</Note>
-        <ToExport>${item.export ? 'true' : 'false'}</ToExport>
-      </NoteRequest>
-    `).join("\n")}
-  </Notes>
-  <Password>${this.credentials.password}</Password>
-  <Username>${this.credentials.username}</Username>
-</AddNotesRequest>
-    `;
-  }
+    public item(object: NoteRequest) {
 
-  items(object: Note[]): string {
-    return ``;
-  }
+        return {
+            AddNotesRequest: {
+                AssignmentID: object.id,
+                Notes: object.notes.map((item) => {
+                    return {
+                        NoteRequest: {
+                            ExportedToVB: item.export ? "true" : "false",
+                            Note: item.note,
+                            ToExport: item.export ? "true" : "false",
+                        },
+                    };
+                }),
+                Password: this.credentials.password,
+                Username: this.credentials.username,
+            },
+        };
+    }
+
+    public items(object: Note[]) {
+        return {};
+    }
 
 }
