@@ -45,5 +45,3 @@ export class PartnerLink {
     }
 
 }
-
-new PartnerLink(null);
