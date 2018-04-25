@@ -3,20 +3,20 @@ import { DocumentRequest } from "../types";
 
 export class DocumentTransformer implements ObjectToXmlTransformer {
 
-  item(object: DocumentRequest): string {
-    return `
-<DocumentRequest>
-  <Applicant>${object.document.applicant}</Applicant>
-  <AssignmentID>${object.id}</AssignmentID>
-  <Document>${object.document.encodedDocument}</Document>
-  <DocumentTypeID>${object.document.typeId}</DocumentTypeID>
-  <FileName>${object.document.fileName}</FileName>
-</DocumentRequest>
-    `;
+  public item(object: DocumentRequest) {
+    return {
+        DocumentRequest: {
+            Applicant: object.document.applicant,
+            AssignmentID: object.id,
+            Document: object.document.encodedDocument,
+            DocumentTypeID: object.document.typeId,
+            FileName: object.document.fileName,
+        },
+    };
   }
 
-  items(object: DocumentRequest[]): string {
-    return ``;
+  public items(object: DocumentRequest[]) {
+    return {};
   }
 
 }

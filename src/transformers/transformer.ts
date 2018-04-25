@@ -21,6 +21,6 @@ export interface XmlToObjectTransformer {
 }
 
 export interface ObjectToXmlTransformer {
-  item(object: any, index?: number): string;
-  items(object: any[]): string;
+  item(object: any, index?: number);
+  items(object: any[]);
 }

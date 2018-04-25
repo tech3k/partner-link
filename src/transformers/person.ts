@@ -1,6 +1,6 @@
-import { Transformer, XmlToObjectTransformer, ObjectToXmlTransformer } from "./transformer";
-import { PartnerLinkError, CreditSearchPersonResult, CreditSearchPerson } from "../types";
+import { CreditSearchPerson, CreditSearchPersonResult, PartnerLinkError } from "../types";
 import { CreditorTransformer } from "./creditor";
+import { ObjectToXmlTransformer, Transformer, XmlToObjectTransformer } from "./transformer";
 
 export class CreditSearchPersonTransformer extends Transformer implements ObjectToXmlTransformer {
   public item(object: CreditSearchPerson): string {

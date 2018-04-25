@@ -1,53 +1,51 @@
-import { XmlToObjectTransformer, ObjectToXmlTransformer } from "./transformer";
-import { Income, Expenditure } from "../types";
+import {ObjectToXmlTransformer} from "./transformer";
+import {Expenditure, Income} from "../types";
 
 export class IncomeTransformer implements ObjectToXmlTransformer {
 
-  item(object: Income): string {
-    return `
-<IncomeField>
-   <Name>${object.name}</Name>
-   <Value>${object.value / 100}</Value>
-   <UserDefinedName>${object.customName}</UserDefinedName>
-</IncomeField>
-    `;
-  }
+    public item(object: Income) {
+        return {
+            IncomeField: {
+                Name: object.name,
+                Value: object.value,
+                UserDefinedName: object.customName ? object.customName : null,
+            },
+        };
+    }
 
-  items(object: Income[]): string {
-    if (object === undefined || object.length === 0) { return ''; }
+    public items(object: Income[]) {
+        if (!object || !object.length) {
+            return {};
+        }
 
-    return `
-<Income>
-  <IncomeFields>
-    ${object.map(item => this.item(item)).join("\n")}
-  </IncomeFields>
-</Income>
-    `;
-  }
+        return {
+            Income: {IncomeFields: object.map((item) => this.item(item))},
+        };
+    }
 
 }
 
 export class ExpenditureTransformer implements ObjectToXmlTransformer {
 
-  item(object: Expenditure): string {
-    return `
-<ExpenditureField>
-   <Name>${object.name}</Name>
-   <Value>${object.value / 100}</Value>
-</ExpenditureField>
-    `;
-  }
+    public item(object: Expenditure) {
+        return {
+            ExpenditureField: {
+                Name: object.name,
+                Value: object.value,
+            },
+        };
+    }
 
-  items(object: Expenditure[]): string {
-    if (object === undefined || object.length === 0) { return ''; }
+    public items(object: Expenditure[]) {
+        if (!object || !object.length) {
+            return {};
+        }
 
-    return `
-<Expenditure>
-  <ExpenditureFields>
-    ${object.map(item => this.item(item)).join("\n")}
-  </ExpenditureFields>
-</Expenditure>
-    `;
-  }
+        return {
+            Expenditure: {
+                ExpenditureFields: object.map((item) => this.item(item)),
+            },
+        };
+    }
 
 }

@@ -12,72 +12,72 @@ export class Service extends AcceptsCredentials {
   }
 
   private getJwt(): Promise<string> {
-    let options = {
-      method: 'POST',
-      uri: `https://${this.credentials["url"]}/Token`,
+    const options = {
+      method: "POST",
+      uri: `https://${this.credentials.url}/Token`,
       json: true,
       form: {
         grant_type: "password",
         username: this.credentials.username,
-        password: this.credentials.password
-      }
+        password: this.credentials.password,
+      },
     };
     return request(options)
-      .then(result => { this.jwt = result.access_token; return this.jwt; });
+      .then((result) => { this.jwt = result.access_token; return this.jwt; });
   }
 
   protected soapRequest(body: string, credentialUrl: string, path: string, action: string): Promise<any> {
-    let options: any = {
-      method: 'POST',
+    const options: any = {
+      method: "POST",
       uri: `https://${this.credentials[credentialUrl]}/${path}`,
       headers: {
         "Content-Type": "text/xml; charset=utf-8",
-        "SOAPAction": action
+        "SOAPAction": action,
       },
       json: false,
-      body: this.stripEmptyLines(body)
+      body: this.stripEmptyLines(body),
     };
     if (this.credentials.debug) { console.log(options); }
     return request(options)
-      .then(result => {
+      .then((result) => {
         if (this.credentials.debug) { console.log(result); }
         return result;
       });
   }
 
   protected async tokenPostRequest(body: string, credentialUrl: string, path: string): Promise<any> {
-    let options = {
-      method: 'POST',
+    const options = {
+      method: "POST",
       uri: `https://${this.credentials[credentialUrl]}/${path}`,
       headers: {
         "Content-Type": "text/xml",
-        "Authorization": "Bearer " + (this.jwt !== undefined ? this.jwt : await this.getJwt())
+        "Authorization": "Bearer " + (this.jwt !== undefined ? this.jwt : await this.getJwt()),
       },
       json: false,
-      body: this.stripEmptyLines(body)
+      body: this.stripEmptyLines(body),
     };
     if (this.credentials.debug) { console.log(options); }
     return request(options)
-    .then(result => { if (this.credentials.debug) { console.log(result); } return result; });
+    .then((result) => { if (this.credentials.debug) { console.log(result); } return result; });
   }
 
   protected postRequest(body: string, credentialUrl: string, path: string): Promise<any> {
-    let options = {
-      method: 'POST',
+    const options = {
+      method: "POST",
       uri: `https://${this.credentials[credentialUrl]}/${path}`,
       headers: {
         "Content-Type": "text/xml",
       },
       json: false,
-      body: this.stripEmptyLines(body)
+      body: this.stripEmptyLines(body),
     };
     if (this.credentials.debug) { console.log(options); }
     return request(options)
-    .then(result => { if (this.credentials.debug) { console.log(result); } return result; });
+    .then((result) => { if (this.credentials.debug) { console.log(result); } return result; });
   }
 
   private stripEmptyLines(data: string): string {
-    return data.replace(/^\s*[\r\n]/gm, "")
+    return data.replace(/^\s*[\r\n]/gm, "");
   }
 
 }
