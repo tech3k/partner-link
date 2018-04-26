@@ -8,15 +8,15 @@ export class NoteTransformer extends Transformer implements ObjectToXmlTransform
         return {
             AddNotesRequest: {
                 AssignmentID: object.id,
-                Notes: object.notes.map((item) => {
-                    return {
-                        NoteRequest: {
+                Notes: {
+                    NoteRequest: object.notes.map((item) => {
+                        return {
                             ExportedToVB: item.export ? "true" : "false",
                             Note: item.note,
                             ToExport: item.export ? "true" : "false",
-                        },
-                    };
-                }),
+                        };
+                    }),
+                },
                 Password: this.credentials.password,
                 Username: this.credentials.username,
             },

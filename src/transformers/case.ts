@@ -1,7 +1,9 @@
 import * as moment from "moment";
 import {Case, CaseResult, PartnerLinkError} from "../types";
-import {AssetTransformer, ExpenditureTransformer, IncomeTransformer, PropertyTransformer, VehicleTransformer} from "./";
+import {AssetTransformer, ExpenditureTransformer, IncomeTransformer} from "./";
 import {ObjectToXmlTransformer, Transformer, XmlToObjectTransformer} from "./transformer";
+import {VehicleTransformer} from "./vehicle";
+import {PropertyTransformer} from "./property";
 
 export class CaseTransformer extends Transformer implements ObjectToXmlTransformer {
     public item(object: Case) {
@@ -21,8 +23,8 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
         // const clientAddressMatches = object.people[0].addresses[0].address1.trim().match(regex);
         let clientHouseNumber: string;
         let clientStreetName: string;
-        let partnerHouseNumber: string|null = null;
-        let partnerStreetName: string|null = null;
+        let partnerHouseNumber: string | null = null;
+        let partnerStreetName: string | null = null;
         [clientHouseNumber, clientStreetName] = object.people[0].addresses[0].address1.trim().match(regex);
         clientStreetName = clientStreetName ? clientStreetName : object.people[0].addresses[0].address2;
         if (object.people.length > 1) {
@@ -30,7 +32,7 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
             partnerStreetName = partnerStreetName ? partnerStreetName : object.people[1].addresses[0].address2;
         }
 
-        return {
+        const fullCase = {
             CreateFullCaseRequest: {
                 CaseDetails: {
                     CaseMainDetails: {
@@ -55,13 +57,18 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
                             object.people[object.people.length - 1].jobTitle,
                     },
                     Expenditure: {
-                        ExpenditureFields: object.expenditure
-                            .map((item) => new ExpenditureTransformer().item(item)),
+                        ExpenditureFields: {
+                            ExpenditureField: object.expenditure.map((item) => new ExpenditureTransformer().item(item)),
+                        },
                     },
                     Income: {
-                        IncomeFields: object.income.map((item) => new IncomeTransformer().item(item)),
+                        IncomeFields: {
+                            IncomeField: object.income.map((item) => new IncomeTransformer().item(item)),
+                        },
                     },
-                    OtherAssets: object.assets.map((item) => new AssetTransformer().item(item)),
+                    OtherAssets: {
+                        OtherAssetRequest: object.assets.map((item) => new AssetTransformer().item(item)),
+                    },
                     PersonalDetails: {
                         AddressLine1: clientHouseNumber,
                         AddressLine2: clientStreetName,
@@ -69,13 +76,11 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
                         CountryID: 1,
                         County: object.people[0].addresses[0].county,
                         DateOfBirth: object.people[0].dateOfBirth.format("YYYY-MM-DD"),
-                        DependantsList: object.dependants.map((item) => {
-                            return {
-                                Dependant: {
-                                    Age: item.diff(moment().format("YYYY-MM-DD"), "years") * -1,
-                                },
-                            };
-                        }),
+                        DependantsList: {
+                            Dependant: object.dependants.map((item) => {
+                                return {Age: item.diff(moment().format("YYYY-MM-DD"), "years") * -1};
+                            }),
+                        },
                         Email: object.people[0].emailAddress,
                         FirstName: object.people[0].firstName,
                         Gender: object.people[0].gender,
@@ -106,11 +111,19 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
                         Salutation: object.people[0].title,
                         Surname: object.people[0].lastName,
                     },
+                    Properties: {
+                        PropertyRequest: (object.properties || []).map((item) => new PropertyTransformer().item(item)),
+                    },
+                    Vehicles: {
+                        VehicleRequest: (object.vehicles || []).map((item) => new VehicleTransformer().item(item)),
+                    },
                 },
                 Password: this.credentials.password,
                 Username: this.credentials.username,
             },
         };
+
+        return this.removeEmpties(fullCase);
     }
 
     public items(object: any[]): string {

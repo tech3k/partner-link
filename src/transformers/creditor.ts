@@ -26,22 +26,20 @@ export class CreditorTransformer extends Transformer implements ObjectToXmlTrans
 
     public item(object: Creditor) {
         return {
-            CreditorDetails: {
-                AccountReference: object.reference,
-                Applicant: object.applicant,
-                CreditStatus: object.latestStatus,
-                CreditorSource: object.creditCheck ? "Credit Check" : "Provided By Client",
-                CurrentBalance: object.currentBalance / 100,
-                DebtOwner: object.jointAccount ? "joint" : "single",
-                DelinquentBalance: object.delinquentBalance / 100,
-                ExternalCreditCheck: object.creditCheck ? "true" : "false",
-                Name: object.name.toUpperCase(),
-                StartBalance: object.startBalance / 100,
-                StartDate: object.creditStartDate.format("YYYY-MM-DD"),
-                TotalBalance: object.creditAmount / 100,
-                Type: object.creditorType === "Retailer" ? "Home Lending" : object.creditorType, // hax
-                UpdateDate: object.creditUpdateDate.format("YYYY-MM-DD"),
-            },
+            AccountReference: object.reference,
+            Applicant: object.applicant,
+            CreditStatus: object.latestStatus,
+            CreditorSource: object.creditCheck ? "Credit Check" : "Provided By Client",
+            CurrentBalance: object.currentBalance / 100,
+            DebtOwner: object.jointAccount ? "joint" : "single",
+            DelinquentBalance: object.delinquentBalance / 100,
+            ExternalCreditCheck: object.creditCheck ? "true" : "false",
+            Name: object.name.toUpperCase(),
+            StartBalance: object.startBalance / 100,
+            StartDate: object.creditStartDate ? object.creditStartDate.format("YYYY-MM-DD") : null,
+            TotalBalance: object.creditAmount / 100,
+            Type: object.creditorType === "Retailer" ? "Home Lending" : object.creditorType, // hax
+            UpdateDate: object.creditUpdateDate ? object.creditUpdateDate.format("YYYY-MM-DD") : null,
         };
     }
 
@@ -50,13 +48,15 @@ export class CreditorTransformer extends Transformer implements ObjectToXmlTrans
             return {};
         }
 
-        return {
+        const creditors = {
             AddCreditorsRequest: {
-                Creditors: object.map((item) => this.item(item)),
+                Creditors: { CreditorDetails: object.map((item) => this.item(item))},
                 Password: this.credentials.password,
                 Username: this.credentials.username,
             },
         };
+
+        return this.removeEmpties(creditors);
     }
 
     private convertStringToNumber(value: string): number {

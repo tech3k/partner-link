@@ -1,11 +1,10 @@
-import { Property } from "../types";
-import { ObjectToXmlTransformer } from "./transformer";
+import {Property} from "../types";
+import {ObjectToXmlTransformer} from "./transformer";
 
 export class PropertyTransformer implements ObjectToXmlTransformer {
 
-  public item(object: Property) {
-    return {
-        PropertyRequest: {
+    public item(object: Property) {
+        return {
             AccountNo: object.accountNo,
             AddressLine1: object.address1,
             AddressLine2: object.address2,
@@ -33,16 +32,15 @@ export class PropertyTransformer implements ObjectToXmlTransformer {
             TitleNumber: object.titleNumber,
             YearsInProperty: object.yearsInProperty,
             YearsRemaining: object.yearsRemaining,
-        },
-    };
-  }
-
-  public items(object: Property[]) {
-    if (!object || !object.length) {
-        return {};
+        };
     }
 
-    return {Properties: object.map((item) => this.item(item))};
-  }
+    public items(object: Property[]) {
+        if (!object || !object.length) {
+            return {};
+        }
+
+        return {Properties: {PropertyRequest: object.map((item) => this.item(item))}};
+    }
 
 }

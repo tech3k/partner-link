@@ -95,25 +95,23 @@ export class AddAddressTransformer extends Transformer implements ObjectToXmlTra
         // let streetName = addressMatches[2] !== undefined ? addressMatches[2] : object.address2;
 
         return {
-            AddressDetails: {
-                AddressLine1: object.address1,
-                AddressLine2: object.address2,
-                Applicant: 1,
-                Country: "England",
-                County: object.county,
-                Notes: `Credit Check ${this.textFromNumber(index)} address`,
-                Owner: "Single",
-                PTCAB: object.id,
-                PostCode: object.postalCode,
-                SearchNumber: 1,
-            },
+            AddressLine1: object.address1,
+            AddressLine2: object.address2,
+            Applicant: 1,
+            Country: "England",
+            County: object.county,
+            Notes: `Credit Check ${this.textFromNumber(index)} address`,
+            Owner: "Single",
+            PTCAB: object.id,
+            PostCode: object.postalCode,
+            SearchNumber: 1,
         };
     }
 
     public items(object: any[]) {
         return {
             AddAddressesRequest: {
-                Addresses: object.map((address, i) => this.item(address, i)),
+                Addresses: {AddressDetails: object.map((address, i) => this.item(address, i))},
             },
             Password: this.credentials.password,
             Username: this.credentials.username,
