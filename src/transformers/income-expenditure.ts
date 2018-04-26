@@ -5,11 +5,9 @@ export class IncomeTransformer implements ObjectToXmlTransformer {
 
     public item(object: Income) {
         return {
-            IncomeField: {
-                Name: object.name,
-                Value: object.value,
-                UserDefinedName: object.customName ? object.customName : null,
-            },
+            Name: object.name,
+            Value: object.value,
+            UserDefinedName: object.customName ? object.customName : null,
         };
     }
 
@@ -19,7 +17,7 @@ export class IncomeTransformer implements ObjectToXmlTransformer {
         }
 
         return {
-            Income: {IncomeFields: object.map((item) => this.item(item))},
+            IncomeFields: {IncomeField: object.map((item) => this.item(item))},
         };
     }
 
@@ -29,10 +27,8 @@ export class ExpenditureTransformer implements ObjectToXmlTransformer {
 
     public item(object: Expenditure) {
         return {
-            ExpenditureField: {
-                Name: object.name,
-                Value: object.value,
-            },
+            Name: object.name,
+            Value: object.value,
         };
     }
 
@@ -42,9 +38,7 @@ export class ExpenditureTransformer implements ObjectToXmlTransformer {
         }
 
         return {
-            Expenditure: {
-                ExpenditureFields: object.map((item) => this.item(item)),
-            },
+            ExpenditureFields: {ExpenditureField: object.map((item) => this.item(item))},
         };
     }
 

@@ -18,11 +18,17 @@ import {
     PartnerLinkError,
 } from "../types";
 import {Service} from "./service";
+import {OptionsV2} from "xml2js";
 
 export class Submission extends Service {
 
+    private options = {
+        headless: true,
+    } as OptionsV2; // not the correct build options
+
     public createFullCase(fullCase: Case): Promise<CaseResult> {
-        const builder = new xml2js.Builder({trim: true});
+        const builder = new xml2js.Builder(this.options);
+
         return Promise.resolve(fullCase)
             .then((fullCase) => this.postRequest(
                 builder.buildObject(new CaseTransformer(this.credentials).item(fullCase)),
@@ -39,7 +45,7 @@ export class Submission extends Service {
     }
 
     public addAddresses(caseInformation: CaseResult, addresses: CreditSearchAddressResult[]): Promise<CaseResult> {
-        const builder = new xml2js.Builder({trim: true});
+        const builder = new xml2js.Builder(this.options);
         return Promise.resolve({info: caseInformation, addresses})
             .then(({info, addresses}) => {
                 this.postRequest(
@@ -58,7 +64,7 @@ export class Submission extends Service {
     }
 
     public addNotes(caseInformation: CaseResult, notes: NoteRequest): Promise<CaseResult> {
-        const builder = new xml2js.Builder({trim: true});
+        const builder = new xml2js.Builder(this.options);
         return Promise.resolve({info: caseInformation, notes})
             .then(({info, notes}) => this.postRequest(
                 builder.buildObject(new NoteTransformer(this.credentials).item(notes)),
@@ -76,8 +82,7 @@ export class Submission extends Service {
 
     public addCreditors(caseInformation: CaseResult, creditors: Creditor[]): Promise<CaseResult> {
 
-        const builder = new xml2js.Builder();
-
+        const builder = new xml2js.Builder(this.options);
         return Promise.resolve({info: caseInformation, creditors})
             .then(({info, creditors}) => this.postRequest(
                 builder.buildObject(new CreditorTransformer(this.credentials).items(creditors)),
@@ -110,15 +115,15 @@ export class Submission extends Service {
             .then((results) => caseInformation)
             .catch((e) => {
                 const err = new PartnerLinkError(
-                    e.code === undefined ? `Unable to submit documents (${e.message}).` : e.message,
-                    e.code === undefined ? 406 : e.code);
+                    e.code ? `Unable to submit documents (${e.message}).` : e.message,
+                    e.code ? 406 : e.code);
                 err.reference = caseInformation.reference;
                 throw err;
             });
     }
 
     public addDocument(caseInformation: CaseResult, document: Document): Promise<CaseResult> {
-        const builder = new xml2js.Builder();
+        const builder = new xml2js.Builder(this.options);
         return Promise.resolve({info: caseInformation, document})
             .then(({info, document}) => this.tokenPostRequest(
                 builder.buildObject(new DocumentTransformer().item({id: info.id, document} as DocumentRequest)),
