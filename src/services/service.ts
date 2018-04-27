@@ -79,6 +79,12 @@ export class Service extends AcceptsCredentials {
             });
     }
 
+    protected log(...messages: any[]) {
+        if (this.credentials.debug) {
+            console.log(...messages);
+        }
+    }
+
     private getJwt(): Promise<string> {
         const options = {
             method: "POST",
