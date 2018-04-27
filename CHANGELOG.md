@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.3"></a>
+## [1.4.3](https://github.com/DebtPanel/partner-link/compare/v1.4.2...v1.4.3) (2018-04-27)
+
+
+### Bug Fixes
+
+* **Address Regex:** Changed the Address splitting Regex back to the old version ([a7fddc0](https://github.com/DebtPanel/partner-link/commit/a7fddc0))
+
+
+
 <a name="1.4.2"></a>
 ## [1.4.2](https://github.com/DebtPanel/partner-link/compare/v1.4.1...v1.4.2) (2018-04-27)
 
