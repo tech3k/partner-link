@@ -27,6 +27,8 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
         let partnerHouseNumber: string | null = null;
         let partnerStreetName: string | null = null;
 
+        console.log('client address', object.people[0].addresses[0]);
+
         const addressSplitMatches = object.people[0].addresses[0].address1.trim().match(regex);
         console.log('addressSplitMatches', addressSplitMatches);
 
