@@ -25,7 +25,21 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
         let clientStreetName: string;
         let partnerHouseNumber: string | null = null;
         let partnerStreetName: string | null = null;
-        [clientHouseNumber, clientStreetName] = object.people[0].addresses[0].address1.trim().match(regex);
+
+        const addressSplitMatches = object.people[0].addresses[0].address1.trim().match(regex);
+        console.log('addressSplitMatches', addressSplitMatches);
+
+        clientHouseNumber = addressSplitMatches[0] ? addressSplitMatches[0] : undefined;
+        clientStreetName = addressSplitMatches[1] ? addressSplitMatches[1] : undefined;
+
+        if (clientHouseNumber === undefined) {
+            throw new PartnerLinkError('Couldnt Match Client House Number', 500);
+        }
+        if (clientStreetName === undefined) {
+            throw new PartnerLinkError('Couldnt Match Client street name', 500);
+        }
+
+        // [clientHouseNumber, clientStreetName] = object.people[0].addresses[0].address1.trim().match(regex);
         clientStreetName = clientStreetName ? clientStreetName : object.people[0].addresses[0].address2;
         if (object.people.length > 1) {
             [partnerHouseNumber, partnerStreetName] = object.people[1].addresses[0].address1.trim().match(regex);
