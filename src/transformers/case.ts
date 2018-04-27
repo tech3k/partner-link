@@ -21,32 +21,19 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
 
         // const regex = /((?:Flat\s+)?\d+[A-Z]?).+?([A-Z0-9 ]+)?/i;
         const regex = /((?:[F|f][l|L][a|A][t|T] )?[1-9]\d*[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/;
-        // const clientAddressMatches = object.people[0].addresses[0].address1.trim().match(regex);
         let clientHouseNumber: string;
         let clientStreetName: string;
         let partnerHouseNumber: string | null = null;
         let partnerStreetName: string | null = null;
 
-        console.log('client address', object.people[0].addresses[0]);
-
         const addressSplitMatches = object.people[0].addresses[0].address1.trim().match(regex);
-        console.log('addressSplitMatches', addressSplitMatches);
+        clientHouseNumber = addressSplitMatches[0];
+        clientStreetName = addressSplitMatches[1] ? addressSplitMatches[1] : object.people[0].addresses[0].address2;
 
-        clientHouseNumber = addressSplitMatches[0] ? addressSplitMatches[0] : undefined;
-        clientStreetName = addressSplitMatches[1] ? addressSplitMatches[1] : undefined;
-
-        if (clientHouseNumber === undefined) {
-            throw new PartnerLinkError('Couldnt Match Client House Number', 500);
-        }
-        if (clientStreetName === undefined) {
-            throw new PartnerLinkError('Couldnt Match Client street name', 500);
-        }
-
-        // [clientHouseNumber, clientStreetName] = object.people[0].addresses[0].address1.trim().match(regex);
-        clientStreetName = clientStreetName ? clientStreetName : object.people[0].addresses[0].address2;
         if (object.people.length > 1) {
-            [partnerHouseNumber, partnerStreetName] = object.people[1].addresses[0].address1.trim().match(regex);
-            partnerStreetName = partnerStreetName ? partnerStreetName : object.people[1].addresses[0].address2;
+            const partnerAddressSplitMatches = object.people[1].addresses[0].address1.trim().match(regex);
+            partnerHouseNumber = partnerAddressSplitMatches[0];
+            partnerStreetName = partnerAddressSplitMatches[1] ? partnerAddressSplitMatches[1] : object.people[1].addresses[0].address2;
         }
 
         const fullCase = {
