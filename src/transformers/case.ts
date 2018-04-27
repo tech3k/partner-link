@@ -27,13 +27,13 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
         let partnerStreetName: string | null = null;
 
         const addressSplitMatches = object.people[0].addresses[0].address1.trim().match(regex);
-        clientHouseNumber = addressSplitMatches[0];
-        clientStreetName = addressSplitMatches[1] ? addressSplitMatches[1] : object.people[0].addresses[0].address2;
+        clientHouseNumber = addressSplitMatches[1].trim();
+        clientStreetName = addressSplitMatches[2] ? addressSplitMatches[2].trim() : object.people[0].addresses[0].address2.trim();
 
         if (object.people.length > 1) {
             const partnerAddressSplitMatches = object.people[1].addresses[0].address1.trim().match(regex);
-            partnerHouseNumber = partnerAddressSplitMatches[0];
-            partnerStreetName = partnerAddressSplitMatches[1] ? partnerAddressSplitMatches[1] : object.people[1].addresses[0].address2;
+            partnerHouseNumber = partnerAddressSplitMatches[1];
+            partnerStreetName = partnerAddressSplitMatches[2] ? partnerAddressSplitMatches[2] : object.people[1].addresses[0].address2;
         }
 
         const fullCase = {
