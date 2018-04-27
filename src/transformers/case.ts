@@ -19,7 +19,8 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
             throw new PartnerLinkError("No home telephone number has been provided.", 406);
         }
 
-        const regex = /((?:Flat\s+)?\d+[A-Z]?).+?([A-Z0-9 ]+)?/i;
+        // const regex = /((?:Flat\s+)?\d+[A-Z]?).+?([A-Z0-9 ]+)?/i;
+        const regex = /((?:[F|f][l|L][a|A][t|T] )?[1-9]\d*[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/;
         // const clientAddressMatches = object.people[0].addresses[0].address1.trim().match(regex);
         let clientHouseNumber: string;
         let clientStreetName: string;
