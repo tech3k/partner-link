@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.4"></a>
+## [1.4.4](https://github.com/DebtPanel/partner-link/compare/v1.4.3...v1.4.4) (2018-04-27)
+
+
+### Bug Fixes
+
+* **Partner Address:** Fixing partner address issues ([d8052d7](https://github.com/DebtPanel/partner-link/commit/d8052d7))
+
+
+
 <a name="1.4.3"></a>
 ## [1.4.3](https://github.com/DebtPanel/partner-link/compare/v1.4.2...v1.4.3) (2018-04-27)
 
