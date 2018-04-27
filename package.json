@@ -1,6 +1,6 @@
 {
   "name": "@debtpanel/partner-link",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A Node module to allow connection to the Partner Link API.",
   "license": "UNLICENSED",
   "repository": {
