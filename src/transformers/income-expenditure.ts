@@ -6,7 +6,7 @@ export class IncomeTransformer implements ObjectToXmlTransformer {
     public item(object: Income) {
         return {
             Name: object.name,
-            Value: object.value,
+            Value: Number(object.value / 100).toFixed(0),
             UserDefinedName: object.customName ? object.customName : null,
         };
     }
@@ -28,7 +28,7 @@ export class ExpenditureTransformer implements ObjectToXmlTransformer {
     public item(object: Expenditure) {
         return {
             Name: object.name,
-            Value: object.value,
+            Value: Number(object.value / 100).toFixed(0),
         };
     }
 
