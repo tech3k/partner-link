@@ -112,9 +112,9 @@ export class AddAddressTransformer extends Transformer implements ObjectToXmlTra
         return {
             AddAddressesRequest: {
                 Addresses: {AddressDetails: object.map((address, i) => this.item(address, i))},
+                Password: this.credentials.password,
+                Username: this.credentials.username,
             },
-            Password: this.credentials.password,
-            Username: this.credentials.username,
         };
     }
 
