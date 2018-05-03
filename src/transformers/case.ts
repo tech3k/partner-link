@@ -100,7 +100,7 @@ export class CaseTransformer extends Transformer implements ObjectToXmlTransform
                         PartnerCity: object.people[1] ? object.people[1].addresses[0].town : null,
                         PartnerCountryID: object.people.length > 1 ? 1 : null,
                         PartnerCounty: object.people[1] ? object.people[1].addresses[0].county : null,
-                        PartnerDateOfBirth: object.people[1] ? object.people[1].dateOfBirth : null,
+                        PartnerDateOfBirth: object.people[1] ? object.people[1].dateOfBirth.format("YYYY-MM-DD") : null,
                         PartnerEmail: object.people[1] ? object.people[1].emailAddress : null,
                         PartnerFirstName: object.people[1] ? object.people[1].firstName : null,
                         PartnerGender: object.people[1] ? object.people[1].gender : null,
