@@ -1,6 +1,6 @@
-import * as moment from "moment";
+import * as moment from 'moment';
 
-import { CreditSearchAddressResult, Creditor } from "./";
+import { CreditSearchAddressResult, Creditor } from './';
 
 export class CreditSearchPerson {
   public clientReference: string;
