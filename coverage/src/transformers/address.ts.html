@@ -179,19 +179,10 @@
 <a name='L131'></a><a href='#L131'>131</a>
 <a name='L132'></a><a href='#L132'>132</a>
 <a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a>
-<a name='L135'></a><a href='#L135'>135</a>
-<a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a>
-<a name='L138'></a><a href='#L138'>138</a>
-<a name='L139'></a><a href='#L139'>139</a>
-<a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a>
-<a name='L143'></a><a href='#L143'>143</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<a name='L134'></a><a href='#L134'>134</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -244,7 +235,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -266,23 +257,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
@@ -408,18 +390,9 @@ export class CreditSearchAddressResultTransformer extends Transformer implements
     public <span class="fstat-no" title="function not covered" >xmlItems</span>(xml: string): Promise&lt;any[]&gt; {
 <span class="cstat-no" title="statement not covered" >        return Promise.resolve(xml)</span>
             .then(<span class="fstat-no" title="function not covered" >xml</span> =&gt; <span class="cstat-no" title="statement not covered" >this.parseXml(xml))</span>
-            .then(
-<span class="fstat-no" title="function not covered" >                parsedResult</span> =&gt;
-<span class="cstat-no" title="statement not covered" >                    parsedResult['soap:Envelope']['soap:Body'][0][</span>
-                        'SearchAddressResponse'
-                        ][0]['SearchAddressResult'],
-            )
+            .then(<span class="fstat-no" title="function not covered" >parsedResult</span> =&gt; <span class="cstat-no" title="statement not covered" >parsedResult['soap:Envelope']['soap:Body'][0]['SearchAddressResponse'][0]['SearchAddressResult'])</span>
             .then(<span class="fstat-no" title="function not covered" >singleResult</span> =&gt; <span class="cstat-no" title="statement not covered" >this.parseXml(singleResult))</span>
-            .then(<span class="fstat-no" title="function not covered" >parsedSingleResult</span> =&gt;
-<span class="cstat-no" title="statement not covered" >                Promise.all(</span>
-                    parsedSingleResult['Address']['AddressMatch'].map(this.xmlItem),
-                ),
-            )
+            .then(<span class="fstat-no" title="function not covered" >parsedSingleResult</span> =&gt; <span class="cstat-no" title="statement not covered" >Promise.all(parsedSingleResult['Address']['AddressMatch'].map(this.xmlItem)))</span>
             .then(<span class="fstat-no" title="function not covered" >allResults</span> =&gt; <span class="cstat-no" title="statement not covered" >allResults)</span>;
     }
 }
@@ -478,7 +451,7 @@ export class AddAddressTransformer extends Transformer implements ObjectToXmlTra
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue May 08 2018 15:52:50 GMT+0100 (BST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue May 08 2018 19:28:11 GMT+0100 (BST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

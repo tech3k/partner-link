@@ -3,7 +3,7 @@ import {Expenditure, Income} from '../types';
 
 describe('Income Transformer', () => {
     it('should transform a single item', () => {
-        expect(new IncomeTransformer().item({name: 'CLIENT_EARNINGS', value: 250000, UserDefinedName: null,} as Income))
+        expect(new IncomeTransformer().item({name: 'CLIENT_EARNINGS', value: 250000, customName: null} as Income))
             .toEqual({
                 Name: 'CLIENT_EARNINGS',
                 Value: '2500',

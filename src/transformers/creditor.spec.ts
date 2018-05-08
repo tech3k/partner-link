@@ -69,6 +69,7 @@ describe('Creditor transformer', () => {
                         CurrentBalance: 10,
                         DebtOwner: 'joint',
                         DelinquentBalance: 10,
+                        ExternalCreditCheck: false,
                         Name: '4 U PHONES LTD',
                         StartBalance: 100,
                         TotalBalance: 100,
@@ -81,48 +82,48 @@ describe('Creditor transformer', () => {
         });
     });
 
-    it('should convert an xml string from an object', async () => {
-
-        const xmlStr = `<CreditorDetails>
-			<AccountReference>123456</AccountReference>
-			<Applicant>1</Applicant>
-			<CommonCreditor>PHONES4U (I)</CommonCreditor>
-			<CommonCreditorId>88548</CommonCreditorId>
-			<CreditStatus>Settled</CreditStatus>
-			<CreditStatusId>2</CreditStatusId>
-			<CreditorSource>Credit Check</CreditorSource>
-			<CreditorSourceId>1</CreditorSourceId>
-			<CurrentBalance>10</CurrentBalance>
-			<DebtOwner>Single</DebtOwner>
-			<DebtOwnerId>1</DebtOwnerId>
-			<DelinquentBalance>10</DelinquentBalance>
-			<EndDate>2018-10-01</EndDate>
-			<ExternalCreditCheck>true</ExternalCreditCheck>
-			<Name>4 U PHONES LTD</Name>
-			<StartBalance>100</StartBalance>
-			<StartDate>2014-12-12</StartDate>
-			<TotalBalance>100</TotalBalance>
-			<Type>Communications Supplier</Type>
-			<TypeId>4</TypeId>
-			<UpdateDate>2015-09-16</UpdateDate>
-		</CreditorDetails>`;
-
-        function parse(xmlString): Promise<any> {
-            return new Promise((resolve, reject) => {
-                xml2js.parseString(xmlString, (err, result) => {
-                    if (err) {
-                        reject(err);
-                    }
-
-                    resolve(result);
-                });
-            });
-        }
-
-        const object = await parse(xmlStr);
-
-        console.log(object.CreditorDetails.AccountReference);
-
-    });
+    // it('should convert an xml string from an object', async () => {
+    //
+    //     const xmlStr = `<CreditorDetails>
+		// 	<AccountReference>123456</AccountReference>
+		// 	<Applicant>1</Applicant>
+		// 	<CommonCreditor>PHONES4U (I)</CommonCreditor>
+		// 	<CommonCreditorId>88548</CommonCreditorId>
+		// 	<CreditStatus>Settled</CreditStatus>
+		// 	<CreditStatusId>2</CreditStatusId>
+		// 	<CreditorSource>Credit Check</CreditorSource>
+		// 	<CreditorSourceId>1</CreditorSourceId>
+		// 	<CurrentBalance>10</CurrentBalance>
+		// 	<DebtOwner>Single</DebtOwner>
+		// 	<DebtOwnerId>1</DebtOwnerId>
+		// 	<DelinquentBalance>10</DelinquentBalance>
+		// 	<EndDate>2018-10-01</EndDate>
+		// 	<ExternalCreditCheck>true</ExternalCreditCheck>
+		// 	<Name>4 U PHONES LTD</Name>
+		// 	<StartBalance>100</StartBalance>
+		// 	<StartDate>2014-12-12</StartDate>
+		// 	<TotalBalance>100</TotalBalance>
+		// 	<Type>Communications Supplier</Type>
+		// 	<TypeId>4</TypeId>
+		// 	<UpdateDate>2015-09-16</UpdateDate>
+		// </CreditorDetails>`;
+    //
+    //     function parse(xmlString): Promise<any> {
+    //         return new Promise((resolve, reject) => {
+    //             xml2js.parseString(xmlString, (err, result) => {
+    //                 if (err) {
+    //                     reject(err);
+    //                 }
+    //
+    //                 resolve(result);
+    //             });
+    //         });
+    //     }
+    //
+    //     const object = await parse(xmlStr);
+    //
+    //     console.log(object.CreditorDetails.AccountReference);
+    //
+    // });
 
 });

@@ -4,7 +4,7 @@ import { ObjectToXmlTransformer } from './transformer';
 export class AssetTransformer implements ObjectToXmlTransformer {
   public item(object: Asset) {
     return {
-      Applicant: object.applicant,
+      Applicant: object.applicant ? object.applicant : 1,
       AssetOwner: object.assetOwner,
       AssetType: object.assetType,
       AssetValue: object.assetValue / 100,

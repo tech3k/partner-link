@@ -76,18 +76,9 @@ export class CreditSearchAddressResultTransformer extends Transformer implements
     public xmlItems(xml: string): Promise<any[]> {
         return Promise.resolve(xml)
             .then(xml => this.parseXml(xml))
-            .then(
-                parsedResult =>
-                    parsedResult['soap:Envelope']['soap:Body'][0][
-                        'SearchAddressResponse'
-                        ][0]['SearchAddressResult'],
-            )
+            .then(parsedResult => parsedResult['soap:Envelope']['soap:Body'][0]['SearchAddressResponse'][0]['SearchAddressResult'])
             .then(singleResult => this.parseXml(singleResult))
-            .then(parsedSingleResult =>
-                Promise.all(
-                    parsedSingleResult['Address']['AddressMatch'].map(this.xmlItem),
-                ),
-            )
+            .then(parsedSingleResult => Promise.all(parsedSingleResult['Address']['AddressMatch'].map(this.xmlItem)))
             .then(allResults => allResults);
     }
 }

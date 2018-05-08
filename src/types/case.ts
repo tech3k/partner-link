@@ -1,14 +1,14 @@
 import * as moment from 'moment';
-import { Vehicle, Property, Asset, Income, Expenditure, Person } from './';
+import {Vehicle, Property, Asset, Income, Expenditure, Person, DocumentRequest} from './';
 
 export class Case {
   public people: Person[];
-  public dependants: moment.Moment[];
+  public dependants?: moment.Moment[];
   public expenditure: Expenditure[];
   public income: Income[];
-  public assets: Asset[];
-  public properties: Property[];
-  public vehicles: Vehicle[];
+  public assets?: Asset[];
+  public properties?: Property[];
+  public vehicles?: Vehicle[];
 }
 
 export class CaseResult {

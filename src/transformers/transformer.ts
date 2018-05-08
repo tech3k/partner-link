@@ -27,7 +27,7 @@ export class Transformer extends AcceptsCredentials {
         return this.removeEmpties(object[key]);
       }
 
-      if (!object[key] && object[key] !== 0) {
+      if (!object[key] && object[key] !== 0 && object[key] !== false) {
         delete object[key];
       }
     });

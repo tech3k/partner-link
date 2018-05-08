@@ -5,23 +5,23 @@ export class PropertyTransformer implements ObjectToXmlTransformer {
   public item(object: Property) {
     return {
       AccountNo: object.accountNo,
-      AddressLine1: object.address1,
+      AddressLine1: object.address1, // required
       AddressLine2: object.address2,
       AmountOfEquity: object.amountOfEquity / 100,
-      Applicant: object.applicant,
+      Applicant: object.applicant, // required
       City: object.city,
       Country: object.country,
       County: object.county,
       DebtorShare: object.debtorShare,
-      HomeAddress: object.homeAddress ? 'true' : 'false',
-      IncludeEquity: object.includeEquity ? 'true' : 'false',
+      HomeAddress: object.homeAddress,
+      IncludeEquity: object.includeEquity,
       LastRemortgaged: object.lastRemortgaged.format('YYYY-MM-DD'),
       MonthsInProperty: object.monthsInProperty,
       MortgageOutstanding: object.mortgageOutstanding,
-      Owner: object.owner,
+      Owner: object.owner,  // Required
       Ownership: object.ownership,
       Postcode: object.postalCode,
-      PreviousAddress: object.previousAddress ? 'true' : 'false',
+      PreviousAddress: object.previousAddress,
       PrimaryLender: object.primaryLender,
       PropertyInNameOf: object.propertyInNameOf,
       PropertyType: object.propertyType,
@@ -36,7 +36,9 @@ export class PropertyTransformer implements ObjectToXmlTransformer {
 
   public items(object: Property[]) {
     if (!object || !object.length) {
-      return {};
+      return {
+
+      };
     }
 
     return {
