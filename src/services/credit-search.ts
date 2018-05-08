@@ -26,39 +26,24 @@ export class CreditSearch extends Service {
     address: CreditSearchAddress,
   ): Promise<CreditSearchAddressResult[]> {
     return Promise.resolve(address)
-      .then(address =>
-        this.soapRequest(
-          new CreditSearchAddressTransformer(this.credentials).item(address),
+      .then((raw) => this.soapRequest(
+          new CreditSearchAddressTransformer(this.credentials).item(raw),
           'creditSearchUrl',
           'services/SearchHeavyInterface.asmx',
           'http://searchlink.co.uk/SearchAddress',
-        ),
-      )
-      .then(addressResult =>
-        new CreditSearchAddressResultTransformer(this.credentials).xmlItems(
-          addressResult,
-        ),
-      )
+      ))
+      .then(addressResult => new CreditSearchAddressResultTransformer(this.credentials).xmlItems(addressResult))
       .then(addressResult => {
         if (addressResult.length === 0) {
-          throw new PartnerLinkError(
-            `Address ${address.houseNumber} ${
-              address.postalCode
-            } was not found.`,
-            406,
-          );
+          throw new PartnerLinkError(`Address ${address.houseNumber} ${address.postalCode} was not found.`, 406);
         }
 
         return addressResult;
       })
       .catch(e => {
         throw new PartnerLinkError(
-          e.code === undefined
-            ? `Address ${address.houseNumber} ${
-                address.postalCode
-              } was not found.`
-            : e.message,
-          e.code === undefined ? 406 : e.code,
+          !e.message ? `Address ${address.houseNumber} ${address.postalCode} was not found.` : e.message,
+          !e.code ? 406 : e.code,
         );
       });
   }
@@ -74,7 +59,7 @@ export class CreditSearch extends Service {
     addresses: CreditSearchAddress[],
   ): Promise<CreditSearchAddressResult[][]> {
     return Promise.resolve(addresses)
-      .then(addresses => {
+      .then((addresses) => {
         if (addresses.length > 3) {
           throw new PartnerLinkError(
             'No more than 3 addresses can be credit searched.',
@@ -84,7 +69,7 @@ export class CreditSearch extends Service {
 
         return addresses;
       })
-      .then(addresses =>
+      .then((addresses) =>
         Promise.all(addresses.map(address => this.checkAddress(address))),
       )
       .catch(e => {
@@ -107,9 +92,7 @@ export class CreditSearch extends Service {
     person: CreditSearchPerson,
   ): Promise<CreditSearchPersonResult> {
     return Promise.resolve(person)
-      .then(person =>
-        new CreditSearchPersonTransformer(this.credentials).item(person),
-      )
+      .then((raw) => new CreditSearchPersonTransformer(this.credentials).item(raw))
       .then(personTransformed =>
         this.soapRequest(
           personTransformed,
@@ -141,14 +124,12 @@ export class CreditSearch extends Service {
 
   public getCreditReport(id: number): Promise<string> {
     return Promise.resolve(id)
-      .then(id =>
-        this.soapRequest(
-          new CreditReportTransformer(this.credentials).item(id),
+      .then((value) => this.soapRequest(
+          new CreditReportTransformer(this.credentials).item(value),
           'creditSearchUrl',
           'services/SearchHeavyInterface.asmx',
           'http://searchlink.co.uk/GetLightSearchCreditReportHTML',
-        ),
-      )
+      ))
       .then(result =>
         new CreditReportTransformer(this.credentials).getHtmlFromResult(result),
       );

@@ -91,12 +91,42 @@
 <a name='L43'></a><a href='#L43'>43</a>
 <a name='L44'></a><a href='#L44'>44</a>
 <a name='L45'></a><a href='#L45'>45</a>
-<a name='L46'></a><a href='#L46'>46</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -142,30 +172,45 @@ import { ObjectToXmlTransformer } from './transformer';
 export class VehicleTransformer implements ObjectToXmlTransformer {
   public item(object: Vehicle) {
     return {
-      AdaptedForDisabledUse: object.adaptedFordisabledUse !== undefined ? object.adaptedFordisabledUse : null,
-      AmountAdvanced: object.amountAdvanced? object.amountAdvanced / 100 : null,
-      AmountOutstanding: object.amountOutstanding ? object.amountOutstanding / 100 : null,
+      AdaptedForDisabledUse:
+        object.adaptedFordisabledUse !== undefined
+          ? object.adaptedFordisabledUse
+          : null,
+      AmountAdvanced: object.amountAdvanced
+        ? object.amountAdvanced / 100
+        : null,
+      AmountOutstanding: object.amountOutstanding
+        ? object.amountOutstanding / 100
+        : null,
       Applicant: object.applicant ? object.applicant : 1,
-      BalloonPayment: object.balloonPayment !== undefined ? object.balloonPayment : null,
+      BalloonPayment:
+        object.balloonPayment !== undefined ? object.balloonPayment : null,
       DateOfAdvance: object.dateOfAdvance
         ? object.dateOfAdvance.format('YYYY-MM-DD')
         : null,
       DateOfRegistration: object.dateOfRegistration
         ? object.dateOfRegistration.format('YYYY-MM-DD')
         : null,
-      DefaultedOnTheLoan: object.defaulted !== undefined ? object.defaulted : null,
+      DefaultedOnTheLoan:
+        object.defaulted !== undefined ? object.defaulted : null,
       EndDate: object.endDate ? object.endDate.format('YYYY-MM-DD') : null,
-      FinanceOutstanding: object.financeOustanding !== undefined ? object.financeOustanding : null,
+      FinanceOutstanding:
+        object.financeOustanding !== undefined
+          ? object.financeOustanding
+          : null,
       FinanceType: object.financeType ? object.financeType : null,
       LoanReferenceNo: object.reference ? object.reference : null,
       Make: object.make,
       Model: object.model,
       MonthlyCost: object.monthlyCost ? object.monthlyCost / 100 : null,
-      RegistrationNo: object.registrationNumber ? object.registrationNumber : null,
+      RegistrationNo: object.registrationNumber
+        ? object.registrationNumber
+        : null,
       TermInMonths: object.termInMonths ? object.termInMonths : null,
       VehicleAge: object.age ? object.age : null,
       VehicleMileage: object.mileage ? object.mileage : null,
-      VehicleNecessary: object.necessary !== undefined ? object.necessary : null,
+      VehicleNecessary:
+        object.necessary !== undefined ? object.necessary : null,
       VehicleUse: object.useType ? object.useType : 'Personal',
       VehicleValue: object.value ? object.value / 100 : null,
     };
@@ -187,7 +232,7 @@ export class VehicleTransformer implements ObjectToXmlTransformer {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri May 04 2018 14:11:00 GMT+0100 (BST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue May 08 2018 15:52:50 GMT+0100 (BST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

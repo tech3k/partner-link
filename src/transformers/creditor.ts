@@ -2,8 +2,8 @@ import * as moment from 'moment';
 import { Creditor } from '../types';
 import { ObjectToXmlTransformer, Transformer } from './transformer';
 
-export class CreditorTransformer extends Transformer
-  implements ObjectToXmlTransformer {
+export class CreditorTransformer extends Transformer implements ObjectToXmlTransformer {
+
   public parseXmlItem(item: any): Creditor {
     const creditor: Creditor = new Creditor();
 
@@ -28,29 +28,20 @@ export class CreditorTransformer extends Transformer
 
   public item(object: Creditor) {
     return {
-      AccountReference: object.reference,
-      Applicant: object.applicant,
+      AccountReference: object.reference ? object.reference : null,
+      Applicant: object.applicant ? object.applicant : 1,
       CreditStatus: object.latestStatus,
-      CreditorSource: object.creditCheck
-        ? 'Credit Check'
-        : 'Provided By Client',
+      CreditorSource: object.creditCheck ? 'Credit Check' : 'Provided By Client',
       CurrentBalance: object.currentBalance / 100,
       DebtOwner: object.jointAccount ? 'joint' : 'single',
       DelinquentBalance: object.delinquentBalance / 100,
-      ExternalCreditCheck: object.creditCheck ? 'true' : 'false',
+      ExternalCreditCheck: object.creditCheck,
       Name: object.name.toUpperCase(),
       StartBalance: object.startBalance / 100,
-      StartDate: object.creditStartDate
-        ? object.creditStartDate.format('YYYY-MM-DD')
-        : null,
+      StartDate: object.creditStartDate ? object.creditStartDate.format('YYYY-MM-DD') : null,
       TotalBalance: object.creditAmount / 100,
-      Type:
-        object.creditorType === 'Retailer'
-          ? 'Home Lending'
-          : object.creditorType, // hax
-      UpdateDate: object.creditUpdateDate
-        ? object.creditUpdateDate.format('YYYY-MM-DD')
-        : null,
+      Type: object.creditorType === 'Retailer' ? 'Home Lending' : object.creditorType, // hax
+      UpdateDate: object.creditUpdateDate ? object.creditUpdateDate.format('YYYY-MM-DD') : null,
     };
   }
 
