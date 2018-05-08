@@ -1,5 +1,5 @@
-import * as moment from "moment";
-import { Vehicle, Property, Asset, Income, Expenditure, Person } from "./";
+import * as moment from 'moment';
+import { Vehicle, Property, Asset, Income, Expenditure, Person } from './';
 
 export class Case {
   public people: Person[];
