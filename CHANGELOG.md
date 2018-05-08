@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.9"></a>
+## [1.4.9](https://github.com/DebtPanel/partner-link/compare/v1.4.8...v1.4.9) (2018-05-08)
+
+
+### Bug Fixes
+
+* **Address Verification:** Fixed issue with address verification ([e0d776d](https://github.com/DebtPanel/partner-link/commit/e0d776d))
+
+
+
 <a name="1.4.8"></a>
 ## [1.4.8](https://github.com/DebtPanel/partner-link/compare/v1.4.7...v1.4.8) (2018-05-03)
 
