@@ -32,7 +32,7 @@ describe('CreditSearchPersonTransformer', () => {
         expect(new CreditSearchPersonTransformer({
             creditSearchClient: 'console',
             creditSearchUsername: 'root',
-            creditSearchPassword: ''
+            creditSearchPassword: '',
         } as PartnerLinkCredentials).item(data)).toEqual(`<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
@@ -65,5 +65,9 @@ describe('CreditSearchPersonTransformer', () => {
     </GetLightSearchAccountDataWithCreditSearchID>
   </soap:Body>
 </soap:Envelope>`);
+    });
+
+    it('should return an empty string', () => {
+        expect(new CreditSearchPersonTransformer({}).items([])).toEqual('');
     });
 });

@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">64.44% </span>
+        <span class="strong">86.67% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>29/45</span>
+        <span class='fraction'>39/45</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">93.94% </span>
@@ -30,21 +30,21 @@
         <span class='fraction'>31/33</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">40% </span>
+        <span class="strong">60% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>6/15</span>
+        <span class='fraction'>9/15</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">64.44% </span>
+        <span class="strong">86.67% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>29/45</span>
+        <span class='fraction'>39/45</span>
       </div>
     </div>
     <p class="quiet">
       Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
     </p>
   </div>
-  <div class='status-line medium'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -238,19 +238,19 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -370,20 +370,20 @@ export class CreditSearchAddressTransformer extends Transformer implements Objec
 &nbsp;
 export class CreditSearchAddressResultTransformer extends Transformer implements XmlToObjectTransformer {
 &nbsp;
-    public <span class="fstat-no" title="function not covered" >xmlItem</span>(xml: any): Promise&lt;CreditSearchAddressResult&gt; {
-<span class="cstat-no" title="statement not covered" >        return Promise.resolve(xml)</span>
-            .then(<span class="fstat-no" title="function not covered" >xml</span> =&gt; <span class="cstat-no" title="statement not covered" >xml['$'])</span>
-            .then(<span class="fstat-no" title="function not covered" >address</span> =&gt; {
-                let returnAddress = <span class="cstat-no" title="statement not covered" >new CreditSearchAddressResult();</span>
+    public xmlItem(xml: any): Promise&lt;CreditSearchAddressResult&gt; {
+        return Promise.resolve(xml)
+            .then(xml =&gt; xml['$'])
+            .then(address =&gt; {
+                let returnAddress = new CreditSearchAddressResult();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >                returnAddress.id = address['ptcabs'];</span>
-<span class="cstat-no" title="statement not covered" >                returnAddress.address1 = `${address['HouseNumber']}`;</span>
-<span class="cstat-no" title="statement not covered" >                returnAddress.address2 = address['Street1'];</span>
-<span class="cstat-no" title="statement not covered" >                returnAddress.address3 = address['Street2'];</span>
-<span class="cstat-no" title="statement not covered" >                returnAddress.town = address['Town'];</span>
-<span class="cstat-no" title="statement not covered" >                returnAddress.postalCode = address['PostCode'];</span>
+                returnAddress.id = address['ptcabs'];
+                returnAddress.address1 = `${address['HouseNumber']}`;
+                returnAddress.address2 = address['Street1'];
+                returnAddress.address3 = address['Street2'];
+                returnAddress.town = address['Town'];
+                returnAddress.postalCode = address['PostCode'];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >                return returnAddress;</span>
+                return returnAddress;
             });
     }
 &nbsp;
@@ -451,7 +451,7 @@ export class AddAddressTransformer extends Transformer implements ObjectToXmlTra
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue May 08 2018 19:28:11 GMT+0100 (BST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed May 09 2018 19:03:40 GMT+0100 (BST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

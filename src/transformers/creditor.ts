@@ -13,9 +13,7 @@ export class CreditorTransformer extends Transformer implements ObjectToXmlTrans
     creditor.accountType = item.AccountType;
     creditor.jointAccount = item.JointAccount === '1';
     creditor.startBalance = this.convertStringToNumber(item.StartBalance);
-    creditor.delinquentBalance = this.convertStringToNumber(
-      item.DelinquentBalance,
-    );
+    creditor.delinquentBalance = this.convertStringToNumber(item.DelinquentBalance);
     creditor.currentBalance = this.convertStringToNumber(item.CurrentBalance);
     creditor.creditStartDate = moment(item.CreditStartDate);
     creditor.creditUpdateDate = moment(item.CreditUpdateDate);

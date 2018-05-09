@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">32.14% </span>
+        <span class="strong">35.71% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>9/28</span>
+        <span class='fraction'>10/28</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">55.56% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>20/36</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">6.25% </span>
+        <span class="strong">12.5% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>1/16</span>
+        <span class='fraction'>2/16</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">33.33% </span>
+        <span class="strong">37.04% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>9/27</span>
+        <span class='fraction'>10/27</span>
       </div>
     </div>
     <p class="quiet">
@@ -150,15 +150,7 @@
 <a name='L102'></a><a href='#L102'>102</a>
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a>
-<a name='L108'></a><a href='#L108'>108</a>
-<a name='L109'></a><a href='#L109'>109</a>
-<a name='L110'></a><a href='#L110'>110</a>
-<a name='L111'></a><a href='#L111'>111</a>
-<a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L105'></a><a href='#L105'>105</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -204,7 +196,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -241,12 +233,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -254,10 +241,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -315,8 +299,8 @@ export class CreditSearchPersonTransformer extends Transformer
 &lt;/soap:Envelope&gt;`;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    items</span>(object: any[]): string {
-<span class="cstat-no" title="statement not covered" >        return '';</span>
+    items(object: any[]): string {
+        return '';
     }
 }
 &nbsp;
@@ -352,24 +336,16 @@ export class CreditSearchPersonResultTransformer extends Transformer
     implements XmlToObjectTransformer {
     public <span class="fstat-no" title="function not covered" >xmlItem</span>(xml: string): Promise&lt;CreditSearchPersonResult&gt; {
 <span class="cstat-no" title="statement not covered" >        return Promise.resolve(xml)</span>
-            .then(<span class="fstat-no" title="function not covered" >xml</span> =&gt; <span class="cstat-no" title="statement not covered" >this.parseXml(xml))</span>
-            .then(
-<span class="fstat-no" title="function not covered" >                parsedResult</span> =&gt;
-<span class="cstat-no" title="statement not covered" >                    parsedResult['soap:Envelope']['soap:Body'][0][</span>
-                        'GetLightSearchAccountDataWithCreditSearchIDResponse'
-                        ][0]['GetLightSearchAccountDataWithCreditSearchIDResult'][0],
-            )
+            .then(<span class="fstat-no" title="function not covered" >raw</span> =&gt; <span class="cstat-no" title="statement not covered" >this.parseXml(raw))</span>
+            .then(<span class="fstat-no" title="function not covered" >parsedResult</span> =&gt; <span class="cstat-no" title="statement not covered" >parsedResult['soap:Envelope']['soap:Body'][0]['GetLightSearchAccountDataWithCreditSearchIDResponse'][0]['GetLightSearchAccountDataWithCreditSearchIDResult'][0])</span>
             .then(<span class="fstat-no" title="function not covered" >singleResult</span> =&gt; <span class="cstat-no" title="statement not covered" >this.parseXml(singleResult))</span>
             .then(<span class="fstat-no" title="function not covered" >parsedSingleResult</span> =&gt; <span class="cstat-no" title="statement not covered" >parsedSingleResult['Account'])</span>
             .then(<span class="fstat-no" title="function not covered" >personResult</span> =&gt; {
-                let returnPersonResult = <span class="cstat-no" title="statement not covered" >new CreditSearchPersonResult();</span>
+                const returnPersonResult = <span class="cstat-no" title="statement not covered" >new CreditSearchPersonResult();</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >                returnPersonResult.id = parseInt(personResult['$']['ID']);</span>
 <span class="cstat-no" title="statement not covered" >                returnPersonResult.creditors = personResult['AccountData'].map(</span>
-<span class="fstat-no" title="function not covered" >                    creditor</span> =&gt;
-<span class="cstat-no" title="statement not covered" >                        new CreditorTransformer(this.credentials).parseXmlItem(</span>
-                            creditor['$'],
-                        ),
+<span class="fstat-no" title="function not covered" >                    creditor</span> =&gt; <span class="cstat-no" title="statement not covered" >new CreditorTransformer(this.credentials).parseXmlItem(creditor['$']),</span>
                 );
 &nbsp;
 <span class="cstat-no" title="statement not covered" >                return returnPersonResult;</span>
@@ -377,7 +353,7 @@ export class CreditSearchPersonResultTransformer extends Transformer
     }
 &nbsp;
     public <span class="fstat-no" title="function not covered" >xmlItems</span>(xml: string): Promise&lt;CreditSearchPersonResult[]&gt; {
-        let parsedResults: string[] = <span class="cstat-no" title="statement not covered" >[];</span>
+        const parsedResults: string[] = <span class="cstat-no" title="statement not covered" >[];</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        return Promise.all(parsedResults.map(<span class="fstat-no" title="function not covered" >address</span> =&gt; <span class="cstat-no" title="statement not covered" >this.xmlItem(address))</span>);</span>
     }
@@ -388,7 +364,7 @@ export class CreditSearchPersonResultTransformer extends Transformer
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue May 08 2018 19:28:11 GMT+0100 (BST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed May 09 2018 19:03:40 GMT+0100 (BST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

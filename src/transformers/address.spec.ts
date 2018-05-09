@@ -1,4 +1,4 @@
-import {AddAddressTransformer, CreditSearchAddressTransformer} from './address';
+import {AddAddressTransformer, CreditSearchAddressResultTransformer, CreditSearchAddressTransformer} from './address';
 import {CreditSearchAddress, CreditSearchAddressResult, PartnerLinkCredentials, PartnerLinkError} from '../types';
 
 describe('CreditSearchAddressTransformer', () => {
@@ -224,5 +224,31 @@ describe('AddAddressTransformer', () => {
                 Username: 'root',
             },
         });
+    });
+});
+
+describe('CreditSearchAddressResultTransformer',  () => {
+
+    it('should transform credit search address result', async () => {
+
+        const data = {
+            $: {
+                ptcabs: '58150008380',
+                HouseNumber: '12',
+                Street1: 'High St',
+                Street2: null,
+                Town: 'Westbury',
+                PostCode: 'M1 6NG',
+            },
+        };
+
+        expect(await new CreditSearchAddressResultTransformer({}).xmlItem(data)).toEqual({
+            id: '58150008380',
+            address1: '12',
+            address2: 'High St',
+            address3: null,
+            town: 'Westbury',
+            postalCode: 'M1 6NG',
+        } as CreditSearchAddressResult);
     });
 });

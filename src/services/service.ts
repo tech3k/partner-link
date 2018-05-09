@@ -11,12 +11,7 @@ export class Service extends AcceptsCredentials {
     this.getJwt();
   }
 
-  protected soapRequest(
-    body: string,
-    credentialUrl: string,
-    path: string,
-    action: string,
-  ): Promise<any> {
+  protected soapRequest(body: string, credentialUrl: string, path: string, action: string): Promise<any> {
     const options: any = {
       method: 'POST',
       uri: `https://${this.credentials[credentialUrl]}/${path}`,

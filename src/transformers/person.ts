@@ -80,24 +80,16 @@ export class CreditSearchPersonResultTransformer extends Transformer
     implements XmlToObjectTransformer {
     public xmlItem(xml: string): Promise<CreditSearchPersonResult> {
         return Promise.resolve(xml)
-            .then(xml => this.parseXml(xml))
-            .then(
-                parsedResult =>
-                    parsedResult['soap:Envelope']['soap:Body'][0][
-                        'GetLightSearchAccountDataWithCreditSearchIDResponse'
-                        ][0]['GetLightSearchAccountDataWithCreditSearchIDResult'][0],
-            )
+            .then(raw => this.parseXml(raw))
+            .then(parsedResult => parsedResult['soap:Envelope']['soap:Body'][0]['GetLightSearchAccountDataWithCreditSearchIDResponse'][0]['GetLightSearchAccountDataWithCreditSearchIDResult'][0])
             .then(singleResult => this.parseXml(singleResult))
             .then(parsedSingleResult => parsedSingleResult['Account'])
             .then(personResult => {
-                let returnPersonResult = new CreditSearchPersonResult();
+                const returnPersonResult = new CreditSearchPersonResult();
 
                 returnPersonResult.id = parseInt(personResult['$']['ID']);
                 returnPersonResult.creditors = personResult['AccountData'].map(
-                    creditor =>
-                        new CreditorTransformer(this.credentials).parseXmlItem(
-                            creditor['$'],
-                        ),
+                    creditor => new CreditorTransformer(this.credentials).parseXmlItem(creditor['$']),
                 );
 
                 return returnPersonResult;
@@ -105,7 +97,7 @@ export class CreditSearchPersonResultTransformer extends Transformer
     }
 
     public xmlItems(xml: string): Promise<CreditSearchPersonResult[]> {
-        let parsedResults: string[] = [];
+        const parsedResults: string[] = [];
 
         return Promise.all(parsedResults.map(address => this.xmlItem(address)));
     }

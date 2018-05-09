@@ -3,7 +3,7 @@ import {Creditor} from '../types';
 import * as moment from 'moment';
 import * as xml2js from 'xml2js';
 
-describe('Creditor transformer', () => {
+describe('CreditorTransformer', () => {
     it('should transform a single item', () => {
         const data = {
             name: '4 u phones Ltd',
@@ -82,48 +82,40 @@ describe('Creditor transformer', () => {
         });
     });
 
-    // it('should convert an xml string from an object', async () => {
-    //
-    //     const xmlStr = `<CreditorDetails>
-		// 	<AccountReference>123456</AccountReference>
-		// 	<Applicant>1</Applicant>
-		// 	<CommonCreditor>PHONES4U (I)</CommonCreditor>
-		// 	<CommonCreditorId>88548</CommonCreditorId>
-		// 	<CreditStatus>Settled</CreditStatus>
-		// 	<CreditStatusId>2</CreditStatusId>
-		// 	<CreditorSource>Credit Check</CreditorSource>
-		// 	<CreditorSourceId>1</CreditorSourceId>
-		// 	<CurrentBalance>10</CurrentBalance>
-		// 	<DebtOwner>Single</DebtOwner>
-		// 	<DebtOwnerId>1</DebtOwnerId>
-		// 	<DelinquentBalance>10</DelinquentBalance>
-		// 	<EndDate>2018-10-01</EndDate>
-		// 	<ExternalCreditCheck>true</ExternalCreditCheck>
-		// 	<Name>4 U PHONES LTD</Name>
-		// 	<StartBalance>100</StartBalance>
-		// 	<StartDate>2014-12-12</StartDate>
-		// 	<TotalBalance>100</TotalBalance>
-		// 	<Type>Communications Supplier</Type>
-		// 	<TypeId>4</TypeId>
-		// 	<UpdateDate>2015-09-16</UpdateDate>
-		// </CreditorDetails>`;
-    //
-    //     function parse(xmlString): Promise<any> {
-    //         return new Promise((resolve, reject) => {
-    //             xml2js.parseString(xmlString, (err, result) => {
-    //                 if (err) {
-    //                     reject(err);
-    //                 }
-    //
-    //                 resolve(result);
-    //             });
-    //         });
-    //     }
-    //
-    //     const object = await parse(xmlStr);
-    //
-    //     console.log(object.CreditorDetails.AccountReference);
-    //
-    // });
+    it('should parse an already converted xml item', async () => {
+        const data = {
+            CreditorName: '4 U PHONES LTD',
+            CreditorType: 'Communications Supplier',
+            AccountReference: '123456',
+            AccountType: 'type',
+            JointAccount: '1',
+            StartBalance: '100',
+            DelinquentBalance: '10',
+            CurrentBalance: '10',
+            CreditStartDate: '2014-12-12',
+            CreditUpdateDate: '2015-09-16',
+            CreditAmount: '100',
+            CreditTerms: 5,
+            LatestStatus: 'status',
+        };
+
+        const creditor = new Creditor();
+        creditor.name = '4 U PHONES LTD';
+        creditor.creditorType = 'Communications Supplier';
+        creditor.reference = '123456';
+        creditor.accountType = 'type';
+        creditor.jointAccount = true;
+        creditor.startBalance = 10000;
+        creditor.delinquentBalance = 1000;
+        creditor.currentBalance = 1000;
+        creditor.creditStartDate = moment('2014-12-12');
+        creditor.creditUpdateDate = moment('2015-09-16');
+        creditor.creditAmount = 10000;
+        creditor.creditTerms = 5;
+        creditor.latestStatus = 'status';
+
+        expect(new CreditorTransformer({}).parseXmlItem(data)).toEqual(creditor);
+
+    });
 
 });
