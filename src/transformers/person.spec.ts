@@ -1,4 +1,4 @@
-import {CreditSearchPersonTransformer} from './person';
+import {CreditSearchPersonResultTransformer, CreditSearchPersonTransformer} from './person';
 import {CreditSearchPerson, PartnerLinkCredentials, PartnerLinkError} from '../types';
 import * as moment from 'moment';
 
@@ -71,3 +71,7 @@ describe('CreditSearchPersonTransformer', () => {
         expect(new CreditSearchPersonTransformer({}).items([])).toEqual('');
     });
 });
+
+describe('CreditSearchPersonResultTransformer', async () => {
+    expect(await new CreditSearchPersonResultTransformer({}).xmlItems('')).toEqual([]);
+})

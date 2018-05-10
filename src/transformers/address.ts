@@ -58,16 +58,15 @@ export class CreditSearchAddressResultTransformer extends Transformer implements
 
     public xmlItem(xml: any): Promise<CreditSearchAddressResult> {
         return Promise.resolve(xml)
-            .then(xml => xml['$'])
+            .then(raw => raw.$)
             .then(address => {
-                let returnAddress = new CreditSearchAddressResult();
-
-                returnAddress.id = address['ptcabs'];
-                returnAddress.address1 = `${address['HouseNumber']}`;
-                returnAddress.address2 = address['Street1'];
-                returnAddress.address3 = address['Street2'];
-                returnAddress.town = address['Town'];
-                returnAddress.postalCode = address['PostCode'];
+                const returnAddress = new CreditSearchAddressResult();
+                returnAddress.id = address.ptcabs;
+                returnAddress.address1 = address.HouseNumber;
+                returnAddress.address2 = address.Street1;
+                returnAddress.address3 = address.Street2;
+                returnAddress.town = address.Town;
+                returnAddress.postalCode = address.PostCode;
 
                 return returnAddress;
             });
@@ -75,11 +74,12 @@ export class CreditSearchAddressResultTransformer extends Transformer implements
 
     public xmlItems(xml: string): Promise<any[]> {
         return Promise.resolve(xml)
-            .then(xml => this.parseXml(xml))
+            .then(raw => this.parseXml(raw))
             .then(parsedResult => parsedResult['soap:Envelope']['soap:Body'][0]['SearchAddressResponse'][0]['SearchAddressResult'])
             .then(singleResult => this.parseXml(singleResult))
-            .then(parsedSingleResult => Promise.all(parsedSingleResult['Address']['AddressMatch'].map(this.xmlItem)))
-            .then(allResults => allResults);
+            .then(parsedItem => {
+                return Promise.all((parsedItem.Address ? parsedItem.Address.AddressMatch : []).map(this.xmlItem));
+            });
     }
 }
 

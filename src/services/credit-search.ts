@@ -31,19 +31,20 @@ export class CreditSearch extends Service {
                 'http://searchlink.co.uk/SearchAddress',
             ))
             .then(async (addressResult) => {
-                return new CreditSearchAddressResultTransformer(this.credentials).xmlItems(addressResult)
+                return new CreditSearchAddressResultTransformer(this.credentials).xmlItems(addressResult);
             })
             .then(addressResult => {
                 if (addressResult.length === 0) {
-                    throw new PartnerLinkError(`Address ${address.houseNumber} ${address.postalCode} was not found.`, 406);
+                    throw new PartnerLinkError(`Address ${address.houseNumber}, ${address.postalCode} was not found.`, 406);
                 }
 
                 return addressResult;
             })
             .catch(e => {
+                this.log('checkAddress', e);
                 throw new PartnerLinkError(
-                    !e.message ? `Address ${address.houseNumber} ${address.postalCode} was not found.` : e.message,
-                    !e.code ? 406 : e.code,
+                    !e.message ? `Unable to search for address.` : e.message,
+                    !e.code ? 500 : e.code,
                 );
             });
     }
@@ -64,11 +65,11 @@ export class CreditSearch extends Service {
                         406,
                     );
                 }
-
                 return addresses;
             })
             .then((addresses) => Promise.all(addresses.map(address => this.checkAddress(address))))
             .catch(e => {
+                this.log('checkMultipleAddresses', e);
                 throw new PartnerLinkError(
                     !e.code ? `At least one requested address was not found.` : e.message,
                     !e.code ? 406 : e.code,
@@ -85,27 +86,26 @@ export class CreditSearch extends Service {
     public performCreditCheck(person: CreditSearchPerson): Promise<CreditSearchPersonResult> {
         return Promise.resolve(person)
             .then((raw) => new CreditSearchPersonTransformer(this.credentials).item(raw))
-            .then(personTransformed =>
-                this.soapRequest(
-                    personTransformed,
-                    'creditSearchUrl',
-                    'services/SearchHeavyInterface.asmx',
-                    'http://searchlink.co.uk/GetLightSearchAccountDataWithCreditSearchID',
-                ),
-            )
+            .then(personTransformed => this.soapRequest(
+                personTransformed,
+                'creditSearchUrl',
+                'services/SearchHeavyInterface.asmx',
+                'http://searchlink.co.uk/GetLightSearchAccountDataWithCreditSearchID',
+            ))
             .then(personResult => new CreditSearchPersonResultTransformer(this.credentials).xmlItem(personResult))
-            .then(transformedPerson =>
-                Promise.resolve(transformedPerson.id)
+            .then(transformedPerson => {
+                return Promise.resolve(transformedPerson.id)
                     .then(id => this.getCreditReport(id))
                     .then(html => {
                         transformedPerson.report = html;
                         return transformedPerson;
-                    }),
-            )
+                    });
+            })
             .catch(e => {
+                this.log('performCreditCheck', e);
                 throw new PartnerLinkError(
-                    !e.code ? `No Creditors have been found.` : e.message,
-                    !e.code ? 406 : e.code,
+                    !e.code ? 'Unable to preform credit search.' : e.message,
+                    !e.code ? 500 : e.code,
                 );
             });
     }

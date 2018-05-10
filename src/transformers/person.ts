@@ -66,6 +66,7 @@ export class CreditReportTransformer extends Transformer {
     }
 
     public getHtmlFromResult(xml: string): Promise<string> {
+        console.log(xml);
         return Promise.resolve(xml)
             .then(raw => this.parseXml(raw))
             .then(
@@ -81,17 +82,14 @@ export class CreditSearchPersonResultTransformer extends Transformer
     public xmlItem(xml: string): Promise<CreditSearchPersonResult> {
         return Promise.resolve(xml)
             .then(raw => this.parseXml(raw))
-            .then(parsedResult => parsedResult['soap:Envelope']['soap:Body'][0]['GetLightSearchAccountDataWithCreditSearchIDResponse'][0]['GetLightSearchAccountDataWithCreditSearchIDResult'][0])
+            .then(parsedResult => parsedResult['soap:Envelope']['soap:Body'][0].GetLightSearchAccountDataWithCreditSearchIDResponse[0].GetLightSearchAccountDataWithCreditSearchIDResult[0])
             .then(singleResult => this.parseXml(singleResult))
-            .then(parsedSingleResult => parsedSingleResult['Account'])
+            .then(parsedSingleResult => parsedSingleResult.Account)
             .then(personResult => {
                 const returnPersonResult = new CreditSearchPersonResult();
-
-                returnPersonResult.id = parseInt(personResult['$']['ID']);
-                returnPersonResult.creditors = personResult['AccountData'].map(
-                    creditor => new CreditorTransformer(this.credentials).parseXmlItem(creditor['$']),
-                );
-
+                returnPersonResult.id = parseInt(personResult.$.ID, 10);
+                returnPersonResult.creditors = (personResult.AccountData || [])
+                    .map(creditor => new CreditorTransformer(this.credentials).parseXmlItem(creditor.$));
                 return returnPersonResult;
             });
     }
