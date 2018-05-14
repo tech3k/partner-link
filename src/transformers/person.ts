@@ -92,7 +92,6 @@ export class CreditReportTransformer extends Transformer {
   }
 
   public getHtmlFromResult(xml: string): Promise<string> {
-    console.log(xml);
     return Promise.resolve(xml)
       .then(raw => this.parseXml(raw))
       .then(
