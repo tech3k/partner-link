@@ -23,8 +23,8 @@ export class Property {
   public propertyInNameOf: string;
   public propertyType: string;
   public propertyValue: number;
-  public securedLoan: boolean;
-  public thirdPartyOwner: number;
+  public securedLoan: number;
+  public thirdPartyOwner: string;
   public titleNumber: string;
   public yearsInProperty: number;
   public yearsRemaining: number;

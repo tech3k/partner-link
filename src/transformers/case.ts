@@ -16,9 +16,11 @@ import { PropertyTransformer } from './property';
 export class CaseTransformer extends Transformer
   implements ObjectToXmlTransformer {
   public item(object: Case) {
+    // employment status
     if (
-      !object.people[0].employmentStatus ||
-      !object.people[0].employmentStatus.length
+      !Array.isArray(object.people) ||
+      !object.people[0] ||
+      !object.people[0].employmentStatus
     ) {
       throw new PartnerLinkError(
         'No Employment Status has been provided.',
@@ -26,16 +28,58 @@ export class CaseTransformer extends Transformer
       );
     }
 
+    // contact number
     if (
-      (!object.people[0].homeNumber ||
-        object.people[0].homeNumber.length <= 3) &&
-      (!object.people[0].mobileNumber ||
-        object.people[0].mobileNumber.length <= 3)
+      (!object.people[0] ||
+        (!object.people[0].homeNumber ||
+          object.people[0].homeNumber.length <= 3)) &&
+      (!object.people[0] ||
+        (!object.people[0].mobileNumber ||
+          object.people[0].mobileNumber.length <= 3))
     ) {
       throw new PartnerLinkError(
         'No home telephone number has been provided.',
         406,
       );
+    }
+
+    // date of birth
+    if (!object.people[0].dateOfBirth) {
+      throw new PartnerLinkError('No date of birth provided.', 406);
+    }
+
+    // Primary
+    if (
+      !Array.isArray(object.people[0].addresses) ||
+      !object.people[0].addresses[0] ||
+      !object.people[0].addresses[0].address1
+    ) {
+      throw new PartnerLinkError('No address has been provided.', 406);
+    }
+
+    // Secondary (Partner)
+    if (object.people.length > 1) {
+      if (!object.people[1].dateOfBirth) {
+        throw new PartnerLinkError('Partner, No date of birth provided', 406);
+      }
+
+      if (
+        !Array.isArray(object.people[1].addresses) ||
+        !object.people[1].addresses[0] ||
+        !object.people[1].addresses[0].address1
+      ) {
+        throw new PartnerLinkError(
+          'Partner, No address has been provided',
+          406,
+        );
+      }
+
+      if (!object.people[1].employmentStatus) {
+        throw new PartnerLinkError(
+          'Partner, No Employment Status has been provided.',
+          406,
+        );
+      }
     }
 
     // const regex = /((?:Flat\s+)?\d+[A-Z]?).+?([A-Z0-9 ]+)?/i;
@@ -48,19 +92,27 @@ export class CaseTransformer extends Transformer
     const addressSplitMatches = object.people[0].addresses[0].address1
       .trim()
       .match(regex);
-    clientHouseNumber = addressSplitMatches[1].trim();
-    clientStreetName = addressSplitMatches[2]
-      ? addressSplitMatches[2].trim()
-      : object.people[0].addresses[0].address2.trim();
+    clientHouseNumber =
+      addressSplitMatches && addressSplitMatches[1]
+        ? addressSplitMatches[1]
+        : object.people[0].addresses[0].address1;
+    clientStreetName =
+      addressSplitMatches && addressSplitMatches[2]
+        ? addressSplitMatches[2]
+        : object.people[0].addresses[0].address2;
 
     if (object.people.length > 1) {
       const partnerAddressSplitMatches = object.people[1].addresses[0].address1
         .trim()
         .match(regex);
-      partnerHouseNumber = partnerAddressSplitMatches[1];
-      partnerStreetName = partnerAddressSplitMatches[2]
-        ? partnerAddressSplitMatches[2]
-        : object.people[1].addresses[0].address2;
+      partnerHouseNumber =
+        partnerAddressSplitMatches && partnerAddressSplitMatches[1]
+          ? partnerAddressSplitMatches[1]
+          : object.people[1].addresses[0].address1;
+      partnerStreetName =
+        partnerAddressSplitMatches && partnerAddressSplitMatches[2]
+          ? partnerAddressSplitMatches[2]
+          : object.people[1].addresses[0].address2;
     }
 
     const fullCase = {
@@ -69,12 +121,12 @@ export class CaseTransformer extends Transformer
           CaseMainDetails: {
             AddressCountryID: 1,
             ContactMade: true,
-            FirstName: object.people[0].firstName,
-            Gender: object.people[0].gender,
-            Joint: object.people.length > 1 ? 'true' : 'false',
+            FirstName: object.people[0].firstName, // required
+            Gender: object.people[0].gender, // required
+            Joint: object.people.length > 1, // boolean
             LeadProviderID: this.credentials.leadProviderId,
             MaidenName: object.people[0].maidenName,
-            PartnerUnaware: false,
+            PartnerUnaware: null, // boolean,
             Salutation: object.people[0].title,
             SourceCode: this.credentials.sourceCode,
             Surname: object.people[0].lastName,
@@ -82,30 +134,28 @@ export class CaseTransformer extends Transformer
           EmploymentDetails: {
             EmployerName: object.people[0].employerName
               ? object.people[0].employerName
-              : object.people[object.people.length - 1].employerName,
-            EmploymentStatus: object.people[0].employmentStatus
-              ? object.people[0].employmentStatus
-              : object.people[object.people.length - 1].employmentStatus,
+              : null,
+            EmploymentStatus: object.people[0].employmentStatus, // Required
             JobTitle: object.people[0].jobTitle
               ? object.people[0].jobTitle
-              : object.people[object.people.length - 1].jobTitle,
+              : null,
           },
           Expenditure: {
             ExpenditureFields: {
-              ExpenditureField: object.expenditure.map(item =>
+              ExpenditureField: (object.expenditure || []).map(item =>
                 new ExpenditureTransformer().item(item),
               ),
             },
           },
           Income: {
             IncomeFields: {
-              IncomeField: object.income.map(item =>
+              IncomeField: (object.income || []).map(item =>
                 new IncomeTransformer().item(item),
               ),
             },
           },
           OtherAssets: {
-            OtherAssetRequest: object.assets.map(item =>
+            OtherAssetRequest: (object.assets || []).map(item =>
               new AssetTransformer().item(item),
             ),
           },
@@ -117,7 +167,7 @@ export class CaseTransformer extends Transformer
             County: object.people[0].addresses[0].county,
             DateOfBirth: object.people[0].dateOfBirth.format('YYYY-MM-DD'),
             DependantsList: {
-              Dependant: object.dependants.map(item => {
+              Dependant: (object.dependants || []).map(item => {
                 return {
                   Age: item.diff(moment().format('YYYY-MM-DD'), 'years') * -1,
                 };
@@ -130,7 +180,7 @@ export class CaseTransformer extends Transformer
               object.people[0].homeNumber.length > 2
                 ? object.people[0].homeNumber
                 : object.people[0].mobileNumber,
-            JointApplicant: object.people.length > 1 ? 'true' : 'false',
+            JointApplicant: object.people.length > 1, // boolean,
             MaidenName: object.people[0].maidenName,
             MaritalStatus: object.people[0].maritalStatus,
             MiddleName: object.people[0].middleNames,
@@ -172,7 +222,9 @@ export class CaseTransformer extends Transformer
             PartnerPostcode: object.people[1]
               ? object.people[1].addresses[0].postalCode
               : null,
-            PartnerUnaware: object.people[1] ? false : null,
+            PartnerSalutation: object.people[1] ? object.people[1].title : null,
+            PartnerSurname: object.people[1] ? object.people[1].lastName : null,
+            PartnerUnaware: null, // boolean
             Postcode: object.people[0].addresses[0].postalCode,
             Salutation: object.people[0].title,
             Surname: object.people[0].lastName,
@@ -205,7 +257,7 @@ export class CaseResultTransformer extends Transformer
   implements XmlToObjectTransformer {
   public xmlItem(xml: string): Promise<CaseResult> {
     return Promise.resolve(xml)
-      .then(xml => this.parseXml(xml))
+      .then(raw => this.parseXml(raw))
       .then(parsedXml => {
         if (!parsedXml.CreatedAssignment) {
           throw new PartnerLinkError('Case could not be created', 406);

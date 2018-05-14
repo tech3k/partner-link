@@ -11,7 +11,7 @@ export class Creditor {
   public currentBalance: number;
   public creditStartDate: moment.Moment;
   public creditUpdateDate: moment.Moment;
-  public creditAmount: number;
+  public creditAmount: number | null;
   public creditTerms: string;
   public latestStatus: string;
   public applicant?: number;

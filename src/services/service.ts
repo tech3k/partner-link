@@ -1,7 +1,7 @@
 import * as request from 'request-promise-native';
-
 import { AcceptsCredentials } from './credentials';
 import { PartnerLinkCredentials } from '../types';
+import * as util from 'util';
 
 export class Service extends AcceptsCredentials {
   private jwt: string = undefined;
@@ -27,15 +27,16 @@ export class Service extends AcceptsCredentials {
       json: false,
       body: this.stripEmptyLines(body),
     };
-    if (this.credentials.debug) {
-      console.log(options);
-    }
-    return request(options).then(result => {
-      if (this.credentials.debug) {
-        console.log(result);
-      }
-      return result;
-    });
+
+    this.log('soapRequest', options);
+    return request(options)
+      .then(result => {
+        this.log('soapRequest: response', result);
+        return result;
+      })
+      .catch(e => {
+        process.stdout.write(util.inspect(e));
+      });
   }
 
   protected async tokenPostRequest(
@@ -48,19 +49,16 @@ export class Service extends AcceptsCredentials {
       uri: `https://${this.credentials[credentialUrl]}/${path}`,
       headers: {
         'Content-Type': 'text/xml',
-        Authorization:
-          'Bearer ' + (this.jwt !== undefined ? this.jwt : await this.getJwt()),
+        Authorization: 'Bearer ' + (this.jwt ? this.jwt : await this.getJwt()),
       },
       json: false,
       body: this.stripEmptyLines(body),
     };
-    if (this.credentials.debug) {
-      console.log(options);
-    }
+
+    this.log('tokenPostRequest', options);
+
     return request(options).then(result => {
-      if (this.credentials.debug) {
-        console.log(result);
-      }
+      this.log('tokenPostRequest: response', result);
       return result;
     });
   }
@@ -79,13 +77,9 @@ export class Service extends AcceptsCredentials {
       json: false,
       body: this.stripEmptyLines(body),
     };
-    if (this.credentials.debug) {
-      console.log(options);
-    }
+    this.log('postRequest', options);
     return request(options).then(result => {
-      if (this.credentials.debug) {
-        console.log(result);
-      }
+      this.log('postRequest: response', result);
       return result;
     });
   }
