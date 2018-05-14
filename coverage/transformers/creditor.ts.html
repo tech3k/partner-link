@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">15.38% </span>
+        <span class="strong">34.62% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>4/26</span>
+        <span class='fraction'>9/26</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">54.55% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/20</span>
+        <span class='fraction'>12/22</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">60% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/5</span>
+        <span class='fraction'>3/5</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">15.38% </span>
+        <span class="strong">34.62% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>4/26</span>
+        <span class='fraction'>9/26</span>
       </div>
     </div>
     <p class="quiet">
@@ -138,38 +138,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -202,39 +202,39 @@ export class CreditorTransformer extends Transformer implements ObjectToXmlTrans
 <span class="cstat-no" title="statement not covered" >        return creditor;</span>
     }
 &nbsp;
-    public <span class="fstat-no" title="function not covered" >item</span>(object: Creditor) {
-<span class="cstat-no" title="statement not covered" >        return {</span>
-            AccountReference: object.reference ? object.reference : null,
-            Applicant: object.applicant ? object.applicant : 1,
+    public item(object: Creditor) {
+        return {
+            AccountReference: object.reference ? <span class="branch-0 cbranch-no" title="branch not covered" >object.reference </span>: null,
+            Applicant: object.applicant ? <span class="branch-0 cbranch-no" title="branch not covered" >object.applicant </span>: 1,
             CreditStatus: object.latestStatus,
-            CreditorSource: object.creditCheck ? 'Credit Check' : 'Provided By Client',
+            CreditorSource: object.creditCheck ? <span class="branch-0 cbranch-no" title="branch not covered" >'Credit Check' </span>: 'Provided By Client',
             CurrentBalance: object.currentBalance / 100,
-            DebtOwner: object.jointAccount ? 'joint' : 'single',
+            DebtOwner: object.jointAccount ? <span class="branch-0 cbranch-no" title="branch not covered" >'joint' </span>: 'single',
             DelinquentBalance: object.delinquentBalance / 100,
             ExternalCreditCheck: object.creditCheck,
-            Name: object.name.toUpperCase(),
+            Name: (object.name || '').toUpperCase(),
             StartBalance: object.startBalance / 100,
-            StartDate: object.creditStartDate ? object.creditStartDate.format('YYYY-MM-DD') : null,
+            StartDate: object.creditStartDate ? <span class="branch-0 cbranch-no" title="branch not covered" >object.creditStartDate.format('YYYY-MM-DD') </span>: null,
             TotalBalance: object.creditAmount / 100,
-            Type: object.creditorType === 'Retailer' ? 'Home Lending' : object.creditorType, // hax
-            UpdateDate: object.creditUpdateDate ? object.creditUpdateDate.format('YYYY-MM-DD') : null,
+            Type: object.creditorType === 'Retailer' ? <span class="branch-0 cbranch-no" title="branch not covered" >'Home Lending' </span>: object.creditorType, // hax
+            UpdateDate: object.creditUpdateDate ? <span class="branch-0 cbranch-no" title="branch not covered" >object.creditUpdateDate.format('YYYY-MM-DD') </span>: null,
         };
     }
 &nbsp;
-    public <span class="fstat-no" title="function not covered" >items</span>(object: Creditor[]) {
-<span class="cstat-no" title="statement not covered" >        if (!object || !object.length) {</span>
+    public items(object: Creditor[]) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!object || !object.length) {
 <span class="cstat-no" title="statement not covered" >            return {};</span>
         }
 &nbsp;
-        const creditors = <span class="cstat-no" title="statement not covered" >{</span>
+        const creditors = {
             AddCreditorsRequest: {
-                Creditors: {CreditorDetails: object.map(<span class="fstat-no" title="function not covered" >item</span> =&gt; <span class="cstat-no" title="statement not covered" >this.item(item))</span>},
+                Creditors: {CreditorDetails: object.map(item =&gt; this.item(item))},
                 Password: this.credentials.password,
                 Username: this.credentials.username,
             },
         };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return this.removeEmpties(creditors);</span>
+        return this.removeEmpties(creditors);
     }
 &nbsp;
     private <span class="fstat-no" title="function not covered" >convertStringToNumber</span>(value: string): number {
@@ -247,7 +247,7 @@ export class CreditorTransformer extends Transformer implements ObjectToXmlTrans
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu May 10 2018 19:28:32 GMT+0100 (BST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon May 14 2018 12:42:47 GMT+0100 (BST)
 </div>
 </div>
 <script src="../prettify.js"></script>

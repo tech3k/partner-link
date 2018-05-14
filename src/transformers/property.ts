@@ -18,7 +18,7 @@ export class PropertyTransformer implements ObjectToXmlTransformer {
       LastRemortgaged: object.lastRemortgaged.format('YYYY-MM-DD'),
       MonthsInProperty: object.monthsInProperty,
       MortgageOutstanding: object.mortgageOutstanding,
-      Owner: object.owner,  // Required
+      Owner: object.owner, // Required
       Ownership: object.ownership,
       Postcode: object.postalCode,
       PreviousAddress: object.previousAddress,
@@ -36,9 +36,7 @@ export class PropertyTransformer implements ObjectToXmlTransformer {
 
   public items(object: Property[]) {
     if (!object || !object.length) {
-      return {
-
-      };
+      return {};
     }
 
     return {

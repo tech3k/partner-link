@@ -8,7 +8,7 @@ export class NoteTransformer extends Transformer
       AddNotesRequest: {
         AssignmentID: object.id,
         Notes: {
-          NoteRequest: object.notes.map(item => {
+          NoteRequest: (object.notes || []).map(item => {
             return {
               ExportedToVB: item.export,
               Note: item.note,

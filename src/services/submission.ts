@@ -30,10 +30,10 @@ export class Submission extends Service {
     this.log('createFullCase', fullCase);
 
     return Promise.resolve(fullCase)
-      .then(fullCase =>
+      .then(caseObj =>
         this.postRequest(
           builder.buildObject(
-            new CaseTransformer(this.credentials).item(fullCase),
+            new CaseTransformer(this.credentials).item(caseObj),
           ),
           'url',
           'api/CreateFullCaseWithReturn',
@@ -164,8 +164,8 @@ export class Submission extends Service {
       .catch(e => {
         this.log('addDocuments', e);
         const err = new PartnerLinkError(
-          e.code ? `Unable to submit documents (${e.message}).` : e.message,
-          e.code ? 406 : e.code,
+          !e.code ? `Unable to submit documents (${e.message}).` : e.message,
+          !e.code ? 406 : e.code,
         );
         err.reference = caseInformation.reference;
         throw err;
@@ -177,6 +177,7 @@ export class Submission extends Service {
     document: Document,
   ): Promise<CaseResult> {
     this.log('addDocument', caseInformation, document);
+
     const builder = new xml2js.Builder(this.options);
     return Promise.resolve({ info: caseInformation, document })
       .then(({ info, document }) =>
@@ -196,10 +197,10 @@ export class Submission extends Service {
         this.log('addDocument', e);
 
         throw new PartnerLinkError(
-          e.code === undefined
+          !e.code
             ? `Unable to submit document ${document.fileName}.`
             : e.message,
-          e.code === undefined ? 406 : e.code,
+          !e.code ? 406 : e.code,
         );
       });
   }

@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">16.67% </span>
+        <span class="strong">33.33% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/6</span>
+        <span class='fraction'>2/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">45.45% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/44</span>
+        <span class='fraction'>20/44</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">33.33% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/3</span>
+        <span class='fraction'>1/3</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">16.67% </span>
+        <span class="strong">33.33% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/6</span>
+        <span class='fraction'>2/6</span>
       </div>
     </div>
     <p class="quiet">
@@ -111,7 +111,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -170,49 +170,49 @@
 import { ObjectToXmlTransformer } from './transformer';
 &nbsp;
 export class VehicleTransformer implements ObjectToXmlTransformer {
-  public <span class="fstat-no" title="function not covered" >item</span>(object: Vehicle) {
-<span class="cstat-no" title="statement not covered" >    return {</span>
+  public item(object: Vehicle) {
+    return {
       AdaptedForDisabledUse:
         object.adaptedFordisabledUse !== undefined
           ? object.adaptedFordisabledUse
-          : null,
+          : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
       AmountAdvanced: object.amountAdvanced
         ? object.amountAdvanced / 100
-        : null,
+        : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
       AmountOutstanding: object.amountOutstanding
         ? object.amountOutstanding / 100
-        : null,
-      Applicant: object.applicant ? object.applicant : 1,
+        : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
+      Applicant: object.applicant ? object.applicant : <span class="branch-1 cbranch-no" title="branch not covered" >1,</span>
       BalloonPayment:
-        object.balloonPayment !== undefined ? object.balloonPayment : null,
+        object.balloonPayment !== undefined ? object.balloonPayment : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
       DateOfAdvance: object.dateOfAdvance
         ? object.dateOfAdvance.format('YYYY-MM-DD')
-        : null,
+        : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
       DateOfRegistration: object.dateOfRegistration
         ? object.dateOfRegistration.format('YYYY-MM-DD')
-        : null,
+        : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
       DefaultedOnTheLoan:
-        object.defaulted !== undefined ? object.defaulted : null,
-      EndDate: object.endDate ? object.endDate.format('YYYY-MM-DD') : null,
+        object.defaulted !== undefined ? object.defaulted : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
+      EndDate: object.endDate ? object.endDate.format('YYYY-MM-DD') : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
       FinanceOutstanding:
         object.financeOustanding !== undefined
           ? object.financeOustanding
-          : null,
-      FinanceType: object.financeType ? object.financeType : null,
-      LoanReferenceNo: object.reference ? object.reference : null,
+          : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
+      FinanceType: object.financeType ? object.financeType : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
+      LoanReferenceNo: object.reference ? object.reference : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
       Make: object.make,
       Model: object.model,
-      MonthlyCost: object.monthlyCost ? object.monthlyCost / 100 : null,
+      MonthlyCost: object.monthlyCost ? object.monthlyCost / 100 : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
       RegistrationNo: object.registrationNumber
         ? object.registrationNumber
-        : null,
-      TermInMonths: object.termInMonths ? object.termInMonths : null,
-      VehicleAge: object.age ? object.age : null,
-      VehicleMileage: object.mileage ? object.mileage : null,
+        : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
+      TermInMonths: object.termInMonths ? object.termInMonths : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
+      VehicleAge: object.age ? object.age : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
+      VehicleMileage: object.mileage ? object.mileage : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
       VehicleNecessary:
-        object.necessary !== undefined ? object.necessary : null,
-      VehicleUse: object.useType ? object.useType : 'Personal',
-      VehicleValue: object.value ? object.value / 100 : null,
+        object.necessary !== undefined ? object.necessary : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
+      VehicleUse: object.useType ? object.useType : <span class="branch-1 cbranch-no" title="branch not covered" >'Personal',</span>
+      VehicleValue: object.value ? object.value / 100 : <span class="branch-1 cbranch-no" title="branch not covered" >null,</span>
     };
   }
 &nbsp;
@@ -232,7 +232,7 @@ export class VehicleTransformer implements ObjectToXmlTransformer {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu May 10 2018 15:33:58 GMT+0100 (BST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon May 14 2018 12:42:47 GMT+0100 (BST)
 </div>
 </div>
 <script src="../prettify.js"></script>
