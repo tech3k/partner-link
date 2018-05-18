@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.11"></a>
+## [1.4.11](https://github.com/DebtPanel/partner-link/compare/v1.4.10...v1.4.11) (2018-05-18)
+
+
+
 <a name="1.4.10"></a>
 ## [1.4.10](https://github.com/DebtPanel/partner-link/compare/v1.4.9...v1.4.10) (2018-05-08)
 
