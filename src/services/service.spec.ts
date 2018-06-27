@@ -9,51 +9,40 @@ beforeEach(() => {
 });
 
 describe('Service', () => {
-  it('soapRequest should be successful', async () => {
-    request.mockImplementation(async () => {
-      return Promise.resolve('ok');
-    });
-
+  it('soapRequest should be successful', () => {
+    request.mockImplementation(() => Promise.resolve('ok'));
     expect(request).not.toBeCalled();
+
     const service = new Service({} as PartnerLinkCredentials);
-    expect(await service.soapRequest('???', 'google.com', '/', 'get')).toEqual(
-      'ok',
-    );
+    return expect(
+      service.soapRequest('???', 'google.com', '/', 'get'),
+    ).resolves.toEqual('ok');
   });
 
-  it('soapRequest should fail', async () => {
+  it('soapRequest should fail', () => {
     request
-      .mockImplementationOnce(async () => {
-        return Promise.resolve('ok');
-      })
-      .mockImplementation(async () => {
-        return Promise.reject(Error('Noo!'));
-      });
+      .mockImplementationOnce(() => Promise.resolve('ok'))
+      .mockImplementation(() => Promise.reject(Error('Noo!')));
 
     const service = new Service({} as PartnerLinkCredentials);
-    // should resolve because error has already been caught
-    expect(
-      await service.soapRequest('???', 'google.com', '/', 'get'),
-    ).toBeUndefined();
+    return expect(
+      service.soapRequest('???', 'google.com', '/', 'get'),
+    ).rejects.toThrowError('Noo!');
   });
 
   it('tokenPostRequest should be successful', async () => {
-    request.mockImplementation(async () => {
-      return Promise.resolve('ok');
-    });
+    request.mockImplementation(() => Promise.resolve('ok'));
 
     const service = new Service({} as PartnerLinkCredentials);
-    expect(await service.tokenPostRequest('', 'google.com', '/')).toBe('ok');
+    return expect(
+      service.tokenPostRequest('', 'google.com', '/'),
+    ).resolves.toBe('ok');
   });
 
-  it('tokenPostRequest should fail', async () => {
+  it('tokenPostRequest should fail', () => {
     request
-      .mockImplementationOnce(async () => {
-        return Promise.resolve('ok');
-      })
-      .mockImplementation(async () => {
-        return Promise.reject(Error('Ooh!'));
-      });
+      .mockImplementationOnce(async () => Promise.resolve('ok'))
+      .mockImplementation(async () => Promise.reject(Error('Ooh!')));
 
     const service = new Service({} as PartnerLinkCredentials);
     return expect(
@@ -61,13 +50,13 @@ describe('Service', () => {
     ).rejects.toThrowError('Ooh!');
   });
 
-  it('postRequest should be successful', async () => {
-    request.mockImplementation(async () => {
-      return Promise.resolve('ok');
-    });
+  it('postRequest should be successful', () => {
+    request.mockImplementation(async () => Promise.resolve('ok'));
 
     const service = new Service({} as PartnerLinkCredentials);
-    expect(await service.postRequest('', 'google.com', '/')).toBe('ok');
+    return expect(service.postRequest('', 'google.com', '/')).resolves.toBe(
+      'ok',
+    );
   });
 
   it('log should output', () => {

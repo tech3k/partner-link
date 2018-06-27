@@ -26,17 +26,25 @@ export class CreditSearch extends Service {
     address: CreditSearchAddress,
   ): Promise<CreditSearchAddressResult[]> {
     return Promise.resolve(address)
-      .then(raw => this.soapRequest(
-        new CreditSearchAddressTransformer(this.credentials).item(raw),
-        'creditSearchUrl',
-        'services/SearchHeavyInterface.asmx',
-        'http://searchlink.co.uk/SearchAddress',
-      ))
-      .then(async addressResult => new CreditSearchAddressResultTransformer(this.credentials).xmlItems(addressResult))
+      .then(raw =>
+        this.soapRequest(
+          new CreditSearchAddressTransformer(this.credentials).item(raw),
+          'creditSearchUrl',
+          'services/SearchHeavyInterface.asmx',
+          'http://searchlink.co.uk/SearchAddress',
+        ),
+      )
+      .then(async addressResult =>
+        new CreditSearchAddressResultTransformer(this.credentials).xmlItems(
+          addressResult,
+        ),
+      )
       .then(addressResult => {
         if (!addressResult.length) {
           throw new PartnerLinkError(
-            `Address ${address.houseNumber}, ${address.postalCode} was not found.`,
+            `Address ${address.houseNumber}, ${
+              address.postalCode
+            } was not found.`,
             406,
           );
         }

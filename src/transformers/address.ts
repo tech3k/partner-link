@@ -92,13 +92,16 @@ export class CreditSearchAddressResultTransformer extends Transformer
     return Promise.resolve(xml)
       .then(raw => this.parseXml(raw))
       .then(parsedResult => {
-        return parsedResult['soap:Envelope']['soap:Body'][0].SearchAddressResponse[0].SearchAddressResult;
+        return parsedResult['soap:Envelope']['soap:Body'][0]
+          .SearchAddressResponse[0].SearchAddressResult;
       })
       .then(singleResult => this.parseXml(singleResult))
       .then(parsedItem => {
         return Promise.all(
-          (parsedItem && parsedItem.hasOwnProperty('Address') ? parsedItem.Address.AddressMatch : [])
-            .map(this.xmlItem),
+          (parsedItem && parsedItem.hasOwnProperty('Address')
+            ? parsedItem.Address.AddressMatch
+            : []
+          ).map(this.xmlItem),
         );
       });
   }

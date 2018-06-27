@@ -29,14 +29,10 @@ export class Service extends AcceptsCredentials {
     };
 
     this.log('soapRequest', options);
-    return request(options)
-      .then(result => {
-        this.log('soapRequest: response', result);
-        return result;
-      })
-      .catch(e => {
-        process.stdout.write(util.inspect(e));
-      });
+    return request(options).then(result => {
+      this.log('soapRequest: response', result);
+      return result;
+    });
   }
 
   protected async tokenPostRequest(
