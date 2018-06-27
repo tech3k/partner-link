@@ -14,13 +14,6 @@ export class Transformer extends AcceptsCredentials {
     });
   }
 
-  // protected encodeValue(value: string): string {
-  //   return value.replace(
-  //     /[\u00A0-\u9999<>\&]/gim,
-  //     r => `&#${r.charCodeAt(0)};`,
-  //   );
-  // }
-
   protected removeEmpties(object) {
     Object.keys(object).forEach((key, index) => {
       if (object[key] instanceof Object) {

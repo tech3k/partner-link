@@ -26,37 +26,22 @@ export class CreditSearch extends Service {
     address: CreditSearchAddress,
   ): Promise<CreditSearchAddressResult[]> {
     return Promise.resolve(address)
-      .then(raw =>
-        this.soapRequest(
-          new CreditSearchAddressTransformer(this.credentials).item(raw),
-          'creditSearchUrl',
-          'services/SearchHeavyInterface.asmx',
-          'http://searchlink.co.uk/SearchAddress',
-        ),
-      )
-      .then(async addressResult => {
-        return new CreditSearchAddressResultTransformer(
-          this.credentials,
-        ).xmlItems(addressResult);
-      })
+      .then(raw => this.soapRequest(
+        new CreditSearchAddressTransformer(this.credentials).item(raw),
+        'creditSearchUrl',
+        'services/SearchHeavyInterface.asmx',
+        'http://searchlink.co.uk/SearchAddress',
+      ))
+      .then(async addressResult => new CreditSearchAddressResultTransformer(this.credentials).xmlItems(addressResult))
       .then(addressResult => {
-        if (addressResult.length === 0) {
+        if (!addressResult.length) {
           throw new PartnerLinkError(
-            `Address ${address.houseNumber}, ${
-              address.postalCode
-            } was not found.`,
+            `Address ${address.houseNumber}, ${address.postalCode} was not found.`,
             406,
           );
         }
 
         return addressResult;
-      })
-      .catch(e => {
-        this.log('checkAddress', e);
-        throw new PartnerLinkError(
-          !e.message ? `Unable to search for address.` : e.message,
-          !e.code ? 500 : e.code,
-        );
       });
   }
 
@@ -71,24 +56,17 @@ export class CreditSearch extends Service {
     addresses: CreditSearchAddress[],
   ): Promise<CreditSearchAddressResult[][]> {
     return Promise.resolve(addresses)
-      .then(addresses => {
-        if (addresses.length > 3) {
+      .then(items => {
+        if (items.length > 3) {
           throw new PartnerLinkError(
             'No more than 3 addresses can be credit searched.',
             406,
           );
         }
-        return addresses;
+        return items;
       })
-      .then(addresses =>
-        Promise.all(addresses.map(address => this.checkAddress(address))),
-      )
-      .catch(e => {
-        this.log('checkMultipleAddresses', e);
-        throw new PartnerLinkError(
-          !e.code ? `At least one requested address was not found.` : e.message,
-          !e.code ? 406 : e.code,
-        );
+      .then(items => {
+        return Promise.all(items.map(address => this.checkAddress(address)));
       });
   }
 

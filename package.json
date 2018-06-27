@@ -19,25 +19,25 @@
     "release": "standard-version && git push --follow-tags origin master && npm publish"
   },
   "dependencies": {
-    "moment": "^2.22.1",
-    "request": "^2.85.0",
+    "moment": "^2.22.2",
+    "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
-    "@types/jest": "^22.2.3",
-    "@types/node": "^9.6.15",
-    "@types/request": "^2.47.0",
-    "@types/request-promise-native": "^1.0.14",
-    "@types/xml2js": "^0.4.2",
-    "jest": "^22.4.3",
-    "prettier": "^1.12.1",
+    "@types/jest": "^23.1.2",
+    "@types/node": "^10.3.6",
+    "@types/request": "^2.47.1",
+    "@types/request-promise-native": "^1.0.15",
+    "@types/xml2js": "^0.4.3",
+    "jest": "^23.1.2",
+    "prettier": "^1.13.6",
     "rimraf": "^2.6.2",
     "standard-version": "4.3.0",
     "ts-jest": "^22.4.6",
-    "ts-node": "^6.0.3",
+    "ts-node": "^7.0.0",
     "tslint": "^5.10.0",
-    "typescript": "^2.8.3"
+    "typescript": "^2.9.2"
   },
   "jest": {
     "moduleFileExtensions": [
