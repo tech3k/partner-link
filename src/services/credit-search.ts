@@ -34,11 +34,11 @@ export class CreditSearch extends Service {
           'http://searchlink.co.uk/SearchAddress',
         ),
       )
-      .then(async addressResult =>
-        new CreditSearchAddressResultTransformer(this.credentials).xmlItems(
-          addressResult,
-        ),
-      )
+      .then(addressResult => {
+        return new CreditSearchAddressResultTransformer(
+          this.credentials,
+        ).xmlItems(addressResult);
+      })
       .then(addressResult => {
         if (!addressResult.length) {
           throw new PartnerLinkError(

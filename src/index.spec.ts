@@ -5,7 +5,7 @@ import { CreditSearch, Submission } from './services';
 beforeEach(() => {
   jest
     .spyOn(Service.prototype, 'getJwt')
-    .mockImplementation(async () => await 'token');
+    .mockImplementation(() => Promise.resolve('token'));
 });
 
 describe('Partner Link Class', () => {

@@ -30,7 +30,7 @@ describe('Service', () => {
     ).rejects.toThrowError('Noo!');
   });
 
-  it('tokenPostRequest should be successful', async () => {
+  it('tokenPostRequest should be successful', () => {
     request.mockImplementation(() => Promise.resolve('ok'));
 
     const service = new Service({} as PartnerLinkCredentials);
@@ -41,8 +41,8 @@ describe('Service', () => {
 
   it('tokenPostRequest should fail', () => {
     request
-      .mockImplementationOnce(async () => Promise.resolve('ok'))
-      .mockImplementation(async () => Promise.reject(Error('Ooh!')));
+      .mockImplementationOnce(() => Promise.resolve('ok'))
+      .mockImplementation(() => Promise.reject(Error('Ooh!')));
 
     const service = new Service({} as PartnerLinkCredentials);
     return expect(
@@ -51,7 +51,7 @@ describe('Service', () => {
   });
 
   it('postRequest should be successful', () => {
-    request.mockImplementation(async () => Promise.resolve('ok'));
+    request.mockImplementation(() => Promise.resolve('ok'));
 
     const service = new Service({} as PartnerLinkCredentials);
     return expect(service.postRequest('', 'google.com', '/')).resolves.toBe(
