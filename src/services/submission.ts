@@ -60,14 +60,16 @@ export class Submission extends Service {
     const builder = new xml2js.Builder(this.options);
     return Promise.resolve({ info: caseInformation, addresses })
       .then(({ info, addresses }) => {
-        this.postRequest(
+        return this.postRequest(
           builder.buildObject(
             new AddAddressTransformer(this.credentials).items(addresses),
           ),
           'url',
           'api/AddAddresses/' + info.id,
-        );
-        return info;
+        ).then(resp => {
+          this.log('addAddresses: response', resp);
+          return info;
+        });
       })
       .catch(e => {
         this.log('addAddresses', e);

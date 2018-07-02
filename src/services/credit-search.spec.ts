@@ -13,7 +13,7 @@ import * as moment from 'moment';
 beforeEach(() => {
   jest
     .spyOn(CreditSearch.prototype, 'getJwt')
-    .mockImplementation(async () => await 'auth-token');
+    .mockImplementation(() => Promise.resolve('auth-token'));
 });
 
 describe('CreditSearch: checkAddress', () => {
@@ -27,10 +27,9 @@ describe('CreditSearch: checkAddress', () => {
     expect(build).toThrow(PartnerLinkError);
   });
 
-  it('should return credit search adress results', async () => {
-    jest.spyOn(CreditSearch.prototype, 'soapRequest').mockImplementation(
-      async () =>
-        await `<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+  it('should return credit search adress results', () => {
+    jest.spyOn(CreditSearch.prototype, 'soapRequest').mockImplementation(() => {
+      return Promise.resolve(`<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope/" soap:encodingStyle="http://www.w3.org/2003/05/soap-encoding">
     <soap:Body>
         <SearchAddressResponse>
@@ -40,8 +39,8 @@ describe('CreditSearch: checkAddress', () => {
             </SearchAddressResult>
         </SearchAddressResponse>
     </soap:Body>
-</soap:Envelope>`,
-    );
+</soap:Envelope>`);
+    });
 
     const data = {
       houseNumber: '12',
@@ -52,8 +51,7 @@ describe('CreditSearch: checkAddress', () => {
     } as CreditSearchAddress;
 
     const service = new CreditSearch({} as PartnerLinkCredentials);
-
-    expect(await service.checkAddress(data)).toEqual([
+    return expect(service.checkAddress(data)).resolves.toEqual([
       {
         id: '58150008380',
         address1: '12',
@@ -66,17 +64,16 @@ describe('CreditSearch: checkAddress', () => {
   });
 
   it('should throw exception, address was not found', () => {
-    jest.spyOn(CreditSearch.prototype, 'soapRequest').mockImplementation(
-      async () =>
-        await `<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+    jest.spyOn(CreditSearch.prototype, 'soapRequest').mockImplementation(() => {
+      return Promise.resolve(`<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope/" soap:encodingStyle="http://www.w3.org/2003/05/soap-encoding">
     <soap:Body>
         <SearchAddressResponse>
-            <SearchAddressResult>&lt;Address/&gt;</SearchAddressResult>
+            <SearchAddressResult></SearchAddressResult>
         </SearchAddressResponse>
     </soap:Body>
-</soap:Envelope>`,
-    );
+</soap:Envelope>`);
+    });
 
     const data = {
       houseNumber: '12',
@@ -111,10 +108,9 @@ describe('CreditSearch: checkMultipleAddresses', () => {
     );
   });
 
-  it('should return multiple addresses with success', async () => {
-    jest.spyOn(CreditSearch.prototype, 'soapRequest').mockImplementation(
-      async () =>
-        await `<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+  it('should return multiple addresses with success', () => {
+    jest.spyOn(CreditSearch.prototype, 'soapRequest').mockImplementation(() => {
+      return Promise.resolve(`<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope/" soap:encodingStyle="http://www.w3.org/2003/05/soap-encoding">
     <soap:Body>
         <SearchAddressResponse>
@@ -124,8 +120,8 @@ describe('CreditSearch: checkMultipleAddresses', () => {
             </SearchAddressResult>
         </SearchAddressResponse>
     </soap:Body>
-</soap:Envelope>`,
-    );
+</soap:Envelope>`);
+    });
     const service = new CreditSearch({} as PartnerLinkCredentials);
     const data: CreditSearchAddress[] = [
       {
@@ -144,7 +140,7 @@ describe('CreditSearch: checkMultipleAddresses', () => {
       } as CreditSearchAddress,
     ];
 
-    expect(await service.checkMultipleAddresses(data)).toEqual([
+    expect(service.checkMultipleAddresses(data)).resolves.toEqual([
       [
         {
           id: '58150008380',
@@ -170,11 +166,11 @@ describe('CreditSearch: checkMultipleAddresses', () => {
 });
 
 describe('CreditSearch: performCreditCheck', () => {
-  it('should perform credit check', async () => {
+  it('should perform credit check', () => {
     jest
       .spyOn(CreditSearch.prototype, 'soapRequest')
-      .mockImplementationOnce(async () => {
-        return await `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      .mockImplementationOnce(() => {
+        return Promise.resolve(`<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
     <GetLightSearchAccountDataWithCreditSearchIDResponse xmlns="http://searchlink.co.uk/">
         <GetLightSearchAccountDataWithCreditSearchIDResult>&lt;Account ID="451912"
@@ -192,16 +188,16 @@ describe('CreditSearch: performCreditCheck', () => {
         <creditSearchID>451912</creditSearchID>
     </GetLightSearchAccountDataWithCreditSearchIDResponse>
 </soap:Body>
-</soap:Envelope>`;
+</soap:Envelope>`);
       })
-      .mockImplementation(async () => {
-        return await `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      .mockImplementation(() => {
+        return Promise.resolve(`<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
     <GetLightSearchCreditReportHTMLResponse xmlns="http://searchlink.co.uk/">
         <GetLightSearchCreditReportHTMLResult>YQ==</GetLightSearchCreditReportHTMLResult>
     </GetLightSearchCreditReportHTMLResponse>
 </soap:Body>
-</soap:Envelope>`;
+</soap:Envelope>`);
       });
     const data = {
       clientReference: 'ref-00001',
@@ -251,16 +247,16 @@ describe('CreditSearch: performCreditCheck', () => {
     }
 
     const service = new CreditSearch({} as PartnerLinkCredentials);
-    const result = await service.performCreditCheck(data);
-
-    expect(result).toEqual(buildExpected());
+    return expect(service.performCreditCheck(data)).resolves.toEqual(
+      buildExpected(),
+    );
   });
 
-  it('should return zero creditors', async () => {
+  it('should return zero creditors', () => {
     jest
       .spyOn(CreditSearch.prototype, 'soapRequest')
-      .mockImplementationOnce(async () => {
-        return await `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      .mockImplementationOnce(() => {
+        return Promise.resolve(`<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
     <GetLightSearchAccountDataWithCreditSearchIDResponse xmlns="http://searchlink.co.uk/">
         <GetLightSearchAccountDataWithCreditSearchIDResult>&lt;Account ID="451912"
@@ -270,16 +266,16 @@ describe('CreditSearch: performCreditCheck', () => {
         <creditSearchID>451912</creditSearchID>
     </GetLightSearchAccountDataWithCreditSearchIDResponse>
 </soap:Body>
-</soap:Envelope>`;
+</soap:Envelope>`);
       })
-      .mockImplementation(async () => {
-        return await `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      .mockImplementation(() => {
+        return Promise.resolve(`<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
     <GetLightSearchCreditReportHTMLResponse xmlns="http://searchlink.co.uk/">
         <GetLightSearchCreditReportHTMLResult></GetLightSearchCreditReportHTMLResult>
     </GetLightSearchCreditReportHTMLResponse>
 </soap:Body>
-</soap:Envelope>`;
+</soap:Envelope>`);
       });
     const data = {
       clientReference: 'ref-00001',
@@ -295,15 +291,13 @@ describe('CreditSearch: performCreditCheck', () => {
     resp.id = 451912;
     resp.creditors = [];
     resp.report = '';
-    expect(await service.performCreditCheck(data)).toEqual(resp);
+    return expect(service.performCreditCheck(data)).resolves.toEqual(resp);
   });
 
-  it('should throw error', async () => {
+  it('should throw error', () => {
     jest
       .spyOn(CreditSearch.prototype, 'soapRequest')
-      .mockImplementation(async () => {
-        throw new Error('Whoops');
-      });
+      .mockImplementation(() => Promise.reject(Error('Whoops')));
 
     const service = new CreditSearch({} as PartnerLinkCredentials);
 

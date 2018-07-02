@@ -246,7 +246,7 @@ describe('AddAddressTransformer', () => {
 });
 
 describe('CreditSearchAddressResultTransformer', () => {
-  it('should transform credit search address result', async () => {
+  it('should transform credit search address result', () => {
     const data = {
       $: {
         ptcabs: '58150008380',
@@ -259,8 +259,8 @@ describe('CreditSearchAddressResultTransformer', () => {
     };
 
     expect(
-      await new CreditSearchAddressResultTransformer({}).xmlItem(data),
-    ).toEqual({
+      new CreditSearchAddressResultTransformer({}).xmlItem(data),
+    ).resolves.toEqual({
       id: '58150008380',
       address1: '12',
       address2: 'High St',
