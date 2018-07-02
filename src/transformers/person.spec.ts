@@ -84,8 +84,8 @@ describe('CreditSearchPersonTransformer', () => {
   });
 });
 
-describe('CreditSearchPersonResultTransformer', async () => {
-  expect(
-    await new CreditSearchPersonResultTransformer({}).xmlItems(''),
-  ).toEqual([]);
+describe('CreditSearchPersonResultTransformer', () => {
+  return expect(
+    new CreditSearchPersonResultTransformer({}).xmlItems(''),
+  ).resolves.toEqual([]);
 });

@@ -20,19 +20,17 @@ import * as moment from 'moment';
 beforeEach(() => {
   jest
     .spyOn(Submission.prototype, 'getJwt')
-    .mockImplementation(async () => await 'token');
+    .mockImplementation(() => Promise.resolve('token'));
 });
 
 describe('Submission: createFullCase', () => {
-  it('should create a full case', async () => {
-    jest
-      .spyOn(Submission.prototype, 'postRequest')
-      .mockImplementation(async () => {
-        return await `<CreatedAssignment xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/PartnerLinkCaseAPI.Models">
+  it('should create a full case', () => {
+    jest.spyOn(Submission.prototype, 'postRequest').mockImplementation(() => {
+      return Promise.resolve(`<CreatedAssignment xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/PartnerLinkCaseAPI.Models">
 	<AssignmentID>32059</AssignmentID>
 	<CaseReference>TESTCRFIX1-300</CaseReference>
-</CreatedAssignment>`;
-      });
+</CreatedAssignment>`);
+    });
 
     const service = new Submission({} as PartnerLinkCredentials);
     const data = {
@@ -133,47 +131,45 @@ describe('Submission: createFullCase', () => {
         } as Vehicle,
       ],
     } as Case;
-    expect(await service.createFullCase(data)).toEqual({
+    return expect(service.createFullCase(data)).resolves.toEqual({
       id: '32059',
       reference: 'TESTCRFIX1-300',
     } as CaseResult);
   });
 
-  it('should throw error', async () => {
-    jest
-      .spyOn(Submission.prototype, 'postRequest')
-      .mockImplementation(async () => {
-        return await `<CreatedAssignment xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/PartnerLinkCaseAPI.Models">
+  it('should throw error', () => {
+    jest.spyOn(Submission.prototype, 'postRequest').mockImplementation(() => {
+      return Promise.resolve(`<CreatedAssignment xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/PartnerLinkCaseAPI.Models">
 	<AssignmentID>32059</AssignmentID>
 	<CaseReference>TESTCRFIX1-300</CaseReference>
-</CreatedAssignment>`;
-      });
+</CreatedAssignment>`);
+    });
 
     const service = new Submission({} as PartnerLinkCredentials);
-    expect(service.createFullCase({} as Case)).rejects.toThrowError(
+    return expect(service.createFullCase({} as Case)).rejects.toThrowError(
       PartnerLinkError,
     );
   });
 });
 
 describe('Submission: addAddresses', () => {
-  it('add address should be successful', async () => {
+  it('add address should be successful', () => {
     jest
       .spyOn(Submission.prototype, 'postRequest')
-      .mockImplementation(async () => await '');
+      .mockImplementation(() => Promise.resolve(''));
 
-    expect(
-      await new Submission({} as PartnerLinkCredentials).addAddresses(
+    return expect(
+      new Submission({} as PartnerLinkCredentials).addAddresses(
         {} as CaseResult,
         [] as CreditSearchAddressResult[],
       ),
-    ).toEqual({} as CaseResult);
+    ).resolves.toEqual({} as CaseResult);
   });
 
   it('add address should throw error', () => {
-    jest.spyOn(Submission.prototype, 'postRequest').mockImplementation(() => {
-      throw new Error('Whoops');
-    });
+    jest
+      .spyOn(Submission.prototype, 'postRequest')
+      .mockImplementation(() => Promise.reject(Error('Whoops')));
 
     const cred = {} as PartnerLinkCredentials;
     return expect(
@@ -189,22 +185,22 @@ describe('Submission: addNotes', () => {
   it('should resolve request', () => {
     jest
       .spyOn(Submission.prototype, 'postRequest')
-      .mockImplementation(async () => await '');
+      .mockImplementation(() => Promise.resolve(''));
 
-    const cred = {} as PartnerLinkCredentials;
+    const submission = new Submission({} as PartnerLinkCredentials);
     return expect(
-      new Submission(cred).addNotes({} as CaseResult, {} as NoteRequest),
+      submission.addNotes({} as CaseResult, {} as NoteRequest),
     ).resolves.toEqual({});
   });
 
   it('should reject request', () => {
-    jest.spyOn(Submission.prototype, 'postRequest').mockImplementation(() => {
-      throw new Error('Hello');
-    });
+    jest
+      .spyOn(Submission.prototype, 'postRequest')
+      .mockImplementation(() => Promise.reject(Error('Hello')));
 
-    const cred = {} as PartnerLinkCredentials;
+    const submission = new Submission({} as PartnerLinkCredentials);
     return expect(
-      new Submission(cred).addNotes({} as CaseResult, {} as NoteRequest),
+      submission.addNotes({} as CaseResult, {} as NoteRequest),
     ).rejects.toThrowError('Unable to submit notes (Hello).');
   });
 });
@@ -213,11 +209,11 @@ describe('Submission: addCreditor', () => {
   it('should resolve request', () => {
     jest
       .spyOn(Submission.prototype, 'postRequest')
-      .mockImplementation(async () => await '');
+      .mockImplementation(() => Promise.resolve(''));
 
-    const cred = {} as PartnerLinkCredentials;
+    const submission = new Submission({} as PartnerLinkCredentials);
     return expect(
-      new Submission(cred).addCreditor(
+      submission.addCreditor(
         { id: '0001', reference: 'ref' } as CaseResult,
         {} as Creditor,
       ),
@@ -227,13 +223,11 @@ describe('Submission: addCreditor', () => {
   it('should resolve reject request', () => {
     jest
       .spyOn(Submission.prototype, 'postRequest')
-      .mockImplementation(async () => {
-        throw new Error('420');
-      });
+      .mockImplementation(() => Promise.reject(Error('420')));
 
-    const cred = {} as PartnerLinkCredentials;
+    const submission = new Submission({} as PartnerLinkCredentials);
     return expect(
-      new Submission(cred).addCreditor({} as CaseResult, {} as Creditor),
+      submission.addCreditor({} as CaseResult, {} as Creditor),
     ).rejects.toThrowError('Unable to submit creditors (420).');
   });
 });
@@ -242,24 +236,22 @@ describe('Submission: addDocuments', () => {
   it('should resolve successfully', () => {
     jest
       .spyOn(Submission.prototype, 'tokenPostRequest')
-      .mockImplementation(async () => await '');
+      .mockImplementation(() => Promise.resolve(''));
 
-    const cred = {} as PartnerLinkCredentials;
+    const submission = new Submission({} as PartnerLinkCredentials);
     return expect(
-      new Submission(cred).addDocuments({} as CaseResult, [] as Document[]),
+      submission.addDocuments({} as CaseResult, [] as Document[]),
     ).resolves.toEqual({} as CaseResult);
   });
 
   it('should reject promise', () => {
     jest
       .spyOn(Submission.prototype, 'addDocument')
-      .mockImplementationOnce(async () => {
-        throw new Error('yolo');
-      });
+      .mockImplementationOnce(() => Promise.reject(Error('yolo')));
 
-    const cred = {} as PartnerLinkCredentials;
+    const submission = new Submission({} as PartnerLinkCredentials);
     return expect(
-      new Submission(cred).addDocuments({} as CaseResult, [{}] as Document[]),
+      submission.addDocuments({} as CaseResult, [{}] as Document[]),
     ).rejects.toThrowError('Unable to submit documents (yolo).');
   });
 });
@@ -268,26 +260,22 @@ describe('Submission: addDocument', () => {
   it('should resolve successfully', () => {
     jest
       .spyOn(Submission.prototype, 'tokenPostRequest')
-      .mockImplementation(async () => {
-        return await '';
-      });
+      .mockImplementation(() => Promise.resolve(''));
 
-    const cred = {} as PartnerLinkCredentials;
+    const submission = new Submission({} as PartnerLinkCredentials);
     return expect(
-      new Submission(cred).addDocument({} as CaseResult, {} as Document),
+      submission.addDocument({} as CaseResult, {} as Document),
     ).resolves.toEqual({});
   });
 
   it('should reject promise', () => {
     jest
       .spyOn(Submission.prototype, 'tokenPostRequest')
-      .mockImplementation(async () => {
-        throw new Error('ha');
-      });
+      .mockImplementation(() => Promise.reject(Error('ha')));
 
-    const cred = {} as PartnerLinkCredentials;
+    const submission = new Submission({} as PartnerLinkCredentials);
     return expect(
-      new Submission(cred).addDocument(
+      submission.addDocument(
         {} as CaseResult,
         { fileName: 'secret.txt' } as Document,
       ),

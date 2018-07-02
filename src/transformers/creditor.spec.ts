@@ -91,7 +91,7 @@ describe('CreditorTransformer', () => {
     });
   });
 
-  it('should parse an already converted xml item', async () => {
+  it('should parse an already converted xml item', () => {
     const data = {
       CreditorName: '4 U PHONES LTD',
       CreditorType: 'Communications Supplier',
