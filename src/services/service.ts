@@ -1,7 +1,7 @@
+import * as xml2js from 'xml2js';
 import * as request from 'request-promise-native';
 import { AcceptsCredentials } from './credentials';
-import { PartnerLinkCredentials } from '../types';
-import * as util from 'util';
+import { PartnerLinkCredentials, PartnerLinkError } from '../types';
 
 export class Service extends AcceptsCredentials {
   private jwt: string = undefined;
@@ -22,7 +22,7 @@ export class Service extends AcceptsCredentials {
       uri: `https://${this.credentials[credentialUrl]}/${path}`,
       headers: {
         'Content-Type': 'text/xml; charset=utf-8',
-        SOAPAction: action,
+        'SOAPAction': action,
       },
       json: false,
       body: this.stripEmptyLines(body),
@@ -45,7 +45,7 @@ export class Service extends AcceptsCredentials {
       uri: `https://${this.credentials[credentialUrl]}/${path}`,
       headers: {
         'Content-Type': 'text/xml',
-        Authorization: 'Bearer ' + (this.jwt ? this.jwt : await this.getJwt()),
+        'Authorization': 'Bearer ' + (this.jwt ? this.jwt : await this.getJwt()),
       },
       json: false,
       body: this.stripEmptyLines(body),
@@ -97,9 +97,21 @@ export class Service extends AcceptsCredentials {
         password: this.credentials.password,
       },
     };
-    return request(options).then(result => {
-      this.jwt = result.access_token;
-      return this.jwt;
+    return request(options)
+      .then(result => {
+        this.jwt = result.access_token;
+        return this.jwt;
+      });
+  }
+
+  protected parseXml(xml: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      xml2js.parseString(xml, (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(result);
+      });
     });
   }
 

@@ -29,6 +29,12 @@ export class CreditorTransformer extends Transformer
   }
 
   public item(object: Creditor) {
+    // transform credit type from Equifax to Partner-Link
+    const trans = {
+      'Retailer': 'Home Lending',
+      'Basic Bank Account': 'Current Account',
+    };
+
     return {
       AccountReference: object.reference ? object.reference : null,
       Applicant: object.applicant ? object.applicant : 1,
@@ -46,10 +52,7 @@ export class CreditorTransformer extends Transformer
         ? object.creditStartDate.format('YYYY-MM-DD')
         : null,
       TotalBalance: object.creditAmount / 100,
-      Type:
-        object.creditorType === 'Retailer'
-          ? 'Home Lending'
-          : object.creditorType, // hax
+      Type: trans[object.creditorType] ? trans[object.creditorType] : object.creditorType, // transformer hax
       UpdateDate: object.creditUpdateDate
         ? object.creditUpdateDate.format('YYYY-MM-DD')
         : null,

@@ -138,17 +138,11 @@ describe('Submission: createFullCase', () => {
   });
 
   it('should throw error', () => {
-    jest.spyOn(Submission.prototype, 'postRequest').mockImplementation(() => {
-      return Promise.resolve(`<CreatedAssignment xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/PartnerLinkCaseAPI.Models">
-	<AssignmentID>32059</AssignmentID>
-	<CaseReference>TESTCRFIX1-300</CaseReference>
-</CreatedAssignment>`);
-    });
+    jest.spyOn(Submission.prototype, 'postRequest')
+      .mockImplementation(() => Promise.reject(Error('Whoops'));
 
     const service = new Submission({} as PartnerLinkCredentials);
-    return expect(service.createFullCase({} as Case)).rejects.toThrowError(
-      PartnerLinkError,
-    );
+    return expect(service.createFullCase({} as Case)).rejects.toThrowError(PartnerLinkError);
   });
 });
 
@@ -220,15 +214,17 @@ describe('Submission: addCreditor', () => {
     ).resolves.toEqual({ id: '0001', reference: 'ref' } as CaseResult);
   });
 
-  it('should resolve reject request', () => {
+  it('should reject request', () => {
     jest
       .spyOn(Submission.prototype, 'postRequest')
-      .mockImplementation(() => Promise.reject(Error('420')));
+      .mockImplementation(() => {
+        return Promise.reject(Error(`<string>420</string>`));
+      });
 
     const submission = new Submission({} as PartnerLinkCredentials);
     return expect(
-      submission.addCreditor({} as CaseResult, {} as Creditor),
-    ).rejects.toThrowError('Unable to submit creditors (420).');
+      submission.addCreditor({} as CaseResult, {name: 'fake', currentBalance: 0} as Creditor),
+    ).rejects.toThrowError('Unable to submit creditor fake for 0.');
   });
 });
 
