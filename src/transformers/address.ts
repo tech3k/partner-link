@@ -1,13 +1,5 @@
-import {
-  CreditSearchAddress,
-  CreditSearchAddressResult,
-  PartnerLinkError,
-} from '../types';
-import {
-  ObjectToXmlTransformer,
-  Transformer,
-  XmlToObjectTransformer,
-} from './transformer';
+import { CreditSearchAddress, CreditSearchAddressResult, PartnerLinkError } from '../types';
+import { ObjectToXmlTransformer, Transformer, XmlToObjectTransformer } from './transformer';
 
 export class CreditSearchAddressTransformer extends Transformer
   implements ObjectToXmlTransformer {
@@ -99,8 +91,8 @@ export class CreditSearchAddressResultTransformer extends Transformer
       .then(parsedItem => {
         return Promise.all(
           (parsedItem && parsedItem.hasOwnProperty('Address')
-            ? parsedItem.Address.AddressMatch
-            : []
+              ? parsedItem.Address.AddressMatch
+              : []
           ).map(this.xmlItem),
         );
       });
@@ -122,6 +114,7 @@ export class AddAddressTransformer extends Transformer
       AddressLine1: object.address1,
       AddressLine2: object.address2,
       Applicant: 1,
+      City: object.town,
       Country: 'England',
       County: object.county,
       Notes: `Credit Check ${this.textFromNumber(index)} address`,

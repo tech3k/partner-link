@@ -3,12 +3,7 @@ import {
   CreditSearchAddressResultTransformer,
   CreditSearchAddressTransformer,
 } from './address';
-import {
-  CreditSearchAddress,
-  CreditSearchAddressResult,
-  PartnerLinkCredentials,
-  PartnerLinkError,
-} from '../types';
+import { CreditSearchAddress, CreditSearchAddressResult, PartnerLinkCredentials, PartnerLinkError } from '../types';
 
 describe('CreditSearchAddressTransformer', () => {
   it('should throw error house number is required', () => {
@@ -149,6 +144,7 @@ describe('AddAddressTransformer', () => {
     expect(new AddAddressTransformer({}).item(data, 0)).toEqual({
       AddressLine1: '12',
       AddressLine2: 'High St',
+      City: 'Westbury',
       Applicant: 1,
       Country: 'England',
       County: 'Lancashire',
@@ -203,6 +199,7 @@ describe('AddAddressTransformer', () => {
             {
               AddressLine1: '12',
               AddressLine2: 'High St',
+              City: 'Westbury',
               Applicant: 1,
               Country: 'England',
               County: 'Lancashire',
@@ -215,6 +212,7 @@ describe('AddAddressTransformer', () => {
             {
               AddressLine1: '12',
               AddressLine2: 'High St',
+              City: 'Westbury',
               Applicant: 1,
               Country: 'England',
               County: 'Lancashire',
@@ -227,6 +225,7 @@ describe('AddAddressTransformer', () => {
             {
               AddressLine1: '12',
               AddressLine2: 'High St',
+              City: 'Westbury',
               Applicant: 1,
               Country: 'England',
               County: 'Lancashire',
