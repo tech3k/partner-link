@@ -1,14 +1,16 @@
 import * as xml2js from 'xml2js';
 import * as request from 'request-promise-native';
 import { AcceptsCredentials } from './credentials';
-import { PartnerLinkCredentials, PartnerLinkError } from '../types';
+import { PartnerLinkCredentials } from '../types';
 
 export class Service extends AcceptsCredentials {
   private jwt: string = undefined;
 
   constructor(credentials: PartnerLinkCredentials) {
     super(credentials);
-    this.getJwt();
+    if (credentials.jwtRequired) {
+      this.getJwt();
+    }
   }
 
   protected soapRequest(
@@ -86,6 +88,17 @@ export class Service extends AcceptsCredentials {
     }
   }
 
+  protected parseXml(xml: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      xml2js.parseString(xml, (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(result);
+      });
+    });
+  }
+
   private getJwt(): Promise<string> {
     const options = {
       method: 'POST',
@@ -102,17 +115,6 @@ export class Service extends AcceptsCredentials {
         this.jwt = result.access_token;
         return this.jwt;
       });
-  }
-
-  protected parseXml(xml: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      xml2js.parseString(xml, (err, result) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(result);
-      });
-    });
   }
 
   private stripEmptyLines(data: string): string {

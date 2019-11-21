@@ -10,4 +10,5 @@ export class PartnerLinkCredentials {
   public creditSearchPassword: string;
   public creditSearchClient: string;
   public debug: boolean = false;
+  public jwtRequired: boolean = true;
 }
