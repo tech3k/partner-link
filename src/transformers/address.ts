@@ -36,15 +36,16 @@ export class CreditSearchAddressTransformer extends Transformer
         ? addressMatches[1]
         : object.houseNumber;
     const streetName =
-      addressMatches && addressMatches[2] ? addressMatches[2] : object.street;
+      addressMatches && addressMatches[2] ? addressMatches[2] : object.street2;
 
-    return `<?xml version="1.0" encoding="utf-8"?>
+    if (!addressMatches || !addressMatches[2]) {
+      return `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
   <SearchAddress xmlns="http://searchlink.co.uk/">
     <HouseNumber>${houseNumber}</HouseNumber>
     <PostCode>${object.postalCode}</PostCode>
-    <Street>${streetName}</Street>
+    <Street>${object.street}</Street>
     <Town>${object.town}</Town>
     <Surname>${object.surname}</Surname>
     <cred>
@@ -55,6 +56,27 @@ export class CreditSearchAddressTransformer extends Transformer
   </SearchAddress>
 </soap:Body>
 </soap:Envelope>`;
+    } else {
+      return `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+  <SearchAddress xmlns="http://searchlink.co.uk/">
+    <HouseNumber>${houseNumber}</HouseNumber>
+    <PostCode>${object.postalCode}</PostCode>
+    <Street>${streetName}</Street>
+    <Surname>${object.surname}</Surname>
+    <Town>${object.town}</Town>
+    <cred>
+      <Client>${this.credentials.creditSearchClient}</Client>
+      <UserName>${this.credentials.creditSearchUsername}</UserName>
+      <Password>${this.credentials.creditSearchPassword}</Password>
+    </cred>
+  </SearchAddress>
+</soap:Body>
+</soap:Envelope>`;
+    }
+
+
   }
 
   public items(object: any[]): string {
@@ -89,6 +111,10 @@ export class CreditSearchAddressResultTransformer extends Transformer
       })
       .then(singleResult => this.parseXml(singleResult))
       .then(parsedItem => {
+        console.log(parsedItem);
+        if (!parsedItem) {
+          throw new PartnerLinkError('Address could Not Be found in Equifax lookup.', 406);
+        }
         return Promise.all(
           (parsedItem && parsedItem.hasOwnProperty('Address')
               ? parsedItem.Address.AddressMatch
@@ -104,6 +130,9 @@ export class AddAddressTransformer extends Transformer
   public item(object: CreditSearchAddressResult, index: number) {
     if (!object.county) {
       throw new PartnerLinkError('County is missing from the address.', 406);
+    }
+    if (!object.town) {
+      throw new PartnerLinkError('Town is missing from the address.', 406);
     }
 
     // let addressMatches = object.address1.match(/((?:[F|f][l|L][a|A][t|T] )?[1-9]\d*[A-Za-z]?)[\s+|\S+]?([A-Za-z0-9 ]+)?/);

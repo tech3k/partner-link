@@ -27,7 +27,7 @@ export class Service extends AcceptsCredentials {
         'SOAPAction': action,
       },
       json: false,
-      body: this.stripEmptyLines(body),
+      body: this.stripEmptyLines(body).replace('\n', ''),
     };
 
     this.log('soapRequest', options);
@@ -118,6 +118,6 @@ export class Service extends AcceptsCredentials {
   }
 
   private stripEmptyLines(data: string): string {
-    return data.replace(/^\s*[\r\n]/gm, '');
+    return data.replace(/^\s*[\r\n]/gm, '').replace(/\\n/gm, '').replace(/\n/gm, '');
   }
 }

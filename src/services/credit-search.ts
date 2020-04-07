@@ -115,7 +115,7 @@ export class CreditSearch extends Service {
       .catch(e => {
         this.log('performCreditCheck', e);
         throw new PartnerLinkError(
-          !e.code ? 'Unable to preform credit search.' : e.message,
+          !e.code ? 'Unable to perform credit search.' : e.message,
           !e.code ? 500 : e.code,
         );
       });

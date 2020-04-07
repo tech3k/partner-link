@@ -2,6 +2,7 @@ export class CreditSearchAddress {
   public houseNumber: string;
   public postalCode: string;
   public street: string;
+  public street2?: string;
   public town: string;
   public surname: string;
 }

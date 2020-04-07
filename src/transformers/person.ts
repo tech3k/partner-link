@@ -1,14 +1,6 @@
-import {
-  CreditSearchPerson,
-  CreditSearchPersonResult,
-  PartnerLinkError,
-} from '../types';
+import { CreditSearchPerson, CreditSearchPersonResult, PartnerLinkError } from '../types';
 import { CreditorTransformer } from './creditor';
-import {
-  ObjectToXmlTransformer,
-  Transformer,
-  XmlToObjectTransformer,
-} from './transformer';
+import { ObjectToXmlTransformer, Transformer, XmlToObjectTransformer } from './transformer';
 
 export class CreditSearchPersonTransformer extends Transformer
   implements ObjectToXmlTransformer {
@@ -27,38 +19,20 @@ export class CreditSearchPersonTransformer extends Transformer
       <Surname>${object.lastName}</Surname>
       <DateOfBirth>${object.dateOfBirth.format('YYYY-MM-DD')}</DateOfBirth>
       <PTCAB1>${object.addresses[0] ? object.addresses[0].id : ''}</PTCAB1>
-      <HouseNumber1>${
-        object.addresses[0] ? object.addresses[0].address1 : ''
-      }</HouseNumber1>
-      <PostCode1>${
-        object.addresses[0] ? object.addresses[0].postalCode : ''
-      }</PostCode1>
+      <HouseNumber1>${object.addresses[0] ? object.addresses[0].address1 : ''}</HouseNumber1>
+      <PostCode1>${object.addresses[0] ? object.addresses[0].postalCode : ''}</PostCode1>
       <Town1>${object.addresses[0] ? object.addresses[0].town : ''}</Town1>
-      <StreetName1>${
-        object.addresses[0] ? object.addresses[0].address2 : ''
-      }</StreetName1>
+      <StreetName1>${object.addresses[0] ? object.addresses[0].address2 : ''}</StreetName1>
       <PTCAB2>${object.addresses[1] ? object.addresses[1].id : ''}</PTCAB2>
-      <HouseNumber2>${
-        object.addresses[1] ? object.addresses[1].address1 : ''
-      }</HouseNumber2>
-      <PostCode2>${
-        object.addresses[1] ? object.addresses[1].postalCode : ''
-      }</PostCode2>
+      <HouseNumber2>${object.addresses[1] ? object.addresses[1].address1 : ''}</HouseNumber2>
+      <PostCode2>${object.addresses[1] ? object.addresses[1].postalCode : ''}</PostCode2>
       <Town2>${object.addresses[1] ? object.addresses[1].town : ''}</Town2>
-      <StreetName2>${
-        object.addresses[1] ? object.addresses[1].address2 : ''
-      }</StreetName2>
+      <StreetName2>${object.addresses[1] ? object.addresses[1].address2 : ''}</StreetName2>
       <PTCAB3>${object.addresses[2] ? object.addresses[2].id : ''}</PTCAB3>
-      <HouseNumber3>${
-        object.addresses[2] ? object.addresses[2].address1 : ''
-      }</HouseNumber3>
-      <PostCode3>${
-        object.addresses[2] ? object.addresses[2].postalCode : ''
-      }</PostCode3>
+      <HouseNumber3>${object.addresses[2] ? object.addresses[2].address1 : ''}</HouseNumber3>
+      <PostCode3>${object.addresses[2] ? object.addresses[2].postalCode : ''}</PostCode3>
       <Town3>${object.addresses[2] ? object.addresses[2].town : ''}</Town3>
-      <StreetName3>${
-        object.addresses[2] ? object.addresses[2].address2 : ''
-      }</StreetName3>
+      <StreetName3>${object.addresses[2] ? object.addresses[2].address2 : ''}</StreetName3>
       <cred>
         <Client>${this.credentials.creditSearchClient}</Client>
         <UserName>${this.credentials.creditSearchUsername}</UserName>
@@ -98,7 +72,7 @@ export class CreditReportTransformer extends Transformer {
         parsedResult =>
           parsedResult['soap:Envelope']['soap:Body'][0][
             'GetLightSearchCreditReportHTMLResponse'
-          ][0]['GetLightSearchCreditReportHTMLResult'][0],
+            ][0]['GetLightSearchCreditReportHTMLResult'][0],
       )
       .then(singleResult =>
         Buffer.from(singleResult, 'base64').toString('ascii'),

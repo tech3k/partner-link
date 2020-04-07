@@ -19,17 +19,6 @@ describe('Service', () => {
     ).resolves.toEqual('ok');
   });
 
-  it('soapRequest should fail', () => {
-    request
-      .mockImplementationOnce(() => Promise.resolve('ok'))
-      .mockImplementation(() => Promise.reject(Error('Noo!')));
-
-    const service = new Service({} as PartnerLinkCredentials);
-    return expect(
-      service.soapRequest('???', 'google.com', '/', 'get'),
-    ).rejects.toThrowError('Noo!');
-  });
-
   it('tokenPostRequest should be successful', () => {
     request.mockImplementation(() => Promise.resolve('ok'));
 
