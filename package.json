@@ -13,16 +13,18 @@
     "format": "prettier --write \"**/*.ts\"",
     "start": "npm run compile && node ./dist/test.js",
     "compile": "rimraf dist && tsc -d",
-    "prepare": "npm run compile",
+    "prepare": "npm run snyk-protect && npm run compile",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",
-    "release": "standard-version && git push --follow-tags origin master && npm publish"
+    "release": "standard-version && git push --follow-tags origin master && npm publish",
+    "snyk-protect": "snyk protect"
   },
   "dependencies": {
     "moment": "^2.22.2",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
-    "xml2js": "^0.4.19"
+    "xml2js": "^0.4.19",
+    "snyk": "^1.317.0"
   },
   "devDependencies": {
     "@types/jest": "^23.1.2",
@@ -54,5 +56,6 @@
     "coverageReporters": [
       "html"
     ]
-  }
+  },
+  "snyk": true
 }
