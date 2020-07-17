@@ -1,0 +1,4 @@
+"Type: Feature": ['feature/*', 'feat/*']
+"Type: Bug": ['fix/*', 'bug/*']
+"Type: Enhancement": ['enhancement/*', 'enhance/*']
+"Type: Chore": ['chore/*', 'dependabot/*']
