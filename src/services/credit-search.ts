@@ -1,10 +1,11 @@
-import { Service } from './service';
 import {
   CreditReportTransformer,
   CreditSearchAddressResultTransformer,
   CreditSearchAddressTransformer,
   CreditSearchPersonResultTransformer,
   CreditSearchPersonTransformer,
+  RemainingCreditsResultTransformer,
+  RemainingCreditsTransformer,
 } from '../transformers';
 import {
   CreditSearchAddress,
@@ -13,6 +14,7 @@ import {
   CreditSearchPersonResult,
   PartnerLinkError,
 } from '../types';
+import { Service } from './service';
 
 export class CreditSearch extends Service {
   /**
@@ -134,5 +136,28 @@ export class CreditSearch extends Service {
       .then(result =>
         new CreditReportTransformer(this.credentials).getHtmlFromResult(result),
       );
+  }
+
+  public getRemainingSearchCredits(): Promise<number> {
+    return Promise.resolve()
+      .then(() =>
+        this.soapRequest(
+          new RemainingCreditsTransformer(this.credentials).item(),
+          'creditSearchUrl',
+          'services/SearchHeavyInterface.asmx',
+          'http://searchlink.co.uk/GetLightSearchCreditsLeft',
+        ),
+      )
+      .then(result =>
+        new RemainingCreditsResultTransformer(this.credentials).xmlItem(result),
+      )
+      .then(credits => Number(credits))
+      .catch(e => {
+        this.log('getRemainingSearchCredits', e);
+        throw new PartnerLinkError(
+          !e.code ? 'Unable to get remaining search credits.' : e.message,
+          !e.code ? 500 : e.code,
+        );
+      });
   }
 }

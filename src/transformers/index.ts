@@ -1,21 +1,25 @@
 export {
+  AddAddressTransformer,
   CreditSearchAddressResultTransformer,
   CreditSearchAddressTransformer,
-  AddAddressTransformer,
 } from './address';
 export { AssetTransformer } from './asset';
-export { CaseTransformer, CaseResultTransformer } from './case';
+export { CaseResultTransformer, CaseTransformer } from './case';
 export { CreditorTransformer } from './creditor';
 export { DocumentTransformer } from './document';
 export {
-  IncomeTransformer,
   ExpenditureTransformer,
+  IncomeTransformer,
 } from './income-expenditure';
 export { NoteTransformer } from './note';
 export {
-  CreditSearchPersonTransformer,
-  CreditSearchPersonResultTransformer,
   CreditReportTransformer,
+  CreditSearchPersonResultTransformer,
+  CreditSearchPersonTransformer,
 } from './person';
 export { PropertyTransformer } from './property';
+export {
+  RemainingCreditsResultTransformer,
+  RemainingCreditsTransformer,
+} from './remaining-credits';
 export { VehicleTransformer } from './vehicle';
