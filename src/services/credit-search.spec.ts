@@ -1,4 +1,4 @@
-import { CreditSearch } from './credit-search';
+import * as moment from 'moment';
 import {
   Creditor,
   CreditSearchAddress,
@@ -8,7 +8,7 @@ import {
   PartnerLinkCredentials,
   PartnerLinkError,
 } from '../types';
-import * as moment from 'moment';
+import { CreditSearch } from './credit-search';
 
 beforeEach(() => {
   jest
@@ -310,5 +310,44 @@ describe('CreditSearch: performCreditCheck', () => {
 
     expect(build()).rejects.toThrowError(PartnerLinkError);
     expect(build()).rejects.toThrowError('Unable to preform credit search.');
+  });
+});
+
+describe('CreditSearch: getRemainingSearchCredits', () => {
+  it('should return the remaining search credits', async () => {
+    const remainingCredits = 1;
+    jest
+      .spyOn(CreditSearch.prototype, 'soapRequest')
+      .mockImplementation(() =>
+        Promise.resolve(
+          `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><GetLightSearchCreditsLeftResponse xmlns="http://searchlink.co.uk/"><GetLightSearchCreditsLeftResult>${remainingCredits}</GetLightSearchCreditsLeftResult></GetLightSearchCreditsLeftResponse></soap:Body></soap:Envelope>`,
+        ),
+      );
+
+    const creditSearch = new CreditSearch({
+      creditSearchClient: 'test-client',
+      creditSearchUsername: 'test-username',
+      creditSearchPassword: 'test-password',
+    } as PartnerLinkCredentials);
+
+    const result = await creditSearch.getRemainingSearchCredits();
+
+    expect(result).toBe(remainingCredits);
+  });
+
+  it('should throw an error if the response is not valid', async () => {
+    jest
+      .spyOn(CreditSearch.prototype, 'soapRequest')
+      .mockImplementation(() => Promise.reject('Error'));
+
+    const creditSearch = new CreditSearch({
+      creditSearchClient: 'test-client',
+      creditSearchUsername: 'test-username',
+      creditSearchPassword: 'test-password',
+    } as PartnerLinkCredentials);
+
+    expect(creditSearch.getRemainingSearchCredits()).rejects.toThrow(
+      'Unable to get remaining search credits.',
+    );
   });
 });
